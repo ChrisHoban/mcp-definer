@@ -6,7 +6,7 @@ This document defines the **canonical repository layout**. Agent **A0 (platform 
 
 ```
 mcp-definer/
-├── docs/                          # Design/spec docs (this repo's current content)
+├── manifest/                      # Design/spec docs (requirements, ADRs, component specs)
 ├── packages/
 │   ├── schemas/                   # A1 — IR + Manifest JSON Schema, generated TS types, validator
 │   ├── db/                        # A1 — DDL, migrations, discovery view SQL

@@ -80,4 +80,4 @@ interface CredentialResolver {
 }
 ```
 
-`EnvCredentialResolver` reads secrets from `MCP_DEFINER_SECRET_*` env vars (and optional process overlay when the API accepts a one-time secret on create). Phase 4 adds vault/keychain `secretRef` schemes — see [`PHASE_4_SCOPE.md`](../../PHASE_4_SCOPE.md).
+`EnvCredentialResolver` reads secrets from `MCP_DEFINER_SECRET_*` env vars (and optional process overlay when the API accepts a one-time secret on create). Phase 4 adds vault/keychain `secretRef` schemes — see [`PHASE_4_SCOPE.md`](../../manifest/PHASE_4_SCOPE.md).

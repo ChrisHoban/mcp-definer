@@ -10,23 +10,13 @@ A system that turns any API (plus its specification) into a **standardized MCP (
 
 
 
-## What this repository contains
+## What this directory contains
 
 
 
-This monorepo contains **design/spec documentation** (component folders at the repo root) and an **implementation skeleton** (`packages/`, `apps/`, `docker/`, `scripts/`) bootstrapped by agent A0. Business logic is added by downstream agents (A1–A9) per [`BUILD_PLAN.md`](./BUILD_PLAN.md).
+This folder holds **design and specification documentation** for MCP Definer: system-wide requirements, architecture decisions, build plan, and per-component specs. The runnable implementation lives at the repo root in `packages/`, `apps/`, `docker/`, and `scripts/` (bootstrapped by agent A0; business logic added by agents A1–A9 per [`BUILD_PLAN.md`](./BUILD_PLAN.md)).
 
-### Local development (implementation)
-
-```bash
-pnpm install
-pnpm bootstrap    # install + Postgres (docker) + db:migrate stub
-pnpm lint
-pnpm test
-pnpm build
-```
-
-Copy [`.env.example`](./.env.example) to `.env` at the repo root (sets `DATABASE_URL` for migrations/tests). Start Postgres with `docker compose -f docker/docker-compose.yml up -d`, then `pnpm db:migrate`. See [`packages/db/README.md`](./packages/db/README.md) for connection troubleshooting.
+For local setup, tests, and CI, see the [project README](../README.md).
 
 
 
