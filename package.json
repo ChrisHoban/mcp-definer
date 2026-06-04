@@ -30,10 +30,10 @@
     "globals": "^16.2.0",
     "prettier": "^3.5.3",
     "turbo": "^2.5.4",
-    "typescript": "^5.8.3",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.33.1",
     "vitest": "^4.1.0",
     "@vitest/coverage-v8": "^4.1.0",
-    "dotenv": "^16.5.0"
+    "dotenv": "^17.4.2"
   }
 }
