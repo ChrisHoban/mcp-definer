@@ -1,0 +1,19 @@
+{
+  "curationVersion": "1.0",
+  "excludedOperationIds": ["deletePet"],
+  "filters": {
+    "methods": ["GET", "POST"],
+    "tags": ["pet"]
+  },
+  "inputSchemaOverrides": {},
+  "metaToolsEnabled": false,
+  "responseShapeOverrides": {},
+  "toolDescriptions": {
+    "getPetById": "Fetch a pet by ID for the agent."
+  },
+  "toolGroups": {
+    "findPetsByStatus": "pets",
+    "getPetById": "pets"
+  },
+  "toolRenames": {}
+}

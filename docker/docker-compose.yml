@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: mcp-definer-postgres
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: ${PGUSER:-mcp_definer}
+      POSTGRES_PASSWORD: ${PGPASSWORD:-mcp_definer}
+      POSTGRES_DB: ${PGDATABASE:-mcp_definer}
+    volumes:
+      - mcp_definer_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U mcp_definer -d mcp_definer']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # minio:
+  #   image: minio/minio:latest
+  #   command: server /data --console-address ":9001"
+  #   ports:
+  #     - "9000:9000"
+  #     - "9001:9001"
+  #   environment:
+  #     MINIO_ROOT_USER: mcp_definer
+  #     MINIO_ROOT_PASSWORD: mcp_definer
+  #   volumes:
+  #     - mcp_definer_minio:/data
+
+volumes:
+  mcp_definer_pgdata:
+  # mcp_definer_minio:

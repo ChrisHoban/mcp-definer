@@ -1,0 +1,33 @@
+openapi: 3.0.3
+info:
+  title: Messy Sample API
+  version: 1.0.0
+servers:
+  - url: https://api.example.com/v1
+paths:
+  /items:
+    get:
+      summary: List items
+      tags:
+        - items
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /items/{id}:
+    get:
+      summary: Get one item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK

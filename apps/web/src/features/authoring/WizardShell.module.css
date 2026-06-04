@@ -1,0 +1,23 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.meta {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  font-family: ui-monospace, monospace;
+}

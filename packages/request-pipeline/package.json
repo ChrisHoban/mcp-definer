@@ -1,0 +1,30 @@
+{
+  "name": "@mcp-definer/request-pipeline",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "tsc -p tsconfig.json && vitest run",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@mcp-definer/auth": "workspace:*",
+    "@mcp-definer/schemas": "workspace:*",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "typescript": "catalog:",
+    "vitest": "^3.2.2"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "@mcp-definer/generator",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./apply-curation": {
+      "types": "./dist/apply-curation.d.ts",
+      "import": "./dist/apply-curation.js"
+    },
+    "./map-ir-to-manifest": {
+      "types": "./dist/map-ir-to-manifest.d.ts",
+      "import": "./dist/map-ir-to-manifest.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run --config vitest.config.ts",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@apidevtools/swagger-parser": "^12.1.0",
+    "@mcp-definer/schemas": "workspace:*",
+    "yaml": "^2.8.0"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

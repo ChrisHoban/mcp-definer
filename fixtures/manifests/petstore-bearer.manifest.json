@@ -1,0 +1,72 @@
+{
+  "auth": {
+    "apply": {
+      "headerName": "Authorization",
+      "prefix": "Bearer"
+    },
+    "bindingId": "cb_petstore_bearer",
+    "type": "bearer"
+  },
+  "description": "MCP for the Petstore API with bearer token auth",
+  "displayName": "Petstore API (Bearer)",
+  "manifestSchemaVersion": "1.0",
+  "mcpProtocolVersion": "2024-11-05",
+  "name": "petstore-bearer",
+  "policies": {
+    "egressAllowlist": ["petstore.swagger.io"],
+    "retries": {
+      "backoffMs": 200,
+      "max": 2
+    },
+    "timeoutMs": 30000
+  },
+  "prompts": [],
+  "resources": [],
+  "targetApi": {
+    "baseUrl": "https://petstore.swagger.io/v2",
+    "baseUrlOverridable": true,
+    "specHash": "sha256:a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+    "specType": "openapi3"
+  },
+  "tools": [
+    {
+      "description": "Fetch a pet by ID using bearer authentication.",
+      "enabled": true,
+      "group": "pets",
+      "inputSchema": {
+        "properties": {
+          "petId": {
+            "description": "Pet id",
+            "type": "integer"
+          }
+        },
+        "required": ["petId"],
+        "type": "object"
+      },
+      "name": "getPetById",
+      "pagination": null,
+      "rateLimit": null,
+      "request": {
+        "bodyParam": null,
+        "method": "GET",
+        "paramMap": {
+          "petId": {
+            "in": "path"
+          }
+        },
+        "pathTemplate": "/pet/{petId}"
+      },
+      "response": {
+        "errorMap": {
+          "default": "raise"
+        },
+        "shape": "passthrough",
+        "successStatus": ["200"]
+      }
+    }
+  ],
+  "transport": {
+    "default": "stdio",
+    "modes": ["stdio"]
+  }
+}

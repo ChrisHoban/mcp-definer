@@ -1,0 +1,46 @@
+title = "mcp-definer"
+
+[extend]
+useDefault = true
+
+# Documented local-dev credentials, CI test keys, and test fixtures.
+[[allowlists]]
+description = "Known dev/test paths and placeholder secrets"
+paths = [
+  '''(?:^|/)\.env\.example$''',
+  '''(?:^|/)\.gitleaks\.toml$''',
+  '''(?:^|/)packages/db/src/env\.ts$''',
+  '''(?:^|/)docker/docker-compose\.yml$''',
+  '''(?:^|/)\.github/workflows/ci\.yml$''',
+  '''(?:^|/)\.github/workflows/secret-scan\.yml$''',
+  '''(?:^|/)packages/.+/.*\.test\.ts$''',
+  '''(?:^|/)packages/api/tests/.*''',
+  '''(?:^|/)tests/e2e/.*''',
+  '''(?:^|/)packages/db/README\.md$''',
+  '''(?:^|/)TESTING\.md$''',
+  '''(?:^|/)platform/design\.md$''',
+  '''(?:^|/)packages/api/openapi\.yaml$''',
+  '''(?:^|/)apps/web/src/features/management/SettingsPage\.tsx$''',
+  '''(?:^|/)node_modules/''',
+  '''(?:^|/)dist/''',
+]
+stopwords = [
+  '''dev-api-key''',
+  '''ci-test-key''',
+  '''ci-e2e-key''',
+  '''test-key''',
+  '''contract-test-key''',
+  '''e2e-petstore-secret-not-in-logs''',
+  '''super-secret-value-12345''',
+  '''integration-test-key''',
+  '''petstore-secret-key''',
+  '''egress-test-key''',
+  '''mcp_definer''',
+  '''static-bearer-token''',
+  '''env-api-key''',
+  '''my-api-key''',
+  '''test-secret-value''',
+  '''sekrit''',
+  '''csecret''',
+  '''access-token-xyz''',
+]

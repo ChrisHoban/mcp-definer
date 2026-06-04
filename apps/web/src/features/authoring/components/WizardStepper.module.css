@@ -1,0 +1,96 @@
+.stepper {
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+
+.list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  min-width: max-content;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: default;
+  border-radius: var(--radius);
+  white-space: nowrap;
+}
+
+.step:not(:disabled) {
+  cursor: pointer;
+}
+
+.step:not(:disabled):hover {
+  background: var(--bg-muted);
+  color: var(--text);
+}
+
+.active {
+  color: var(--primary-hover);
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.complete {
+  color: var(--success);
+}
+
+.number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--bg-muted);
+  border: 1px solid var(--border);
+}
+
+.active .number {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.complete .number {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.connector {
+  width: 1.5rem;
+  height: 2px;
+  background: var(--border);
+  margin: 0 0.25rem;
+}
+
+.connectorComplete {
+  background: var(--success);
+}
+
+@media (max-width: 900px) {
+  .label {
+    display: none;
+  }
+}

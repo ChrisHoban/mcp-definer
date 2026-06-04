@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "noEmitOnError": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "paths": {
+      "@mcp-definer/schemas": ["./packages/schemas/src/index.ts"],
+      "@mcp-definer/db": ["./packages/db/src/index.ts"],
+      "@mcp-definer/generator": ["./packages/generator/src/index.ts"],
+      "@mcp-definer/runtime": ["./packages/runtime/src/index.ts"],
+      "@mcp-definer/auth": ["./packages/auth/src/index.ts"],
+      "@mcp-definer/registry": ["./packages/registry/src/index.ts"],
+      "@mcp-definer/api": ["./packages/api/src/index.ts"],
+      "@mcp-definer/cli": ["./packages/cli/src/index.ts"],
+      "@mcp-definer/request-pipeline": ["./packages/request-pipeline/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,76 @@
+{
+  "auth": {
+    "apply": {
+      "scopes": ["pets.read", "pets.write"],
+      "tokenUrl": "https://auth.example.com/oauth/token"
+    },
+    "bindingId": "cb_petstore_oauth2",
+    "type": "oauth2_cc"
+  },
+  "description": "MCP for the Petstore API with OAuth2 client credentials",
+  "displayName": "Petstore API (OAuth2 CC)",
+  "manifestSchemaVersion": "1.0",
+  "mcpProtocolVersion": "2024-11-05",
+  "name": "petstore-oauth2-cc",
+  "policies": {
+    "egressAllowlist": ["petstore.swagger.io", "auth.example.com"],
+    "retries": {
+      "backoffMs": 500,
+      "max": 3
+    },
+    "timeoutMs": 45000
+  },
+  "prompts": [],
+  "resources": [],
+  "targetApi": {
+    "baseUrl": "https://petstore.swagger.io/v2",
+    "baseUrlOverridable": false,
+    "specHash": "sha256:a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+    "specType": "openapi3"
+  },
+  "tools": [
+    {
+      "description": "List pets with optional status filter via OAuth2-protected API.",
+      "enabled": true,
+      "group": "pets",
+      "inputSchema": {
+        "properties": {
+          "status": {
+            "description": "Status filter",
+            "items": {
+              "enum": ["available", "pending", "sold"],
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "name": "findPetsByStatus",
+      "pagination": null,
+      "rateLimit": null,
+      "request": {
+        "bodyParam": null,
+        "method": "GET",
+        "paramMap": {
+          "status": {
+            "in": "query"
+          }
+        },
+        "pathTemplate": "/pet/findByStatus"
+      },
+      "response": {
+        "errorMap": {
+          "404": "return",
+          "default": "raise"
+        },
+        "shape": "passthrough",
+        "successStatus": ["200"]
+      }
+    }
+  ],
+  "transport": {
+    "default": "stdio",
+    "modes": ["stdio", "http"]
+  }
+}

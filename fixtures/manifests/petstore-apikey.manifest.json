@@ -1,0 +1,110 @@
+{
+  "auth": {
+    "apply": {
+      "in": "header",
+      "name": "X-API-Key"
+    },
+    "bindingId": "cb_petstore_apikey",
+    "type": "apiKey"
+  },
+  "description": "MCP for the Petstore API",
+  "displayName": "Petstore API",
+  "manifestSchemaVersion": "1.0",
+  "mcpProtocolVersion": "2024-11-05",
+  "name": "petstore",
+  "policies": {
+    "egressAllowlist": ["petstore.swagger.io"],
+    "retries": {
+      "backoffMs": 200,
+      "max": 2
+    },
+    "timeoutMs": 30000
+  },
+  "prompts": [],
+  "resources": [],
+  "targetApi": {
+    "baseUrl": "https://petstore.swagger.io/v2",
+    "baseUrlOverridable": true,
+    "specHash": "sha256:a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+    "specType": "openapi3"
+  },
+  "tools": [
+    {
+      "description": "Fetch a pet by ID for the agent.",
+      "enabled": true,
+      "group": "pets",
+      "inputSchema": {
+        "properties": {
+          "petId": {
+            "description": "Pet id",
+            "type": "integer"
+          }
+        },
+        "required": ["petId"],
+        "type": "object"
+      },
+      "name": "getPetById",
+      "pagination": null,
+      "rateLimit": null,
+      "request": {
+        "bodyParam": null,
+        "method": "GET",
+        "paramMap": {
+          "petId": {
+            "in": "path"
+          }
+        },
+        "pathTemplate": "/pet/{petId}"
+      },
+      "response": {
+        "errorMap": {
+          "default": "raise"
+        },
+        "shape": "passthrough",
+        "successStatus": ["200"]
+      }
+    },
+    {
+      "description": "List pets with optional status filter.",
+      "enabled": true,
+      "group": "pets",
+      "inputSchema": {
+        "properties": {
+          "status": {
+            "description": "Status values that need to be considered for filter",
+            "items": {
+              "enum": ["available", "pending", "sold"],
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "name": "findPetsByStatus",
+      "pagination": null,
+      "rateLimit": null,
+      "request": {
+        "bodyParam": null,
+        "method": "GET",
+        "paramMap": {
+          "status": {
+            "in": "query"
+          }
+        },
+        "pathTemplate": "/pet/findByStatus"
+      },
+      "response": {
+        "errorMap": {
+          "default": "raise"
+        },
+        "shape": "passthrough",
+        "successStatus": ["200"]
+      }
+    }
+  ],
+  "transport": {
+    "default": "stdio",
+    "modes": ["stdio", "http"]
+  }
+}

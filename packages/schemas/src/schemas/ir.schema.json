@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcp-definer.dev/schemas/ir/1.0",
+  "title": "IntermediateRepresentation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["irVersion", "source", "servers", "operations", "securitySchemes"],
+  "properties": {
+    "irVersion": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "hash"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["openapi3", "openapi31", "swagger2", "graphql", "grpc", "asyncapi", "postman"]
+        },
+        "hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "title": { "type": "string" },
+        "version": { "type": "string" }
+      }
+    },
+    "servers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url"],
+        "properties": {
+          "url": { "type": "string", "format": "uri" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/operation" }
+    },
+    "securitySchemes": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/securityScheme" }
+    }
+  },
+  "$defs": {
+    "jsonSchema": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["in", "name", "required", "schema"],
+      "properties": {
+        "in": { "type": "string", "enum": ["path", "query", "header", "cookie"] },
+        "name": { "type": "string", "minLength": 1 },
+        "required": { "type": "boolean" },
+        "description": { "type": "string" },
+        "schema": { "$ref": "#/$defs/jsonSchema" }
+      }
+    },
+    "requestBody": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "contentType": { "type": "string" },
+        "schema": { "$ref": "#/$defs/jsonSchema" }
+      }
+    },
+    "response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "type": "string", "pattern": "^[0-9]{3}$" },
+        "description": { "type": "string" },
+        "contentType": { "type": "string" },
+        "schema": { "$ref": "#/$defs/jsonSchema" }
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "method", "path", "parameters", "responses"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "method": {
+          "type": "string",
+          "enum": ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"]
+        },
+        "path": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string" },
+        "description": { "type": "string" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "parameters": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/parameter" }
+        },
+        "requestBody": { "$ref": "#/$defs/requestBody" },
+        "responses": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/response" },
+          "minItems": 1
+        },
+        "security": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "securityScheme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["apiKey", "http", "oauth2", "openIdConnect"]
+        },
+        "in": { "type": "string", "enum": ["header", "query", "cookie"] },
+        "name": { "type": "string" },
+        "scheme": { "type": "string" },
+        "bearerFormat": { "type": "string" },
+        "flows": { "type": "object", "additionalProperties": true },
+        "openIdConnectUrl": { "type": "string", "format": "uri" },
+        "description": { "type": "string" }
+      }
+    }
+  }
+}

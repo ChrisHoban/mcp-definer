@@ -1,0 +1,357 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcp-definer.dev/schemas/manifest/1.0",
+  "title": "Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "manifestSchemaVersion",
+    "mcpProtocolVersion",
+    "name",
+    "displayName",
+    "description",
+    "targetApi",
+    "transport",
+    "auth",
+    "tools",
+    "resources",
+    "prompts",
+    "policies"
+  ],
+  "properties": {
+    "manifestSchemaVersion": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "mcpProtocolVersion": {
+      "type": "string",
+      "const": "2024-11-05"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "displayName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "targetApi": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["specType", "specHash", "baseUrl"],
+      "properties": {
+        "specType": {
+          "type": "string",
+          "enum": ["openapi3", "openapi31", "swagger2"]
+        },
+        "specHash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "baseUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "baseUrlOverridable": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "transport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["modes", "default"],
+      "properties": {
+        "modes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["stdio", "http"]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "default": {
+          "type": "string",
+          "enum": ["stdio", "http"]
+        }
+      }
+    },
+    "auth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bindingId", "type", "apply"],
+      "properties": {
+        "bindingId": {
+          "type": "string",
+          "pattern": "^cb_[a-zA-Z0-9_]+$"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["apiKey", "bearer", "oauth2_cc", "oauth2_ac", "basic", "custom"]
+        },
+        "apply": { "$ref": "#/$defs/authApply" }
+      }
+    },
+    "tools": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/tool" }
+    },
+    "resources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/resource" }
+    },
+    "prompts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/prompt" }
+    },
+    "policies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timeoutMs", "retries", "egressAllowlist"],
+      "properties": {
+        "timeoutMs": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 300000
+        },
+        "retries": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["max", "backoffMs"],
+          "properties": {
+            "max": { "type": "integer", "minimum": 0, "maximum": 10 },
+            "backoffMs": { "type": "integer", "minimum": 0, "maximum": 60000 }
+          }
+        },
+        "egressAllowlist": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        }
+      }
+    }
+  },
+  "$defs": {
+    "jsonSchema": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "authApplyApiKey": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["in", "name"],
+      "properties": {
+        "in": { "type": "string", "enum": ["header", "query"] },
+        "name": { "type": "string", "minLength": 1 }
+      }
+    },
+    "authApplyBearer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "headerName": {
+          "type": "string",
+          "default": "Authorization"
+        },
+        "prefix": {
+          "type": "string",
+          "default": "Bearer"
+        }
+      }
+    },
+    "authApplyOAuth2Cc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tokenUrl"],
+      "properties": {
+        "tokenUrl": { "type": "string", "format": "uri" },
+        "scopes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "authApplyOAuth2Ac": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authorizationUrl", "tokenUrl"],
+      "properties": {
+        "authorizationUrl": { "type": "string", "format": "uri" },
+        "tokenUrl": { "type": "string", "format": "uri" },
+        "scopes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "authApplyBasic": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {}
+    },
+    "authApplyCustom": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["headers"],
+      "properties": {
+        "headers": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "minProperties": 1
+        }
+      }
+    },
+    "authApply": {
+      "oneOf": [
+        { "$ref": "#/$defs/authApplyApiKey" },
+        { "$ref": "#/$defs/authApplyBearer" },
+        { "$ref": "#/$defs/authApplyOAuth2Cc" },
+        { "$ref": "#/$defs/authApplyOAuth2Ac" },
+        { "$ref": "#/$defs/authApplyBasic" },
+        { "$ref": "#/$defs/authApplyCustom" }
+      ]
+    },
+    "paramMapEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["in"],
+      "properties": {
+        "in": {
+          "type": "string",
+          "enum": ["path", "query", "header", "body"]
+        }
+      }
+    },
+    "toolRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "pathTemplate", "paramMap"],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"]
+        },
+        "pathTemplate": { "type": "string", "minLength": 1 },
+        "paramMap": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/paramMapEntry" }
+        },
+        "bodyParam": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "toolResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shape", "successStatus", "errorMap"],
+      "properties": {
+        "shape": {
+          "type": "string",
+          "enum": ["passthrough", "summarize", "jsonpath"]
+        },
+        "successStatus": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[0-9]{3}$" },
+          "minItems": 1
+        },
+        "errorMap": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "jsonpath": { "type": "string" }
+      }
+    },
+    "pagination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["offset", "cursor", "link"]
+        },
+        "paramNames": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+    "rateLimit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestsPerMinute"],
+      "properties": {
+        "requestsPerMinute": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "tool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "description",
+        "enabled",
+        "inputSchema",
+        "request",
+        "response"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+        },
+        "description": { "type": "string", "minLength": 1 },
+        "enabled": { "type": "boolean" },
+        "group": { "type": "string" },
+        "inputSchema": { "$ref": "#/$defs/jsonSchema" },
+        "request": { "$ref": "#/$defs/toolRequest" },
+        "response": { "$ref": "#/$defs/toolResponse" },
+        "pagination": {
+          "oneOf": [{ "$ref": "#/$defs/pagination" }, { "type": "null" }]
+        },
+        "rateLimit": {
+          "oneOf": [{ "$ref": "#/$defs/rateLimit" }, { "type": "null" }]
+        }
+      }
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uri", "name", "description"],
+      "properties": {
+        "uri": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "mimeType": { "type": "string" }
+      }
+    },
+    "prompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "description"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "required": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

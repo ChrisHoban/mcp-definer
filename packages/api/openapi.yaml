@@ -1,0 +1,235 @@
+openapi: 3.1.0
+info:
+  title: MCP Definer API
+  version: 1.0.0
+  description: |
+    Control plane (authenticated) and discovery (public read) HTTP API.
+
+    **Authentication (Phase 1):** send `X-API-Key: dev-api-key` or `Authorization: Bearer dev-api-key`
+    on control-plane routes. Override via `MCP_DEFINER_API_KEY` env var.
+
+servers:
+  - url: http://localhost:3001/v1
+    description: Local dev (`pnpm dev:api`)
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Org-scoped API key for CLI and UI
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Same token as X-API-Key
+
+  schemas:
+    Problem:
+      type: object
+      properties:
+        type: { type: string }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        code: { type: string }
+
+paths:
+  /specs/parse:
+    post:
+      summary: Parse OpenAPI spec to IR (no persistence)
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content: { type: string }
+                filename: { type: string }
+      responses:
+        '200':
+          description: Parsed IR and discovered operations
+
+  /mcps:
+    get:
+      summary: List MCPs
+      parameters:
+        - name: cursor
+          in: query
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer }
+      responses:
+        '200': { description: Paginated MCP list }
+    post:
+      summary: Create MCP draft from manifest or IR
+      responses:
+        '201': { description: Created }
+
+  /mcps/{id}:
+    get:
+      summary: MCP detail
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: MCP detail }
+    patch:
+      summary: Update MCP metadata
+      responses:
+        '200': { description: Updated }
+    delete:
+      summary: Archive MCP
+      responses:
+        '204': { description: Archived }
+
+  /mcps/{id}/versions:
+    get:
+      summary: List versions
+      responses:
+        '200': { description: Version list }
+    post:
+      summary: Create draft version
+      responses:
+        '201': { description: Created }
+
+  /mcps/{id}/versions/{ver}:
+    get:
+      summary: Version detail with manifest
+      responses:
+        '200': { description: Version detail }
+    patch:
+      summary: Edit draft version
+      responses:
+        '200': { description: Updated }
+        '409': { description: Published version immutable }
+
+  /mcps/{id}/versions/{ver}/validate:
+    post:
+      summary: Validate manifest conformance
+      responses:
+        '200': { description: Validation result }
+
+  /mcps/{id}/versions/{ver}/publish:
+    post:
+      summary: Publish version to channel
+      responses:
+        '200': { description: Published }
+
+  /mcps/{id}/versions/{ver}/deprecate:
+    post:
+      summary: Deprecate published version
+      responses:
+        '200': { description: Deprecated }
+
+  /mcps/{id}/versions/{ver}/regenerate:
+    post:
+      summary: Regenerate manifest from IR with diff
+      responses:
+        '200': { description: Diff result }
+
+  /mcps/{id}/tools/{tool}/invoke:
+    post:
+      summary: Test-console tool invoke (uses request-pipeline, ADR-012)
+      parameters:
+        - name: version
+          in: query
+          schema: { type: string }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                args: { type: object }
+      responses:
+        '200': { description: Tool result (secrets redacted) }
+        '403': { description: Egress blocked }
+
+  /mcps/{id}/credentials:
+    get:
+      summary: Get credential binding metadata (no secret values)
+      responses:
+        '200': { description: Binding metadata + secretRef only }
+    post:
+      summary: Create binding (write-only secret)
+      responses:
+        '201': { description: Created }
+    delete:
+      summary: Delete binding
+      responses:
+        '204': { description: Deleted }
+
+  /audit:
+    get:
+      summary: Query audit events
+      responses:
+        '200': { description: Audit log }
+
+  /index:
+    get:
+      summary: Discovery catalog index v1 (ETag)
+      security: []
+      parameters:
+        - name: cursor
+          in: query
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer }
+      responses:
+        '200': { description: Discovery index }
+        '304': { description: Not modified }
+
+  /registry/{org}/{slug}:
+    get:
+      summary: Per-MCP registry detail
+      security: []
+      responses:
+        '200': { description: Detail }
+
+  /registry/{org}/{slug}/versions/{ver}/manifest:
+    get:
+      summary: Published manifest for runtime
+      security: []
+      responses:
+        '200': { description: Manifest JSON }
+
+  /registry/{org}/{slug}/install:
+    get:
+      summary: Harness install snippet (ADR-008)
+      security: []
+      parameters:
+        - name: harness
+          in: query
+          schema: { type: string, default: cursor }
+      responses:
+        '200': { description: Install snippet }
+
+  /search:
+    get:
+      summary: Search catalog
+      security: []
+      parameters:
+        - name: q
+          in: query
+          schema: { type: string }
+        - name: tag
+          in: query
+          schema: { type: string }
+        - name: capability
+          in: query
+          schema: { type: string }
+      responses:
+        '200': { description: Search results }

@@ -1,0 +1,22 @@
+{
+  "indexVersion": "1.0",
+  "generatedAt": "2026-06-04T12:00:00Z",
+  "entries": [
+    {
+      "org": "acme",
+      "slug": "petstore",
+      "name": "Petstore API",
+      "description": "MCP for the Petstore API",
+      "visibility": "public",
+      "latestVersion": "1.0.0",
+      "channel": "stable",
+      "mcpProtocolVersion": "2024-11-05",
+      "toolCount": 2,
+      "toolNames": ["getPetById", "listPets"],
+      "tags": ["pets", "demo"],
+      "installUrl": "/v1/registry/acme/petstore/install?harness=cursor",
+      "manifestUrl": "/v1/registry/acme/petstore/versions/1.0.0/manifest"
+    }
+  ],
+  "nextCursor": null
+}

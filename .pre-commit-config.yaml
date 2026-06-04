@@ -1,0 +1,11 @@
+# Install once:  pip install pre-commit   (or: scoop install pre-commit)
+# Activate hook: pre-commit install
+# Manual scan:   pre-commit run gitleaks --all-files
+#
+# Uses .gitleaks.toml in the repo root automatically.
+
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.2
+    hooks:
+      - id: gitleaks

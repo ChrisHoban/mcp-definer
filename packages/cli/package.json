@@ -1,0 +1,31 @@
+{
+  "name": "@mcp-definer/cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "mcp-definer": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "tsc -p tsconfig.json && vitest run",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@mcp-definer/auth": "workspace:*",
+    "@mcp-definer/registry": "workspace:*",
+    "@mcp-definer/schemas": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vitest": "^3.2.2"
+  }
+}

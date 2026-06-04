@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.turbo/
+coverage/
+*.tsbuildinfo
+
+# Environment & secrets (never commit live credentials)
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Local MCP / IDE config that may contain API keys or binding secrets
+mcp.json
+.cursor/mcp.json
+
+# Certificates & private keys
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.crt
+*.cer
+id_rsa
+id_ed25519
+id_ecdsa
+
+# Common credential file names
+credentials.json
+secrets.json
+*.credentials
+*.secret
+.npmrc
+
+# Logs
+*.log
+.npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcp-definer.dev/schemas/curation-profile/1.0",
+  "title": "CurationProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["curationVersion"],
+  "properties": {
+    "curationVersion": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "excludedOperationIds": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "default": []
+    },
+    "toolRenames": {
+      "type": "object",
+      "additionalProperties": { "type": "string", "minLength": 1 },
+      "default": {}
+    },
+    "toolDescriptions": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "default": {}
+    },
+    "toolGroups": {
+      "type": "object",
+      "additionalProperties": { "type": "string", "minLength": 1 },
+      "default": {}
+    },
+    "inputSchemaOverrides": {
+      "type": "object",
+      "additionalProperties": { "type": "object", "additionalProperties": true },
+      "default": {}
+    },
+    "responseShapeOverrides": {
+      "type": "object",
+      "additionalProperties": { "type": "object", "additionalProperties": true },
+      "default": {}
+    },
+    "filters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"]
+          }
+        },
+        "pathPrefixes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "default": {}
+    },
+    "metaToolsEnabled": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

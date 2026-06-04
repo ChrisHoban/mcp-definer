@@ -1,0 +1,15 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/schemas" },
+    { "path": "./packages/db" },
+    { "path": "./packages/request-pipeline" },
+    { "path": "./packages/generator" },
+    { "path": "./packages/auth" },
+    { "path": "./packages/runtime" },
+    { "path": "./packages/registry" },
+    { "path": "./packages/api" },
+    { "path": "./packages/cli" },
+    { "path": "./apps/web" }
+  ]
+}
