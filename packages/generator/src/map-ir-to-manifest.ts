@@ -4,10 +4,7 @@ import type {
   Manifest,
   ManifestTool,
 } from '@mcp-definer/schemas';
-import {
-  MANIFEST_SCHEMA_VERSION,
-  MCP_PROTOCOL_VERSION,
-} from '@mcp-definer/schemas';
+import { MANIFEST_SCHEMA_VERSION, MCP_PROTOCOL_VERSION } from '@mcp-definer/schemas';
 
 import { buildManifestAuth, defaultBindingId } from './auth-map.js';
 import { manifestSpecType } from './openapi/detect.js';
@@ -28,10 +25,7 @@ function pickSuccessStatuses(responses: IrOperation['responses']): string[] {
   return unique.length > 0 ? unique : ['200'];
 }
 
-function operationToTool(
-  op: IrOperation,
-  warnings: GeneratorWarning[],
-): ManifestTool {
+function operationToTool(op: IrOperation, warnings: GeneratorWarning[]): ManifestTool {
   const params: Array<{
     in: 'path' | 'query' | 'header' | 'body';
     name: string;
@@ -88,10 +82,7 @@ function operationToTool(
     }
   }
 
-  const description =
-    op.summary?.trim() ||
-    op.description?.trim() ||
-    `${op.method} ${op.path}`;
+  const description = op.summary?.trim() || op.description?.trim() || `${op.method} ${op.path}`;
 
   return {
     name: op.id,
@@ -137,11 +128,8 @@ export function mapIrToManifest(
     .map((op) => operationToTool(op, warnings))
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  const displayName =
-    options.displayName ?? ir.source.title ?? name;
-  const description =
-    options.description ??
-    `MCP for ${displayName}`;
+  const displayName = options.displayName ?? ir.source.title ?? name;
+  const description = options.description ?? `MCP for ${displayName}`;
 
   return {
     manifestSchemaVersion: MANIFEST_SCHEMA_VERSION,
@@ -171,10 +159,7 @@ export function mapIrToManifest(
   };
 }
 
-function pickSchemeSuffix(
-  ir: IntermediateRepresentation,
-  preferred?: string,
-): string {
+function pickSchemeSuffix(ir: IntermediateRepresentation, preferred?: string): string {
   const schemes = Object.keys(ir.securitySchemes).sort();
   if (preferred && ir.securitySchemes[preferred]) {
     return preferred;

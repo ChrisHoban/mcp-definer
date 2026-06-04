@@ -4,7 +4,9 @@ import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { defineConfig } from 'vitest/config';
 
-const requireFromRuntime = createRequire(resolve(import.meta.dirname, 'packages/runtime/package.json'));
+const requireFromRuntime = createRequire(
+  resolve(import.meta.dirname, 'packages/runtime/package.json'),
+);
 const mcpSdkRoot = dirname(requireFromRuntime.resolve('@modelcontextprotocol/sdk/package.json'));
 
 const root = import.meta.dirname;

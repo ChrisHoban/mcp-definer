@@ -21,10 +21,7 @@ const FORBIDDEN_SECRET_KEYS = new Set([
   'credentials',
 ]);
 
-const SECRET_VALUE_PATTERNS = [
-  /^sk-[a-zA-Z0-9]{20,}$/,
-  /^Bearer\s+[a-zA-Z0-9._-]{20,}$/i,
-];
+const SECRET_VALUE_PATTERNS = [/^sk-[a-zA-Z0-9]{20,}$/, /^Bearer\s+[a-zA-Z0-9._-]{20,}$/i];
 
 function ajvErrorsToIssues(errors: ErrorObject[] | null | undefined): ValidationIssue[] {
   if (!errors) {
@@ -134,7 +131,10 @@ function authApplyMatchesType(
   return issues;
 }
 
-function validateToolInputSchemas(tools: ManifestTool[], ajv: ReturnType<typeof getAjv>): ValidationIssue[] {
+function validateToolInputSchemas(
+  tools: ManifestTool[],
+  ajv: ReturnType<typeof getAjv>,
+): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
 
   tools.forEach((tool, index) => {
@@ -143,7 +143,8 @@ function validateToolInputSchemas(tools: ManifestTool[], ajv: ReturnType<typeof 
     } catch (error) {
       issues.push({
         path: `/tools/${index}/inputSchema`,
-        message: error instanceof Error ? error.message : 'Invalid JSON Schema for tool inputSchema',
+        message:
+          error instanceof Error ? error.message : 'Invalid JSON Schema for tool inputSchema',
         code: 'invalidInputSchema',
       });
     }
@@ -240,7 +241,9 @@ export function validateManifest(input: unknown): ValidateManifestResult {
 
   const manifest = input as Manifest;
 
-  errors.push(...authApplyMatchesType(manifest.auth.type, manifest.auth.apply as Record<string, unknown>));
+  errors.push(
+    ...authApplyMatchesType(manifest.auth.type, manifest.auth.apply as Record<string, unknown>),
+  );
   errors.push(...validateTransportConsistency(manifest));
   errors.push(...validateUniqueToolNames(manifest.tools));
   errors.push(...validateEgressAllowlist(manifest));

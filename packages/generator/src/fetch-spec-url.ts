@@ -29,11 +29,7 @@ const DEFAULT_MAX_BYTES = 5 * 1024 * 1024;
 const DEFAULT_TIMEOUT_MS = 30_000;
 const DEFAULT_MAX_REDIRECTS = 3;
 
-const BLOCKED_HOSTNAMES = new Set([
-  'localhost',
-  'metadata.google.internal',
-  'metadata.google',
-]);
+const BLOCKED_HOSTNAMES = new Set(['localhost', 'metadata.google.internal', 'metadata.google']);
 
 function normalizeHost(host: string): string {
   return host.toLowerCase().replace(/\.$/, '');
@@ -74,7 +70,12 @@ function isPrivateOrReservedIp(host: string): boolean {
   }
   if (version === 6) {
     const lower = host.toLowerCase();
-    if (lower === '::1' || lower.startsWith('fe80:') || lower.startsWith('fc') || lower.startsWith('fd')) {
+    if (
+      lower === '::1' ||
+      lower.startsWith('fe80:') ||
+      lower.startsWith('fc') ||
+      lower.startsWith('fd')
+    ) {
       return true;
     }
   }
@@ -180,27 +181,18 @@ export async function fetchSpecFromUrl(
       }
 
       if (!response.ok) {
-        throw new SpecFetchError(
-          `HTTP ${response.status} fetching ${current}`,
-          'HTTP_ERROR',
-        );
+        throw new SpecFetchError(`HTTP ${response.status} fetching ${current}`, 'HTTP_ERROR');
       }
 
       const contentType = response.headers.get('content-type');
       const contentLength = response.headers.get('content-length');
       if (contentLength && Number(contentLength) > maxBytes) {
-        throw new SpecFetchError(
-          `Response exceeds max size (${maxBytes} bytes)`,
-          'SIZE_LIMIT',
-        );
+        throw new SpecFetchError(`Response exceeds max size (${maxBytes} bytes)`, 'SIZE_LIMIT');
       }
 
       const buffer = await response.arrayBuffer();
       if (buffer.byteLength > maxBytes) {
-        throw new SpecFetchError(
-          `Response exceeds max size (${maxBytes} bytes)`,
-          'SIZE_LIMIT',
-        );
+        throw new SpecFetchError(`Response exceeds max size (${maxBytes} bytes)`, 'SIZE_LIMIT');
       }
 
       const content = new TextDecoder('utf-8').decode(buffer);

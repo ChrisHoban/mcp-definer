@@ -275,7 +275,11 @@ export interface RegistryStore {
   getToolsForVersion(versionId: string): Promise<StoredTool[]>;
   getInstallTargets(versionId: string): Promise<StoredInstallTarget[]>;
   getVersionAuthoringData(versionId: string): Promise<VersionAuthoringData>;
-  publishVersion(versionId: string, channel: 'stable' | 'beta', actorId: string): Promise<StoredMcpVersion>;
+  publishVersion(
+    versionId: string,
+    channel: 'stable' | 'beta',
+    actorId: string,
+  ): Promise<StoredMcpVersion>;
   deprecateVersion(versionId: string, actorId: string): Promise<StoredMcpVersion>;
   updateDraftManifest(versionId: string, manifest: Manifest): Promise<StoredMcpVersion>;
   updateDraftVersion(versionId: string, input: UpdateDraftVersionInput): Promise<StoredMcpVersion>;

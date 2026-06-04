@@ -98,7 +98,10 @@ export class EnvCredentialResolver implements CredentialResolver {
       case 'oauth2_cc': {
         const apply = manifestAuth?.apply as AuthApplyOAuth2Cc | undefined;
         if (!apply?.tokenUrl) {
-          throw new CredentialResolutionError('oauth2_cc apply metadata missing tokenUrl', bindingId);
+          throw new CredentialResolutionError(
+            'oauth2_cc apply metadata missing tokenUrl',
+            bindingId,
+          );
         }
         const clientCreds = parseOAuth2ClientCredentialsSecret(secret);
         const accessToken = await fetchOAuth2ClientCredentialsToken(

@@ -43,7 +43,7 @@ async function main(): Promise<void> {
   switch (command) {
     case 'install':
       exitCode = await runInstall(positional, {
-        harness: (flags.harness as string | undefined) as 'cursor' | undefined,
+        harness: flags.harness as string | undefined as 'cursor' | undefined,
         registryUrl: flags['registry-url'] as string | undefined,
         configPath: flags.config as string | undefined,
         local: flags.local === true,

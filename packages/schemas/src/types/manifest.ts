@@ -1,12 +1,6 @@
 import type { JsonSchema } from './ir.js';
 
-export type ManifestAuthType =
-  | 'apiKey'
-  | 'bearer'
-  | 'oauth2_cc'
-  | 'oauth2_ac'
-  | 'basic'
-  | 'custom';
+export type ManifestAuthType = 'apiKey' | 'bearer' | 'oauth2_cc' | 'oauth2_ac' | 'basic' | 'custom';
 
 export interface AuthApplyApiKey {
   in: 'header' | 'query';

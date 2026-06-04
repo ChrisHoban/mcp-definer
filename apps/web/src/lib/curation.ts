@@ -114,13 +114,22 @@ export interface DescriptionQuality {
 
 export function assessDescriptionQuality(description: string | undefined): DescriptionQuality {
   if (!description?.trim()) {
-    return { level: 'bad', message: 'Description is empty — agents rely on this for tool selection.' };
+    return {
+      level: 'bad',
+      message: 'Description is empty — agents rely on this for tool selection.',
+    };
   }
   if (description.trim().length < 20) {
-    return { level: 'warn', message: 'Description is very short — add context about when to use this tool.' };
+    return {
+      level: 'warn',
+      message: 'Description is very short — add context about when to use this tool.',
+    };
   }
   if (description.trim().length < 50) {
-    return { level: 'warn', message: 'Consider a richer description with parameters and use cases.' };
+    return {
+      level: 'warn',
+      message: 'Consider a richer description with parameters and use cases.',
+    };
   }
   return { level: 'good', message: 'Description looks adequate for agent comprehension.' };
 }

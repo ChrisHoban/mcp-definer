@@ -10,9 +10,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
 const petstoreYaml = join(repoRoot, 'fixtures/openapi/petstore.yaml');
 
-const { parseSpec, mapIrToManifest, applyCuration, emptyCuration } = await import(
-  '../packages/generator/dist/index.js'
-);
+const { parseSpec, mapIrToManifest, applyCuration, emptyCuration } =
+  await import('../packages/generator/dist/index.js');
 const { serializeCanonical } = await import('../packages/schemas/dist/index.js');
 
 const { ir } = await parseSpec({ kind: 'file', path: petstoreYaml });

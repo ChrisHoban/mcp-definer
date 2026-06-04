@@ -141,7 +141,11 @@ function parseSwagger2Operations(
         const loc = param.in as string;
         if (loc === 'formData') {
           warnings.push(
-            warn('unsupportedFormData', `formData parameter ignored on ${httpMethod} ${path}`, path),
+            warn(
+              'unsupportedFormData',
+              `formData parameter ignored on ${httpMethod} ${path}`,
+              path,
+            ),
           );
           continue;
         }
@@ -170,7 +174,9 @@ function parseSwagger2Operations(
 
       const consumes = (op.consumes ?? api.consumes) as string[] | undefined;
       if (consumes?.some((c) => c.includes('multipart'))) {
-        warnings.push(warn('unsupportedMultipart', `multipart upload on ${httpMethod} ${path}`, path));
+        warnings.push(
+          warn('unsupportedMultipart', `multipart upload on ${httpMethod} ${path}`, path),
+        );
       }
 
       raw.push({
@@ -240,7 +246,9 @@ function parseOpenApi3Operations(
         const content = rb.content as Record<string, Record<string, unknown>> | undefined;
         const mime = content ? Object.keys(content).sort()[0] : undefined;
         if (mime?.includes('multipart')) {
-          warnings.push(warn('unsupportedMultipart', `multipart body on ${httpMethod} ${path}`, path));
+          warnings.push(
+            warn('unsupportedMultipart', `multipart body on ${httpMethod} ${path}`, path),
+          );
         } else {
           const media = mime && content ? content[mime] : undefined;
           requestBody = {
@@ -271,9 +279,7 @@ function parseOpenApi3Operations(
   return assignIdsToRaw(raw);
 }
 
-function extractSecurityNames(
-  security: unknown,
-): string[] | undefined {
+function extractSecurityNames(security: unknown): string[] | undefined {
   if (!Array.isArray(security) || security.length === 0) {
     return undefined;
   }
@@ -404,8 +410,14 @@ export function buildIrFromOpenApi(
   const format = detectSpecFormat(api);
   const info = (api.info ?? {}) as Record<string, unknown>;
 
-  if (format === 'swagger2' && Array.isArray(api.servers) && (api.servers as unknown[]).length > 1) {
-    warnings.push(warn('multipleServers', 'Multiple servers found; using first only (MVP)', '/servers'));
+  if (
+    format === 'swagger2' &&
+    Array.isArray(api.servers) &&
+    (api.servers as unknown[]).length > 1
+  ) {
+    warnings.push(
+      warn('multipleServers', 'Multiple servers found; using first only (MVP)', '/servers'),
+    );
   }
 
   const operations =

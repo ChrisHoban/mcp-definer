@@ -12,9 +12,7 @@ export async function getRegistryDetail(
     throw new RegistryError('NOT_FOUND', `MCP not found: ${org}/${slug}`);
   }
 
-  const versionRecords = ctx.store.listVersions
-    ? await ctx.store.listVersions(mcp.id)
-    : [];
+  const versionRecords = ctx.store.listVersions ? await ctx.store.listVersions(mcp.id) : [];
 
   const summaries: VersionSummary[] = [];
   for (const ver of versionRecords) {

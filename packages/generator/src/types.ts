@@ -60,7 +60,9 @@ export interface RegenerateWithDiffInput {
 export interface ToolChangeDetail {
   operationId: string;
   toolName: string;
-  fields: Array<'description' | 'inputSchema' | 'request' | 'response' | 'group' | 'enabled' | 'name'>;
+  fields: Array<
+    'description' | 'inputSchema' | 'request' | 'response' | 'group' | 'enabled' | 'name'
+  >;
 }
 
 export interface ManifestDiff {

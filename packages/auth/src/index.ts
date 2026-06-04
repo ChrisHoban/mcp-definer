@@ -15,11 +15,7 @@ export { canViewMcp, type McpAccessContext } from './rbac/visibility.js';
 
 // Secrets (write-only public API)
 export { SECRET_ENV_PREFIX, secretEnvVarName, readEnvSecret } from './secrets/env.js';
-export {
-  ENV_SECRET_REF_PREFIX,
-  envSecretRef,
-  envVarNameFromSecretRef,
-} from './secrets/env-ref.js';
+export { ENV_SECRET_REF_PREFIX, envSecretRef, envVarNameFromSecretRef } from './secrets/env-ref.js';
 export { EnvSecretStore, InMemorySecretStore, type SecretStore } from './secrets/secret-store.js';
 
 // Credential bindings

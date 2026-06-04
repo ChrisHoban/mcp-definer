@@ -17,7 +17,9 @@ describe('integration: invoke parity (ADR-012)', () => {
     const mock = await startMockUpstream();
     try {
       const { app, ctx } = await createTestApp();
-      const petstore = (await ctx.registryStore.listMcps()).items.find((m) => m.slug === 'petstore')!;
+      const petstore = (await ctx.registryStore.listMcps()).items.find(
+        (m) => m.slug === 'petstore',
+      )!;
       const version = await ctx.registryStore.getLatestPublishedVersion(petstore.id);
       const stored = (await ctx.registryStore.getManifestById(version!.manifestId))!;
       const manifest = withMockEgress(stored.content, mock.baseUrl);

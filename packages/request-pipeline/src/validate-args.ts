@@ -34,11 +34,10 @@ export function validateToolArgs(inputSchema: JsonSchema, args: unknown): void {
   const valid = validate(args);
 
   if (!valid) {
-    const issues =
-      validate.errors?.map((error: ErrorObject) => {
-        const path = error.instancePath || '/';
-        return `${path}: ${error.message ?? 'invalid'}`;
-      }) ?? ['invalid arguments'];
+    const issues = validate.errors?.map((error: ErrorObject) => {
+      const path = error.instancePath || '/';
+      return `${path}: ${error.message ?? 'invalid'}`;
+    }) ?? ['invalid arguments'];
 
     throw new ToolValidationError('Tool arguments failed validation', issues);
   }

@@ -6,12 +6,7 @@ import {
   type CredentialBindingStore,
   type OrgRole,
 } from '@mcp-definer/auth';
-import {
-  createPool,
-  runMigrations,
-  validateDatabase,
-  type DbPool,
-} from '@mcp-definer/db';
+import { createPool, runMigrations, validateDatabase, type DbPool } from '@mcp-definer/db';
 import type { ManifestAuth } from '@mcp-definer/schemas';
 import {
   createSeededRegistryStore,

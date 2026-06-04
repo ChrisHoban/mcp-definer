@@ -34,7 +34,8 @@ describe.skipIf(!dbAvailable)('integration: postgres registry + env credentials'
     };
 
     const slug = `pg-int-${Date.now()}`;
-    const { mapIrToManifest, emptyCuration, applyCuration } = await import('@mcp-definer/generator');
+    const { mapIrToManifest, emptyCuration, applyCuration } =
+      await import('@mcp-definer/generator');
     const base = mapIrToManifest(parsed.ir, {
       name: slug,
       displayName: 'Postgres Integration',
@@ -70,7 +71,9 @@ describe.skipIf(!dbAvailable)('integration: postgres registry + env credentials'
       }),
     });
     expect(credRes.status).toBe(201);
-    const credBody = (await credRes.json()) as { binding: { secretRef: string; hasSecret: boolean } };
+    const credBody = (await credRes.json()) as {
+      binding: { secretRef: string; hasSecret: boolean };
+    };
     expect(credBody.binding.secretRef).toContain('env:MCP_DEFINER_SECRET_');
     expect(credBody.binding.hasSecret).toBe(true);
 

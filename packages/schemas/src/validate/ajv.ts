@@ -4,9 +4,7 @@ import type { ErrorObject, ValidateFunction } from 'ajv';
 
 import irSchema from '../schemas/ir.schema.json' with { type: 'json' };
 import manifestSchema from '../schemas/manifest.schema.json' with { type: 'json' };
-import curationProfileSchema from '../schemas/curation-profile.schema.json' with {
-  type: 'json',
-};
+import curationProfileSchema from '../schemas/curation-profile.schema.json' with { type: 'json' };
 
 const require = createRequire(import.meta.url);
 

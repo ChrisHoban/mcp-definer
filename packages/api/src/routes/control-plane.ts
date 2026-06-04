@@ -215,7 +215,12 @@ export function createControlPlaneRoutes(ctx: AppContext): Hono<ApiEnv> {
     const app = ctx;
     const cursor = c.req.query('cursor');
     const limit = c.req.query('limit') ? Number(c.req.query('limit')) : undefined;
-    const status = c.req.query('status') as 'draft' | 'published' | 'deprecated' | 'retired' | undefined;
+    const status = c.req.query('status') as
+      | 'draft'
+      | 'published'
+      | 'deprecated'
+      | 'retired'
+      | undefined;
     const visibility = c.req.query('visibility') as 'private' | 'org' | 'public' | undefined;
     const tag = c.req.query('tag');
 
@@ -404,7 +409,10 @@ export function createControlPlaneRoutes(ctx: AppContext): Hono<ApiEnv> {
     }>();
 
     if (!body.manifest && !body.curation && !body.authorState && !body.specText) {
-      return badRequest(c, 'At least one of manifest, curation, authorState, or specText is required');
+      return badRequest(
+        c,
+        'At least one of manifest, curation, authorState, or specText is required',
+      );
     }
 
     const sourceSpec =
@@ -492,32 +500,36 @@ export function createControlPlaneRoutes(ctx: AppContext): Hono<ApiEnv> {
     }
   });
 
-  routes.post('/mcps/:id/versions/:ver/deprecate', requirePermission('mcp:deprecate'), async (c) => {
-    const app = ctx;
-    const ver = c.req.param('ver');
-    const mcp = await app.registryStore.getMcpById(c.req.param('id'));
-    if (!mcp) {
-      return notFound(c, 'MCP not found');
-    }
-
-    const body = await c.req.json<{ reason?: string }>();
-
-    try {
-      const result = await deprecateVersion(app.registry, {
-        org: mcp.orgSlug,
-        slug: mcp.slug,
-        version: ver,
-        actorId: c.get('auth').userId,
-        reason: body.reason,
-      });
-      return c.json(result);
-    } catch (error) {
-      if (error instanceof RegistryError) {
-        return handleRegistryError(c, error);
+  routes.post(
+    '/mcps/:id/versions/:ver/deprecate',
+    requirePermission('mcp:deprecate'),
+    async (c) => {
+      const app = ctx;
+      const ver = c.req.param('ver');
+      const mcp = await app.registryStore.getMcpById(c.req.param('id'));
+      if (!mcp) {
+        return notFound(c, 'MCP not found');
       }
-      throw error;
-    }
-  });
+
+      const body = await c.req.json<{ reason?: string }>();
+
+      try {
+        const result = await deprecateVersion(app.registry, {
+          org: mcp.orgSlug,
+          slug: mcp.slug,
+          version: ver,
+          actorId: c.get('auth').userId,
+          reason: body.reason,
+        });
+        return c.json(result);
+      } catch (error) {
+        if (error instanceof RegistryError) {
+          return handleRegistryError(c, error);
+        }
+        throw error;
+      }
+    },
+  );
 
   routes.post('/mcps/:id/versions/:ver/regenerate', requirePermission('mcp:edit'), async (c) => {
     const app = ctx;
@@ -571,9 +583,9 @@ export function createControlPlaneRoutes(ctx: AppContext): Hono<ApiEnv> {
     const verParam = c.req.query('version');
     const version = verParam
       ? await app.registryStore.getVersionForMcp(mcp.id, verParam)
-      : (mcp.latestVersionId
+      : ((mcp.latestVersionId
           ? await app.registryStore.getVersionById(mcp.latestVersionId)
-          : null) ?? (await app.registryStore.listVersions!(mcp.id))[0];
+          : null) ?? (await app.registryStore.listVersions!(mcp.id))[0]);
 
     if (!version) {
       return notFound(c, 'Version not found');
@@ -615,16 +627,10 @@ export function createControlPlaneRoutes(ctx: AppContext): Hono<ApiEnv> {
       });
     } catch (error) {
       if (error instanceof ToolValidationError) {
-        return sendProblem(
-          c,
-          problem(400, 'TOOL_VALIDATION', error.message, 'TOOL_VALIDATION'),
-        );
+        return sendProblem(c, problem(400, 'TOOL_VALIDATION', error.message, 'TOOL_VALIDATION'));
       }
       if (error instanceof EgressBlockedError) {
-        return sendProblem(
-          c,
-          problem(403, 'EGRESS_BLOCKED', error.message, 'EGRESS_BLOCKED'),
-        );
+        return sendProblem(c, problem(403, 'EGRESS_BLOCKED', error.message, 'EGRESS_BLOCKED'));
       }
       if (error instanceof UpstreamHttpError) {
         return sendProblem(
@@ -659,11 +665,7 @@ export function createControlPlaneRoutes(ctx: AppContext): Hono<ApiEnv> {
     }
 
     try {
-      const binding = await app.bindingStore.create(
-        { ...body, mcpId },
-        body.secret,
-        mcp.orgSlug,
-      );
+      const binding = await app.bindingStore.create({ ...body, mcpId }, body.secret, mcp.orgSlug);
       await emitAudit(ctx, c, 'credential.create', 'credential_binding', binding.id);
       return c.json({ binding }, 201);
     } catch (error) {

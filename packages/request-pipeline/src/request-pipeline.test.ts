@@ -20,9 +20,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '../../..');
 
 function loadManifest(name: string): Manifest {
-  return JSON.parse(
-    readFileSync(join(repoRoot, 'fixtures/manifests', name), 'utf8'),
-  ) as Manifest;
+  return JSON.parse(readFileSync(join(repoRoot, 'fixtures/manifests', name), 'utf8')) as Manifest;
 }
 
 function mockCredential(): Extract<ResolvedCredential, { authType: 'apiKey' }> {
@@ -67,16 +65,10 @@ describe('egress allow-list', () => {
     const fetch = vi.fn<HttpFetchFn>();
 
     await expect(
-      executeToolCall(
-        manifest,
-        tool,
-        { petId: 1 },
-        mockCredential(),
-        {
-          baseUrlOverride: 'https://evil.example.com/v2',
-          fetch,
-        },
-      ),
+      executeToolCall(manifest, tool, { petId: 1 }, mockCredential(), {
+        baseUrlOverride: 'https://evil.example.com/v2',
+        fetch,
+      }),
     ).rejects.toBeInstanceOf(EgressBlockedError);
 
     expect(fetch).not.toHaveBeenCalled();

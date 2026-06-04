@@ -34,7 +34,13 @@ export type {
   ToolResponse,
 } from '../../../../packages/schemas/src/types/manifest.js';
 
-export { MANIFEST_SCHEMA_VERSION, MCP_PROTOCOL_VERSION } from '../../../../packages/schemas/src/types/manifest.js';
+export {
+  MANIFEST_SCHEMA_VERSION,
+  MCP_PROTOCOL_VERSION,
+} from '../../../../packages/schemas/src/types/manifest.js';
 
-export type { CurationProfile, CurationFilters } from '../../../../packages/schemas/src/types/curation-profile.js';
+export type {
+  CurationProfile,
+  CurationFilters,
+} from '../../../../packages/schemas/src/types/curation-profile.js';
 export { CURATION_VERSION } from '../../../../packages/schemas/src/types/curation-profile.js';

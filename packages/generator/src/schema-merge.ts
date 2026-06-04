@@ -27,7 +27,11 @@ export function isForbiddenInputName(name: string): boolean {
   return FORBIDDEN_INPUT_KEYS.has(name);
 }
 
-function stripForbiddenKeys(schema: JsonSchema, warnings: GeneratorWarning[], path: string): JsonSchema {
+function stripForbiddenKeys(
+  schema: JsonSchema,
+  warnings: GeneratorWarning[],
+  path: string,
+): JsonSchema {
   if (!schema || typeof schema !== 'object' || Array.isArray(schema)) {
     return schema;
   }
@@ -53,11 +57,7 @@ function stripForbiddenKeys(schema: JsonSchema, warnings: GeneratorWarning[], pa
   }
 
   if (result.items) {
-    result.items = stripForbiddenKeys(
-      result.items as JsonSchema,
-      warnings,
-      `${path}/items`,
-    );
+    result.items = stripForbiddenKeys(result.items as JsonSchema, warnings, `${path}/items`);
   }
 
   if (result.additionalProperties && typeof result.additionalProperties === 'object') {
@@ -85,11 +85,7 @@ export function normalizeJsonSchema(
 
   if ('oneOf' in record || 'anyOf' in record || 'allOf' in record) {
     warnings.push(
-      warn(
-        'unsupportedCombinator',
-        'oneOf/anyOf/allOf flattened to generic object (MVP)',
-        path,
-      ),
+      warn('unsupportedCombinator', 'oneOf/anyOf/allOf flattened to generic object (MVP)', path),
     );
     const branches = (record.oneOf ?? record.anyOf ?? record.allOf) as unknown[];
     if (Array.isArray(branches) && branches.length > 0) {

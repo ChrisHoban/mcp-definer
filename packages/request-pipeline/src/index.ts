@@ -36,7 +36,12 @@ export async function executeToolCall(
 ): Promise<ToolCallResult> {
   validateToolArgs(tool.inputSchema, args);
 
-  const request = buildHttpRequest(manifest, tool, args as Record<string, unknown>, options.baseUrlOverride);
+  const request = buildHttpRequest(
+    manifest,
+    tool,
+    args as Record<string, unknown>,
+    options.baseUrlOverride,
+  );
   const authedRequest = applyCredential(credential, request);
 
   assertEgressAllowed(authedRequest.url, manifest.policies.egressAllowlist);

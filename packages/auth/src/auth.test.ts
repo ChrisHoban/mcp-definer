@@ -57,10 +57,13 @@ describe('visibility', () => {
 
   it('allows org members to view org-visible MCPs', () => {
     expect(
-      canViewMcp({ orgId: 'org-1', userId: 'user-2', role: 'viewer' }, {
-        ...mcp,
-        visibility: 'org',
-      }),
+      canViewMcp(
+        { orgId: 'org-1', userId: 'user-2', role: 'viewer' },
+        {
+          ...mcp,
+          visibility: 'org',
+        },
+      ),
     ).toBe(true);
   });
 
@@ -133,10 +136,7 @@ describe('InMemoryBindingStore', () => {
     const secretStore = new EnvSecretStore();
     const store = new InMemoryBindingStore(secretStore);
 
-    await store.create(
-      { id: 'cb_a', mcpId: 'mcp-1', authType: 'apiKey' },
-      'key-a',
-    );
+    await store.create({ id: 'cb_a', mcpId: 'mcp-1', authType: 'apiKey' }, 'key-a');
 
     await expect(
       store.create({ id: 'cb_b', mcpId: 'mcp-1', authType: 'bearer' }, 'token-b'),

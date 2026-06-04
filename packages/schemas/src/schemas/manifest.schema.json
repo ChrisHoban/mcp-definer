@@ -293,14 +293,7 @@
     "tool": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "name",
-        "description",
-        "enabled",
-        "inputSchema",
-        "request",
-        "response"
-      ],
+      "required": ["name", "description", "enabled", "inputSchema", "request", "response"],
       "properties": {
         "name": {
           "type": "string",

@@ -58,7 +58,9 @@ describe('@mcp-definer/api', () => {
     expect(body.entries[0].toolCount).toBe(fixture.entries[0].toolCount);
     expect(body.entries[0].mcpProtocolVersion).toBe(fixture.entries[0].mcpProtocolVersion);
     expect(body.entries[0].installUrl).toContain('/v1/registry/acme/petstore/install');
-    expect(body.entries[0].manifestUrl).toContain('/v1/registry/acme/petstore/versions/1.0.0/manifest');
+    expect(body.entries[0].manifestUrl).toContain(
+      '/v1/registry/acme/petstore/versions/1.0.0/manifest',
+    );
 
     const etag = res.headers.get('ETag');
     expect(etag).toBeTruthy();
@@ -78,14 +80,11 @@ describe('@mcp-definer/api', () => {
     expect(petstore).toBeDefined();
 
     const manifest = loadFixture<Manifest>('fixtures/manifests/petstore-apikey.manifest.json');
-    const res = await app.request(
-      `http://localhost/v1/mcps/${petstore!.id}/versions/1.0.0`,
-      {
-        method: 'PATCH',
-        headers: authHeaders('test-key'),
-        body: JSON.stringify({ manifest }),
-      },
-    );
+    const res = await app.request(`http://localhost/v1/mcps/${petstore!.id}/versions/1.0.0`, {
+      method: 'PATCH',
+      headers: authHeaders('test-key'),
+      body: JSON.stringify({ manifest }),
+    });
 
     expect(res.status).toBe(409);
     const problem = (await res.json()) as { code: string };

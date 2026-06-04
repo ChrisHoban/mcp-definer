@@ -47,9 +47,7 @@ export async function searchCatalog(
   const limit = Math.min(params.limit ?? 50, 100);
   let start = 0;
   if (params.cursor) {
-    const idx = entries.findIndex(
-      (e) => `${e.org}/${e.slug}` === params.cursor,
-    );
+    const idx = entries.findIndex((e) => `${e.org}/${e.slug}` === params.cursor);
     start = idx >= 0 ? idx + 1 : 0;
   }
 

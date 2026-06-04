@@ -31,8 +31,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): ApiConfig {
 
   const isTest = env.VITEST === 'true' || env.NODE_ENV === 'test';
   const registryStoreExplicit = env.REGISTRY_STORE as ApiConfig['registryStore'] | undefined;
-  const registryStore =
-    registryStoreExplicit ?? (isTest ? 'memory' : 'postgres');
+  const registryStore = registryStoreExplicit ?? (isTest ? 'memory' : 'postgres');
 
   return {
     port,

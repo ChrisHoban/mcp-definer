@@ -13,7 +13,9 @@ import { createDiscoveryRoutes } from './routes/discovery.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-export async function createApp(config: ApiConfig): Promise<{ app: Hono<ApiEnv>; ctx: AppContext }> {
+export async function createApp(
+  config: ApiConfig,
+): Promise<{ app: Hono<ApiEnv>; ctx: AppContext }> {
   const ctx = await createAppContext(config);
   const app = new Hono<ApiEnv>();
 

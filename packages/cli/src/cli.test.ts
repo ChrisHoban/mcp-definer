@@ -22,9 +22,7 @@ describe('CLI validate', () => {
   it('returns non-zero for invalid manifest', async () => {
     const dir = await mkdtemp(join(tmpdir(), 'mcp-definer-cli-'));
     const badPath = join(dir, 'bad.json');
-    await import('node:fs/promises').then(({ writeFile }) =>
-      writeFile(badPath, '{"name":"x"}'),
-    );
+    await import('node:fs/promises').then(({ writeFile }) => writeFile(badPath, '{"name":"x"}'));
 
     try {
       const code = await runValidate([badPath]);
@@ -73,7 +71,10 @@ describe('CLI install --local', () => {
 
 describe('validateManifest integration', () => {
   it('fixture passes shared validator used by CLI', async () => {
-    const raw = await readFile(join(repoRoot, 'fixtures/manifests/petstore-apikey.manifest.json'), 'utf8');
+    const raw = await readFile(
+      join(repoRoot, 'fixtures/manifests/petstore-apikey.manifest.json'),
+      'utf8',
+    );
     const result = validateManifest(JSON.parse(raw));
     expect(result.valid).toBe(true);
   });

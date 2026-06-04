@@ -85,9 +85,7 @@ export const api = {
     }),
 
   getVersion: (mcpId: string, ver: string) =>
-    apiFetch<import('./api-types').VersionDetailResponse>(
-      `/mcps/${mcpId}/versions/${ver}`,
-    ),
+    apiFetch<import('./api-types').VersionDetailResponse>(`/mcps/${mcpId}/versions/${ver}`),
 
   patchVersion: (mcpId: string, ver: string, body: import('./api-types').PatchVersionRequest) =>
     apiFetch<{ id: string; version: string; channel: string | null; publishedAt: string | null }>(
@@ -96,20 +94,20 @@ export const api = {
     ),
 
   validateVersion: (mcpId: string, ver: string) =>
-    apiFetch<import('./api-types').ValidationResponse>(
-      `/mcps/${mcpId}/versions/${ver}/validate`,
-      { method: 'POST', body: JSON.stringify({}) },
-    ),
+    apiFetch<import('./api-types').ValidationResponse>(`/mcps/${mcpId}/versions/${ver}/validate`, {
+      method: 'POST',
+      body: JSON.stringify({}),
+    }),
 
   publishVersion: (
     mcpId: string,
     ver: string,
     body: { channel?: 'stable' | 'beta'; changelog?: string },
   ) =>
-    apiFetch<import('./api-types').PublishResponse>(
-      `/mcps/${mcpId}/versions/${ver}/publish`,
-      { method: 'POST', body: JSON.stringify(body) },
-    ),
+    apiFetch<import('./api-types').PublishResponse>(`/mcps/${mcpId}/versions/${ver}/publish`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
 
   getCredentials: (mcpId: string) =>
     apiFetch<import('./api-types').CredentialResponse>(`/mcps/${mcpId}/credentials`),
@@ -134,15 +132,12 @@ export const api = {
     if (params?.visibility) qs.set('visibility', params.visibility);
     if (params?.tag) qs.set('tag', params.tag);
     const query = qs.toString();
-    return apiFetch<import('./api-types').McpListResponse>(
-      `/mcps${query ? `?${query}` : ''}`,
-    );
+    return apiFetch<import('./api-types').McpListResponse>(`/mcps${query ? `?${query}` : ''}`);
   },
 
   getMcp: (id: string) => apiFetch<import('./api-types').McpDetailResponse>(`/mcps/${id}`),
 
-  deleteMcp: (id: string) =>
-    apiFetch<void>(`/mcps/${id}`, { method: 'DELETE' }),
+  deleteMcp: (id: string) => apiFetch<void>(`/mcps/${id}`, { method: 'DELETE' }),
 
   listVersions: (mcpId: string) =>
     apiFetch<import('./api-types').VersionListResponse>(`/mcps/${mcpId}/versions`),
@@ -175,12 +170,7 @@ export const api = {
       { method: 'POST', body: JSON.stringify(body) },
     ),
 
-  invokeTool: (
-    mcpId: string,
-    tool: string,
-    args: Record<string, unknown>,
-    version?: string,
-  ) => {
+  invokeTool: (mcpId: string, tool: string, args: Record<string, unknown>, version?: string) => {
     const qs = version ? `?version=${encodeURIComponent(version)}` : '';
     return apiFetch<import('./api-types').InvokeToolResponse>(
       `/mcps/${mcpId}/tools/${encodeURIComponent(tool)}/invoke${qs}`,

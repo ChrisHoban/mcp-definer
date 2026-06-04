@@ -68,7 +68,13 @@ export class PostgresBindingStore implements CredentialBindingStore {
     await this.pool.query(
       `INSERT INTO credential_bindings (id, mcp_id, auth_type, config, secret_ref)
        VALUES ($1, $2, $3, $4, $5)`,
-      [binding.id, binding.mcpId, binding.authType, JSON.stringify(binding.config), binding.secretRef],
+      [
+        binding.id,
+        binding.mcpId,
+        binding.authType,
+        JSON.stringify(binding.config),
+        binding.secretRef,
+      ],
     );
 
     const hasSecret = await bindingHasSecret(binding.id, this.secretStore);
@@ -137,7 +143,9 @@ export class PostgresBindingStore implements CredentialBindingStore {
   }
 
   async delete(bindingId: string): Promise<void> {
-    const result = await this.pool.query(`DELETE FROM credential_bindings WHERE id = $1`, [bindingId]);
+    const result = await this.pool.query(`DELETE FROM credential_bindings WHERE id = $1`, [
+      bindingId,
+    ]);
     if ((result.rowCount ?? 0) === 0) {
       throw new BindingNotFoundError(bindingId);
     }

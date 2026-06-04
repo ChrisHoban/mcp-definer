@@ -37,7 +37,9 @@ describe('parseSpecText', () => {
   });
 
   it('throws SpecParseError with both parser messages when content is invalid', () => {
-    expect(() => parseSpecText('{ not valid json or yaml: [', 'openapi.yaml')).toThrow(SpecParseError);
+    expect(() => parseSpecText('{ not valid json or yaml: [', 'openapi.yaml')).toThrow(
+      SpecParseError,
+    );
     try {
       parseSpecText('{ not valid json or yaml: [', 'openapi.yaml');
     } catch (error) {

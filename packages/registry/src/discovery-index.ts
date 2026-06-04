@@ -17,8 +17,7 @@ export function isDiscoveryIndexReader(
 }
 
 function rowToEntry(row: DiscoveryIndexRow, baseUrl: string): DiscoveryIndexEntry {
-  const channel =
-    row.channel === 'draft' ? 'stable' : (row.channel as 'stable' | 'beta');
+  const channel = row.channel === 'draft' ? 'stable' : (row.channel as 'stable' | 'beta');
   return {
     org: row.org_slug,
     slug: row.mcp_slug,

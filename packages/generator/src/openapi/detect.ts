@@ -16,9 +16,7 @@ export function detectSpecFormat(doc: Record<string, unknown>): IrSourceType {
   throw new Error('Unrecognized API spec format (expected OpenAPI 3.x or Swagger 2.0)');
 }
 
-export function manifestSpecType(
-  sourceType: IrSourceType,
-): 'openapi3' | 'openapi31' | 'swagger2' {
+export function manifestSpecType(sourceType: IrSourceType): 'openapi3' | 'openapi31' | 'swagger2' {
   if (sourceType === 'openapi31') {
     return 'openapi31';
   }

@@ -77,7 +77,5 @@ export function parseSpecText(content: string, filename?: string): Record<string
     }
   }
 
-  throw new SpecParseError(
-    `Could not parse the spec. ${errors.join(' · ')}`,
-  );
+  throw new SpecParseError(`Could not parse the spec. ${errors.join(' · ')}`);
 }

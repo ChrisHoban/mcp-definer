@@ -173,12 +173,9 @@ describe('registry: buildIndex matches fixture', () => {
 describe('registry: buildInstallSnippet', () => {
   it('produces ADR-008 Cursor stdio config with manifest URL and secret env placeholder', () => {
     const manifest = loadPetstoreIndexManifest();
-    const snippet = buildInstallSnippet(
-      { org: 'acme', slug: 'petstore' },
-      '1.0.0',
-      manifest,
-      { registryBaseUrl: 'https://registry.example.com/v1' },
-    );
+    const snippet = buildInstallSnippet({ org: 'acme', slug: 'petstore' }, '1.0.0', manifest, {
+      registryBaseUrl: 'https://registry.example.com/v1',
+    });
 
     expect(snippet.command).toBe('npx');
     expect(snippet.args).toEqual([

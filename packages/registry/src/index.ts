@@ -36,13 +36,7 @@ export type {
 } from './types.js';
 
 export { RegistryError, type RegistryErrorCode } from './errors.js';
-export {
-  normalizeBaseUrl,
-  manifestPath,
-  installPath,
-  manifestUrl,
-  installUrl,
-} from './urls.js';
+export { normalizeBaseUrl, manifestPath, installPath, manifestUrl, installUrl } from './urls.js';
 export {
   buildInstallSnippet,
   buildInstallSnippetTemplate,

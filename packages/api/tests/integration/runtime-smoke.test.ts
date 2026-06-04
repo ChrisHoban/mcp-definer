@@ -23,7 +23,10 @@ describe('integration: runtime smoke', () => {
       },
     });
 
-    const client = new Client({ name: 'integration-runtime', version: '1.0.0' }, { capabilities: {} });
+    const client = new Client(
+      { name: 'integration-runtime', version: '1.0.0' },
+      { capabilities: {} },
+    );
     await client.connect(transport);
 
     const listed = await client.listTools();

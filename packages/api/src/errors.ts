@@ -32,10 +32,7 @@ export function sendProblem(c: Context, body: ProblemDetail) {
 }
 
 export function handleRegistryError(c: Context, error: RegistryError) {
-  return sendProblem(
-    c,
-    problem(error.statusCode, error.code, error.message, error.code),
-  );
+  return sendProblem(c, problem(error.statusCode, error.code, error.message, error.code));
 }
 
 export function notFound(c: Context, detail: string) {

@@ -136,10 +136,9 @@ export class PostgresRegistryStore implements ControlPlaneRegistryStore {
     const uuidPattern =
       /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     if (uuidPattern.test(stubUserId)) {
-      const existing = await this.pool.query<{ id: string }>(
-        `SELECT id FROM users WHERE id = $1`,
-        [stubUserId],
-      );
+      const existing = await this.pool.query<{ id: string }>(`SELECT id FROM users WHERE id = $1`, [
+        stubUserId,
+      ]);
       if (existing.rows[0]) {
         return { id: existing.rows[0].id };
       }
@@ -195,10 +194,10 @@ export class PostgresRegistryStore implements ControlPlaneRegistryStore {
     try {
       await client.query('BEGIN');
 
-      const existing = await client.query(
-        `SELECT id FROM mcps WHERE org_id = $1 AND slug = $2`,
-        [org.id, input.slug],
-      );
+      const existing = await client.query(`SELECT id FROM mcps WHERE org_id = $1 AND slug = $2`, [
+        org.id,
+        input.slug,
+      ]);
       if (existing.rowCount) {
         throw new RegistryError('CONFLICT', `MCP already exists: ${input.org}/${input.slug}`);
       }
@@ -411,18 +410,14 @@ export class PostgresRegistryStore implements ControlPlaneRegistryStore {
            SET transport = EXCLUDED.transport,
                config_snippet = EXCLUDED.config_snippet,
                instructions = EXCLUDED.instructions`,
-        [
-          versionId,
-          target.harness,
-          target.transport,
-          target.configSnippet,
-          target.instructions,
-        ],
+        [versionId, target.harness, target.transport, target.configSnippet, target.instructions],
       );
     }
   }
 
-  async listMcps(filter: ListMcpsFilter = {}): Promise<{ items: StoredMcp[]; nextCursor: string | null }> {
+  async listMcps(
+    filter: ListMcpsFilter = {},
+  ): Promise<{ items: StoredMcp[]; nextCursor: string | null }> {
     const limit = Math.min(filter.limit ?? 50, 100);
     const params: unknown[] = [];
     const conditions = [`m.status <> 'retired'`];
@@ -470,7 +465,7 @@ export class PostgresRegistryStore implements ControlPlaneRegistryStore {
     const rows = result.rows;
     const hasMore = rows.length > limit;
     const page = hasMore ? rows.slice(0, limit) : rows;
-    const nextCursor = hasMore ? page[page.length - 1]?.id ?? null : null;
+    const nextCursor = hasMore ? (page[page.length - 1]?.id ?? null) : null;
     return { items: page.map(mapMcpRow), nextCursor };
   }
 
@@ -763,7 +758,10 @@ export class PostgresRegistryStore implements ControlPlaneRegistryStore {
       if (!existing) {
         throw new RegistryError('NOT_FOUND', `Version not found: ${versionId}`);
       }
-      throw new RegistryError('ALREADY_PUBLISHED', `Version already published: ${existing.version}`);
+      throw new RegistryError(
+        'ALREADY_PUBLISHED',
+        `Version already published: ${existing.version}`,
+      );
     }
 
     await this.pool.query(
@@ -944,14 +942,7 @@ export class PostgresRegistryStore implements ControlPlaneRegistryStore {
       `INSERT INTO audit_events (org_id, actor_id, action, target_type, target_id, metadata)
        VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING id, org_id, actor_id, action, target_type, target_id, metadata, created_at`,
-      [
-        event.orgId,
-        event.actorId,
-        event.action,
-        event.targetType,
-        event.targetId,
-        event.metadata,
-      ],
+      [event.orgId, event.actorId, event.action, event.targetType, event.targetId, event.metadata],
     );
     const row = result.rows[0]!;
     return {
@@ -1037,8 +1028,7 @@ export class PostgresRegistryStore implements ControlPlaneRegistryStore {
     const entries = discoveryRowsToEntries(page, baseUrl);
 
     const last = page[page.length - 1];
-    const nextCursor =
-      hasMore && last ? `${last.org_slug}/${last.mcp_slug}` : null;
+    const nextCursor = hasMore && last ? `${last.org_slug}/${last.mcp_slug}` : null;
 
     return { entries, nextCursor };
   }

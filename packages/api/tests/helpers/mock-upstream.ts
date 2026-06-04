@@ -23,13 +23,16 @@ export interface MockUpstreamOptions {
 /**
  * Local mock Petstore upstream for integration/E2E (no external network).
  */
-export async function startMockUpstream(
-  options: MockUpstreamOptions = {},
-): Promise<MockUpstream> {
+export async function startMockUpstream(options: MockUpstreamOptions = {}): Promise<MockUpstream> {
   const requests: CapturedRequest[] = [];
   const status = options.status ?? 200;
-  const body =
-    options.body ?? { id: 1, name: 'doggie', status: 'available', photoUrls: [], tags: [] };
+  const body = options.body ?? {
+    id: 1,
+    name: 'doggie',
+    status: 'available',
+    photoUrls: [],
+    tags: [],
+  };
 
   const server = createServer((req: IncomingMessage, res: ServerResponse) => {
     const url = req.url ?? '/';
@@ -72,10 +75,9 @@ export async function startMockUpstream(
   };
 }
 
-export function withMockEgress<T extends { targetApi: { baseUrl: string }; policies: { egressAllowlist: string[] } }>(
-  manifest: T,
-  mockBaseUrl: string,
-): T {
+export function withMockEgress<
+  T extends { targetApi: { baseUrl: string }; policies: { egressAllowlist: string[] } },
+>(manifest: T, mockBaseUrl: string): T {
   const host = new URL(mockBaseUrl).hostname;
   const allowlist = new Set(manifest.policies.egressAllowlist);
   allowlist.add(host);

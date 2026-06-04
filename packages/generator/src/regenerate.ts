@@ -24,9 +24,7 @@ function toolsByOperationId(
   curation: CurationProfile,
 ): Map<string, ManifestTool> {
   const renames = curation.toolRenames ?? {};
-  const reverse = new Map(
-    Object.entries(renames).map(([opId, toolName]) => [toolName, opId]),
-  );
+  const reverse = new Map(Object.entries(renames).map(([opId, toolName]) => [toolName, opId]));
   const validIds = new Set(ir.operations.map((o) => o.id));
   const map = new Map<string, ManifestTool>();
 

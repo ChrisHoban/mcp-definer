@@ -1,10 +1,7 @@
 import pg from 'pg';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
-import {
-  DISCOVERY_INDEX_QUERY,
-  REFRESH_DISCOVERY_INDEX_SQL,
-} from './index.js';
+import { DISCOVERY_INDEX_QUERY, REFRESH_DISCOVERY_INDEX_SQL } from './index.js';
 import { resolveDatabaseUrl } from './env.js';
 import { runMigrations } from './migrate.js';
 

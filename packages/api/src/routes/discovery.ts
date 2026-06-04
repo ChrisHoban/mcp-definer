@@ -56,11 +56,7 @@ export function createDiscoveryRoutes(ctx: AppContext): Hono<ApiEnv> {
   routes.get('/registry/:org/:slug', async (c) => {
     const app = ctx;
     try {
-      const detail = await getRegistryDetail(
-        app.registry,
-        c.req.param('org'),
-        c.req.param('slug'),
-      );
+      const detail = await getRegistryDetail(app.registry, c.req.param('org'), c.req.param('slug'));
 
       const auth = c.get('auth');
       if (

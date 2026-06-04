@@ -10,10 +10,7 @@ function cloneRequest(request: HttpRequest): HttpRequest {
 }
 
 /** Apply a resolved credential to an outbound HTTP request (no secret logging). */
-export function applyCredential(
-  credential: ResolvedCredential,
-  request: HttpRequest,
-): HttpRequest {
+export function applyCredential(credential: ResolvedCredential, request: HttpRequest): HttpRequest {
   const next = cloneRequest(request);
 
   switch (credential.authType) {

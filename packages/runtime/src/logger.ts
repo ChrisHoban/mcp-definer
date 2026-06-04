@@ -16,8 +16,7 @@ function write(level: 'INFO' | 'ERROR', message: string, fields?: Record<string,
 }
 
 export function createLogger(credential?: ResolvedCredential): RuntimeLogger {
-  const redact = (message: string) =>
-    credential ? redactText(message, credential) : message;
+  const redact = (message: string) => (credential ? redactText(message, credential) : message);
 
   return {
     info(message, fields) {

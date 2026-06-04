@@ -9,7 +9,9 @@ export interface NormalizedOutboundRequest {
   apiKeyHeaderRedacted: boolean;
 }
 
-export function normalizeOutboundRequest(entry: Record<string, unknown>): NormalizedOutboundRequest {
+export function normalizeOutboundRequest(
+  entry: Record<string, unknown>,
+): NormalizedOutboundRequest {
   const method = String(entry.method ?? 'GET').toUpperCase();
   const rawUrl = String(entry.url ?? '');
   let pathname = rawUrl;

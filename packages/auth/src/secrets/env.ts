@@ -14,7 +14,10 @@ export function secretEnvVarName(bindingId: string): string {
 }
 
 /** Read a binding secret from process.env (runtime only — not an API read-back path). */
-export function readEnvSecret(bindingId: string, env: NodeJS.ProcessEnv = process.env): string | undefined {
+export function readEnvSecret(
+  bindingId: string,
+  env: NodeJS.ProcessEnv = process.env,
+): string | undefined {
   const value = env[secretEnvVarName(bindingId)];
   return value === undefined || value === '' ? undefined : value;
 }

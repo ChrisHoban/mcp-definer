@@ -1,6 +1,5 @@
 /** Local-dev defaults documented in `.env.example`. Not used in production or strict e2e runs. */
-export const DEV_DATABASE_URL =
-  'postgresql://mcp_definer:mcp_definer@localhost:5432/mcp_definer';
+export const DEV_DATABASE_URL = 'postgresql://mcp_definer:mcp_definer@localhost:5432/mcp_definer';
 
 /** Matches `MCP_DEFINER_API_KEY` in `.env.example` for local control-plane auth. */
 export const DEV_API_KEY = 'dev-api-key';
@@ -31,11 +30,7 @@ export function allowsDevDefaults(env: NodeJS.ProcessEnv = process.env): boolean
   return true;
 }
 
-export function requireEnv(
-  env: NodeJS.ProcessEnv,
-  name: string,
-  devFallback?: string,
-): string {
+export function requireEnv(env: NodeJS.ProcessEnv, name: string, devFallback?: string): string {
   const value = env[name]?.trim();
   if (value) {
     return value;

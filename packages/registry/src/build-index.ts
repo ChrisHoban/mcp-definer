@@ -68,7 +68,7 @@ export async function buildIndex(
     entries.push(entryFromMcp(mcp, latest, tools, baseUrl));
   }
 
-  const nextCursor = start + limit < published.length ? page[page.length - 1]?.id ?? null : null;
+  const nextCursor = start + limit < published.length ? (page[page.length - 1]?.id ?? null) : null;
 
   return {
     indexVersion: '1.0',

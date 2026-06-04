@@ -115,7 +115,9 @@ export class InMemoryRegistryStore implements ControlPlaneRegistryStore {
     return { mcp, version };
   }
 
-  async listMcps(filter: ListMcpsFilter = {}): Promise<{ items: StoredMcp[]; nextCursor: string | null }> {
+  async listMcps(
+    filter: ListMcpsFilter = {},
+  ): Promise<{ items: StoredMcp[]; nextCursor: string | null }> {
     const limit = Math.min(filter.limit ?? 50, 100);
     let items = [...this.mcps.values()].filter((mcp) => mcp.status !== 'retired');
 
@@ -138,7 +140,7 @@ export class InMemoryRegistryStore implements ControlPlaneRegistryStore {
     }
 
     const page = items.slice(start, start + limit);
-    const nextCursor = start + limit < items.length ? page[page.length - 1]?.id ?? null : null;
+    const nextCursor = start + limit < items.length ? (page[page.length - 1]?.id ?? null) : null;
 
     return { items: page, nextCursor };
   }
@@ -390,7 +392,10 @@ export class InMemoryRegistryStore implements ControlPlaneRegistryStore {
     return this.updateDraftVersion(versionId, { manifest });
   }
 
-  async updateDraftVersion(versionId: string, input: UpdateDraftVersionInput): Promise<StoredMcpVersion> {
+  async updateDraftVersion(
+    versionId: string,
+    input: UpdateDraftVersionInput,
+  ): Promise<StoredMcpVersion> {
     const version = this.versions.get(versionId);
     if (!version) {
       throw new RegistryError('NOT_FOUND', `Version not found: ${versionId}`);

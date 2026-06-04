@@ -24,9 +24,7 @@ export async function seedPetstoreFixture(
     ...fullManifest,
     tools: fullManifest.tools
       .filter((tool) => ['getPetById', 'findPetsByStatus'].includes(tool.name))
-      .map((tool) =>
-        tool.name === 'findPetsByStatus' ? { ...tool, name: 'listPets' } : tool,
-      ),
+      .map((tool) => (tool.name === 'findPetsByStatus' ? { ...tool, name: 'listPets' } : tool)),
   };
 
   const { mcp, version } = await store.createMcp({

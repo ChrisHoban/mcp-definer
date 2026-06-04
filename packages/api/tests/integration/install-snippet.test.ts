@@ -11,12 +11,17 @@ describe('integration: install snippet (ADR-008)', () => {
     );
     expect(res.status).toBe(200);
 
-    const body = (await res.json()) as { harness: string; snippet: { command: string; args: string[] } };
+    const body = (await res.json()) as {
+      harness: string;
+      snippet: { command: string; args: string[] };
+    };
     expect(body.harness).toBe('cursor');
     expect(body.snippet.command).toBe('npx');
     expect(body.snippet.args).toContain('@mcp-definer/runtime');
     expect(
-      body.snippet.args.some((arg) => arg.includes('/v1/registry/acme/petstore/versions/1.0.0/manifest')),
+      body.snippet.args.some((arg) =>
+        arg.includes('/v1/registry/acme/petstore/versions/1.0.0/manifest'),
+      ),
     ).toBe(true);
   });
 });

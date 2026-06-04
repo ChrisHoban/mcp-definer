@@ -1,9 +1,4 @@
-import {
-  applyCuration,
-  emptyCuration,
-  mapIrToManifest,
-  parseSpec,
-} from '@mcp-definer/generator';
+import { applyCuration, emptyCuration, mapIrToManifest, parseSpec } from '@mcp-definer/generator';
 import type { Manifest } from '@mcp-definer/schemas';
 import { describe, expect, it } from 'vitest';
 
@@ -67,14 +62,11 @@ describe('integration: publish pipeline', () => {
     const patchedManifest = loadRepoFixture<Manifest>(
       'fixtures/manifests/petstore-apikey.manifest.json',
     );
-    const patchRes = await app.request(
-      `http://localhost/v1/mcps/${mcpId}/versions/${version}`,
-      {
-        method: 'PATCH',
-        headers: authHeaders(),
-        body: JSON.stringify({ manifest: patchedManifest }),
-      },
-    );
+    const patchRes = await app.request(`http://localhost/v1/mcps/${mcpId}/versions/${version}`, {
+      method: 'PATCH',
+      headers: authHeaders(),
+      body: JSON.stringify({ manifest: patchedManifest }),
+    });
     expect(patchRes.status).toBe(409);
     const problem = (await patchRes.json()) as { code: string };
     expect(problem.code).toBe('CONFLICT');

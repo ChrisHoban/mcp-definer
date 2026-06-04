@@ -55,10 +55,7 @@ function mapSchemeType(scheme: IrSecurityScheme): ManifestAuthType {
   return 'custom';
 }
 
-function mapSchemeApply(
-  scheme: IrSecurityScheme,
-  authType: ManifestAuthType,
-): AuthApply {
+function mapSchemeApply(scheme: IrSecurityScheme, authType: ManifestAuthType): AuthApply {
   switch (authType) {
     case 'apiKey':
       return {
@@ -68,7 +65,7 @@ function mapSchemeApply(
     case 'bearer':
       return {
         headerName: 'Authorization',
-        prefix: scheme.scheme === 'bearer' ? 'Bearer' : scheme.scheme ?? 'Bearer',
+        prefix: scheme.scheme === 'bearer' ? 'Bearer' : (scheme.scheme ?? 'Bearer'),
       };
     case 'oauth2_cc': {
       const flow = (scheme.flows?.clientCredentials ?? scheme.flows?.client_credentials) as

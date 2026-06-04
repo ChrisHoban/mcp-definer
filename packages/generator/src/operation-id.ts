@@ -1,14 +1,6 @@
 import type { HttpMethod } from '@mcp-definer/schemas';
 
-const HTTP_METHODS: HttpMethod[] = [
-  'GET',
-  'POST',
-  'PUT',
-  'PATCH',
-  'DELETE',
-  'HEAD',
-  'OPTIONS',
-];
+const HTTP_METHODS: HttpMethod[] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
 
 const METHOD_PREFIX: Record<HttpMethod, string> = {
   GET: 'get',
@@ -66,9 +58,7 @@ export function assignStableOperationIds(
   const ids: string[] = [];
 
   for (const op of ops) {
-    const base = sanitizeToolName(
-      op.operationId?.trim() || deriveOperationId(op.method, op.path),
-    );
+    const base = sanitizeToolName(op.operationId?.trim() || deriveOperationId(op.method, op.path));
     const count = seen.get(base) ?? 0;
     seen.set(base, count + 1);
     ids.push(count === 0 ? base : `${base}_${count + 1}`);
