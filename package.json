@@ -8,6 +8,7 @@
     "bootstrap": "pnpm install && docker compose -f docker/docker-compose.yml up -d && node packages/db/scripts/migrate.mjs",
     "db:migrate": "pnpm --filter @mcp-definer/db run build && node packages/db/scripts/migrate.mjs",
     "test": "vitest run --passWithNoTests",
+    "test:coverage": "vitest run --coverage --passWithNoTests",
     "lint": "eslint packages apps scripts vitest.config.ts eslint.config.js && prettier --check \"packages/**/*.{ts,json}\" \"apps/**/*.{ts,json}\" \"*.{json,yaml,yml,js,ts}\" \"tsconfig.build.json\" \"docker/docker-compose.yml\" \"scripts/**/*.mjs\" \".github/**/*.yml\"",
     "lint:fix": "eslint packages apps scripts vitest.config.ts eslint.config.js --fix && prettier --write \"packages/**/*.{ts,json}\" \"apps/**/*.{ts,json}\" \"*.{json,yaml,yml,js,ts}\" \"tsconfig.build.json\" \"docker/docker-compose.yml\" \"scripts/**/*.mjs\" \".github/**/*.yml\"",
     "build": "tsc -b tsconfig.build.json",
@@ -15,6 +16,7 @@
     "test:integration": "pnpm build && vitest run --config vitest.integration.config.ts",
     "test:e2e": "pnpm build && vitest run --config vitest.e2e.config.ts",
     "test:web": "pnpm --filter @mcp-definer/web test",
+    "test:web:coverage": "pnpm --filter @mcp-definer/web test:coverage",
     "test:web:build": "pnpm --filter @mcp-definer/web build",
     "dev:api": "pnpm --filter @mcp-definer/api run dev",
     "dev:web": "pnpm --filter @mcp-definer/web run dev"
@@ -31,6 +33,7 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.33.1",
     "vitest": "^3.2.2",
+    "@vitest/coverage-v8": "^3.2.2",
     "dotenv": "^16.5.0"
   }
 }

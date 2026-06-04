@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 
 import type { CurationProfile, Manifest, ManifestTool } from '@mcp-definer/schemas';
-import { MCP_PROTOCOL_VERSION, serializeCanonical } from '@mcp-definer/schemas';
+import { serializeCanonical } from '@mcp-definer/schemas';
 
 import { buildInstallSnippetTemplate } from './install-snippet.js';
 import type { StoredInstallTarget, StoredTool } from './types.js';

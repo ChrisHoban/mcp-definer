@@ -1,6 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
 
 import type { Manifest } from '@mcp-definer/schemas';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
@@ -8,8 +7,6 @@ import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
 import { describe, expect, it } from 'vitest';
 
 import { repoRoot } from '../helpers/test-app.js';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 describe('integration: runtime smoke', () => {
   it('stdio tools/list returns expected tool names from petstore fixture', async () => {

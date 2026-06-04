@@ -51,7 +51,7 @@ export function applyCuration(
   manifest: Manifest,
   curation: CurationProfile = EMPTY_CURATION,
   ir?: IntermediateRepresentation,
-  options: ApplyCurationOptions = {},
+  _options: ApplyCurationOptions = {},
   warnings: GeneratorWarning[] = [],
 ): Manifest {
   const opIndex = ir ? buildOperationIndex(ir) : undefined;

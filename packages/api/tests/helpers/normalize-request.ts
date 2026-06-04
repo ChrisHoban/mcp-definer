@@ -23,8 +23,6 @@ export function normalizeOutboundRequest(entry: Record<string, unknown>): Normal
   const apiKeyValue =
     headers['X-API-Key'] ?? headers['x-api-key'] ?? headers['api_key'] ?? headers['api-key'];
   const hasApiKeyHeader = apiKeyValue !== undefined && apiKeyValue !== '';
-  const apiKeyHeaderRedacted =
-    apiKeyValue === '[REDACTED]' || apiKeyValue === undefined || apiKeyValue === '';
 
   return {
     method,

@@ -4,8 +4,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import type { ResolvedCredential } from '@mcp-definer/auth';
-import { InMemoryCredentialResolver, InMemorySecretStore } from '@mcp-definer/auth';
-import type { Manifest, ManifestTool } from '@mcp-definer/schemas';
+import type { Manifest } from '@mcp-definer/schemas';
 import {
   assertEgressAllowed,
   buildHttpRequest,
@@ -86,7 +85,6 @@ describe('egress allow-list', () => {
   it('blocks off-host requests against a mock HTTP server', async () => {
     const manifest = loadManifest('petstore-apikey.manifest.json');
     const tool = manifest.tools.find((entry) => entry.name === 'getPetById')!;
-    const credential = mockCredential();
 
     let server: HttpServer | undefined;
     await new Promise<void>((resolve) => {

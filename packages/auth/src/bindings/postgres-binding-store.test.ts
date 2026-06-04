@@ -7,7 +7,19 @@ import { PostgresBindingStore } from './postgres-binding-store.js';
 
 const DATABASE_URL = process.env.DATABASE_URL ?? resolveDatabaseUrl();
 
-const dbAvailable = process.env.SKIP_DB_TESTS !== 'true';
+async function canConnect(): Promise<boolean> {
+  const pool = createPool(DATABASE_URL);
+  try {
+    await pool.query('SELECT 1');
+    return true;
+  } catch {
+    return false;
+  } finally {
+    await pool.end();
+  }
+}
+
+const dbAvailable = await canConnect();
 
 describe.skipIf(!dbAvailable)('PostgresBindingStore', () => {
   let store: PostgresBindingStore;

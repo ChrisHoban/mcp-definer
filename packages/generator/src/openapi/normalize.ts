@@ -59,13 +59,6 @@ function swagger2TypeToSchema(param: Record<string, unknown>): JsonSchema {
   return schema;
 }
 
-function oas3SchemaToJson(schema: unknown): JsonSchema {
-  if (!schema || typeof schema !== 'object') {
-    return { type: 'object', additionalProperties: true };
-  }
-  return schema as JsonSchema;
-}
-
 function extractResponses(
   responses: Record<string, unknown> | undefined,
   warnings: GeneratorWarning[],

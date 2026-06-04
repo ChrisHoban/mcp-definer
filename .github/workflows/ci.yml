@@ -23,6 +23,18 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
 
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --audit-level=high
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -34,9 +46,14 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - run: pnpm test
-      - run: pnpm test:web
+      - run: pnpm test:coverage
+      - run: pnpm test:web:coverage
       - run: pnpm test:web:build
+      - uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/lcov.info,coverage/web/lcov.info
+          fail_ci_if_error: false
 
   contract-test:
     runs-on: ubuntu-latest

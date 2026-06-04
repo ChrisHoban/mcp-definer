@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/ChrisHoban/mcp-definer/actions/workflows/ci.yml/badge.svg)](https://github.com/ChrisHoban/mcp-definer/actions/workflows/ci.yml)
 [![Secret scan](https://github.com/ChrisHoban/mcp-definer/actions/workflows/secret-scan.yml/badge.svg)](https://github.com/ChrisHoban/mcp-definer/actions/workflows/secret-scan.yml)
+[![codecov](https://codecov.io/gh/ChrisHoban/mcp-definer/graph/badge.svg)](https://codecov.io/gh/ChrisHoban/mcp-definer)
+[![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot&logoColor=white)](https://github.com/ChrisHoban/mcp-definer/security/dependabot)
 
 Turn any HTTP API into a standardized **Model Context Protocol (MCP)** server that AI agents can discover, install, and use—without hand-written integration code.
 
@@ -128,8 +130,10 @@ pnpm dev:web    # Web UI (default :5173)
 ```bash
 pnpm lint
 pnpm build
-pnpm test              # Unit tests (packages + apps)
+pnpm test              # Unit tests (packages)
+pnpm test:coverage     # Package unit tests with coverage report
 pnpm test:web          # Web UI unit tests
+pnpm test:web:coverage # Web UI tests with coverage report
 pnpm contract-test     # Cross-package schema & golden fixtures
 pnpm test:integration  # API + Postgres integration (requires DATABASE_URL)
 pnpm test:e2e          # Full publish → install → runtime loop
@@ -151,12 +155,7 @@ Integration and E2E tests expect Postgres (same credentials as `.env.example` or
 
 | Metric | Status | Notes |
 | --- | --- | --- |
-| CI (lint, test, contract, integration, e2e) | [![CI](https://github.com/ChrisHoban/mcp-definer/actions/workflows/ci.yml/badge.svg)](https://github.com/ChrisHoban/mcp-definer/actions/workflows/ci.yml) | Runs on every push/PR to `main` |
+| CI (lint, audit, test, contract, integration, e2e) | [![CI](https://github.com/ChrisHoban/mcp-definer/actions/workflows/ci.yml/badge.svg)](https://github.com/ChrisHoban/mcp-definer/actions/workflows/ci.yml) | Runs on every push/PR to `main` / `master` |
 | Secret scanning | [![Secret scan](https://github.com/ChrisHoban/mcp-definer/actions/workflows/secret-scan.yml/badge.svg)](https://github.com/ChrisHoban/mcp-definer/actions/workflows/secret-scan.yml) | Gitleaks on push/PR |
-| Code coverage | *Not yet published* | Add Vitest coverage (`vitest run --coverage`) and upload to [Codecov](https://codecov.io) or Coveralls; badge: `![Coverage](https://codecov.io/gh/ChrisHoban/mcp-definer/branch/main/graph/badge.svg)` |
-| Dependency vulnerabilities | *Not yet published* | Enable [Dependabot alerts](https://docs.github.com/en/code-security/dependabot/dependabot-alerts/about-dependabot-alerts) and/or add `pnpm audit` to CI; optional Snyk/Dependabot badge |
-
-**Suggested GitHub follow-ups** to surface coverage and vulnerability badges in this README:
-
-1. **Coverage:** extend `.github/workflows/ci.yml` with `pnpm test -- --coverage`, persist `coverage/lcov.info`, and integrate Codecov (or GitHub’s code coverage visualization).
-2. **Vulnerabilities:** add `.github/dependabot.yml` for npm/pnpm; fail or warn on `pnpm audit --audit-level=high` in CI; link Dependabot security tab in the badge row above.
+| Code coverage | [![codecov](https://codecov.io/gh/ChrisHoban/mcp-definer/graph/badge.svg)](https://codecov.io/gh/ChrisHoban/mcp-definer) | Vitest coverage from packages + web; uploaded in CI |
+| Dependency vulnerabilities | [![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot&logoColor=white)](https://github.com/ChrisHoban/mcp-definer/security/dependabot) | Weekly Dependabot PRs; `pnpm audit --audit-level=high` in CI |

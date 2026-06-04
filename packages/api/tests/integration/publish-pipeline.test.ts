@@ -7,7 +7,7 @@ import {
 import type { Manifest } from '@mcp-definer/schemas';
 import { describe, expect, it } from 'vitest';
 
-import { authHeaders, createTestApp, loadRepoFixture, loadRepoText, repoRoot } from '../helpers/test-app.js';
+import { authHeaders, createTestApp, loadRepoFixture, repoRoot } from '../helpers/test-app.js';
 import { join } from 'node:path';
 
 describe('integration: publish pipeline', () => {

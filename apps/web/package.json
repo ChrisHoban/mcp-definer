@@ -8,6 +8,7 @@
     "build": "tsc -p tsconfig.app.json && vite build",
     "preview": "vite preview",
     "test": "vitest run --config vitest.config.ts",
+    "test:coverage": "vitest run --config vitest.config.ts --coverage",
     "test:smoke": "vitest run --config vitest.config.ts src/test/css-modules.test.ts src/test/routes.smoke.test.tsx",
     "lint": "eslint src"
   },
