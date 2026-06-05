@@ -1,4 +1,4 @@
-import { deleteTestMcp, resolveDatabaseUrl } from '@mcp-definer/db';
+import { cleanupTestDbFixture, resolveDatabaseUrl } from '@mcp-definer/db';
 import { secretEnvVarName } from '@mcp-definer/auth';
 import { describe, expect, it, beforeAll } from 'vitest';
 
@@ -23,6 +23,9 @@ describe.skipIf(!dbAvailable)('integration: postgres registry + env credentials'
     });
 
     let createdMcpId: string | undefined;
+    const runId = Date.now();
+    const slug = `pg-int-${runId}`;
+    const bindingId = `cb_pg_int_${runId}`;
 
     try {
       const spec = loadRepoText('fixtures/openapi/petstore.yaml');
@@ -36,13 +39,12 @@ describe.skipIf(!dbAvailable)('integration: postgres registry + env credentials'
         ir: import('@mcp-definer/schemas').IntermediateRepresentation;
       };
 
-      const slug = `pg-int-${Date.now()}`;
       const { mapIrToManifest, emptyCuration, applyCuration } =
         await import('@mcp-definer/generator');
       const base = mapIrToManifest(parsed.ir, {
         name: slug,
         displayName: 'Postgres Integration',
-        authBindingId: 'cb_pg_int',
+        authBindingId: bindingId,
         securityScheme: 'api_key',
       });
       const manifest = applyCuration(base, emptyCuration(), parsed.ir);
@@ -98,8 +100,11 @@ describe.skipIf(!dbAvailable)('integration: postgres registry + env credentials'
 
       expect(process.env[secretEnvVarName(manifest.auth.bindingId)]).toBe(secret);
     } finally {
-      if (createdMcpId && ctx.dbPool) {
-        await deleteTestMcp(ctx.dbPool, createdMcpId);
+      if (ctx.dbPool) {
+        await cleanupTestDbFixture(ctx.dbPool, {
+          bindingId,
+          mcpId: createdMcpId,
+        });
         await ctx.dbPool.query('SELECT refresh_discovery_index()');
       }
       await shutdownAppContext(ctx);
