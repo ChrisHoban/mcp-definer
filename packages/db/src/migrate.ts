@@ -9,9 +9,6 @@ import { resolveDatabaseUrl } from './env.js';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const migrationsDir = join(__dirname, '../migrations');
 
-/** Serializes concurrent migration runners (e.g. parallel Vitest files in CI). */
-const MIGRATION_ADVISORY_LOCK_KEY = 0x6d63705f; // 'mcp_'
-
 export { DEFAULT_DATABASE_URL, DEV_DATABASE_URL } from './env.js';
 
 async function listMigrationFiles(): Promise<string[]> {
@@ -33,6 +30,15 @@ async function getAppliedMigrations(client: pg.Client): Promise<Set<string>> {
   return new Set(result.rows.map((row) => row.id));
 }
 
+function isDuplicateRelationError(error: unknown): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    (error as { code?: string }).code === '42P07'
+  );
+}
+
 async function applyMigration(client: pg.Client, id: string, sql: string): Promise<void> {
   await client.query('BEGIN');
   try {
@@ -42,6 +48,13 @@ async function applyMigration(client: pg.Client, id: string, sql: string): Promi
     console.log(`Applied migration: ${id}`);
   } catch (error) {
     await client.query('ROLLBACK');
+    if (isDuplicateRelationError(error)) {
+      const appliedNow = await getAppliedMigrations(client);
+      if (appliedNow.has(id)) {
+        console.log(`Skipping migration (applied concurrently): ${id}`);
+        return;
+      }
+    }
     throw error;
   }
 }
@@ -52,7 +65,7 @@ export async function runMigrations(connectionString?: string): Promise<void> {
   await client.connect();
 
   try {
-    await client.query('SELECT pg_advisory_lock($1)', [MIGRATION_ADVISORY_LOCK_KEY]);
+    await client.query("SELECT pg_advisory_lock(hashtext('mcp-definer:migrations'))");
     try {
       await ensureMigrationTable(client);
       const applied = await getAppliedMigrations(client);
@@ -66,11 +79,12 @@ export async function runMigrations(connectionString?: string): Promise<void> {
 
         const sql = await readFile(join(migrationsDir, file), 'utf8');
         await applyMigration(client, file, sql);
+        applied.add(file);
       }
 
       console.log('Migrations complete.');
     } finally {
-      await client.query('SELECT pg_advisory_unlock($1)', [MIGRATION_ADVISORY_LOCK_KEY]);
+      await client.query("SELECT pg_advisory_unlock(hashtext('mcp-definer:migrations'))");
     }
   } finally {
     await client.end();

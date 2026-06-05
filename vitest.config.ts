@@ -26,6 +26,7 @@ export default defineConfig({
   },
   test: {
     passIfNoTests: true,
+    globalSetup: [resolve(import.meta.dirname, 'scripts/vitest-postgres-setup.ts')],
     include: ['packages/*/src/**/*.test.ts'],
     coverage: {
       provider: 'v8',
