@@ -13,7 +13,10 @@ function isPool(client: DbClient): client is pg.Pool {
   return typeof (client as pg.Pool).connect === 'function';
 }
 
-async function withDbConnection<T>(client: DbClient, fn: (conn: DbClient) => Promise<T>): Promise<T> {
+async function withDbConnection<T>(
+  client: DbClient,
+  fn: (conn: DbClient) => Promise<T>,
+): Promise<T> {
   if (isPool(client)) {
     const conn = await client.connect();
     try {
