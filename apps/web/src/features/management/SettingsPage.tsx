@@ -13,6 +13,7 @@ const PERMISSION_READOUT: { label: string; permission: Parameters<typeof hasPerm
   { label: 'Test invoke', permission: 'mcp:test_invoke', minRole: 'author' },
   { label: 'Publish', permission: 'mcp:publish', minRole: 'admin' },
   { label: 'Deprecate', permission: 'mcp:deprecate', minRole: 'admin' },
+  { label: 'Delete MCPs', permission: 'mcp:delete', minRole: 'admin' },
   { label: 'Org settings', permission: 'org:settings', minRole: 'owner' },
 ];
 
@@ -105,7 +106,7 @@ export function SettingsPage() {
           })}
         </ul>
         <p className={styles.muted} style={{ marginTop: '0.75rem' }}>
-          Viewer: read-only. Author: edit drafts + test invoke. Admin: publish/deprecate. Owner: org settings.
+          Viewer: read-only. Author: edit drafts + test invoke. Admin: publish/deprecate/delete. Owner: org settings.
         </p>
       </Card>
 

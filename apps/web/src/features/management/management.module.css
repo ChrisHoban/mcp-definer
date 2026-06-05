@@ -20,15 +20,57 @@
 
 .toolbar {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.625rem;
   margin-bottom: 1rem;
-  align-items: center;
 }
 
-.toolbar input,
-.toolbar select {
-  min-width: 160px;
+.toolbarSearch {
+  width: 100%;
+  max-width: 420px;
+}
+
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0;
+  font-size: 0.8125rem;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.filterLabel {
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.filterDivider {
+  color: var(--text-muted);
+  opacity: 0.45;
+  padding: 0 0.625rem;
+  user-select: none;
+}
+
+.filterBar select,
+.filterBar input {
+  min-width: unset;
+  width: auto;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8125rem;
+}
+
+.filterBar select {
+  max-width: 130px;
+}
+
+.filterBar input {
+  width: 120px;
 }
 
 .tableWrap {

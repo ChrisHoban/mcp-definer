@@ -2,7 +2,13 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { createPool, resolveDatabaseUrl, runMigrations, validateDatabase } from '@mcp-definer/db';
+import {
+  cleanupTestDbFixture,
+  createPool,
+  resolveDatabaseUrl,
+  runMigrations,
+  validateDatabase,
+} from '@mcp-definer/db';
 import type { Manifest } from '@mcp-definer/schemas';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
@@ -26,11 +32,13 @@ async function canConnect(): Promise<boolean> {
 
 const dbAvailable = await canConnect();
 let store: PostgresRegistryStore;
+let pool: ReturnType<typeof createPool>;
+let createdMcpId: string | undefined;
 
 describe.skipIf(!dbAvailable)('PostgresRegistryStore', () => {
   beforeAll(async () => {
     await runMigrations(databaseUrl);
-    const pool = createPool(databaseUrl);
+    pool = createPool(databaseUrl);
     const health = await validateDatabase(pool);
     expect(health.ok).toBe(true);
 
@@ -42,6 +50,9 @@ describe.skipIf(!dbAvailable)('PostgresRegistryStore', () => {
   }, 30_000);
 
   afterAll(async () => {
+    if (createdMcpId) {
+      await cleanupTestDbFixture(pool, { mcpId: createdMcpId });
+    }
     await store?.close();
   });
 
@@ -52,7 +63,7 @@ describe.skipIf(!dbAvailable)('PostgresRegistryStore', () => {
 
     const slug = `pg-persist-${Date.now()}`;
     const user = await store.ensureUser('user_dev');
-    const { version } = await store.createMcp({
+    const { mcp, version } = await store.createMcp({
       org: 'acme',
       slug,
       name: 'PG Persist',
@@ -71,6 +82,7 @@ describe.skipIf(!dbAvailable)('PostgresRegistryStore', () => {
       },
       authorState: { wizardStep: 'curate', parseWarnings: [{ code: 'W1', message: 'warn' }] },
     });
+    createdMcpId = mcp.id;
 
     const authoring = await store.getVersionAuthoringData(version.id);
     expect(authoring.sourceSpec?.contentText).toContain('openapi: 3.0.0');

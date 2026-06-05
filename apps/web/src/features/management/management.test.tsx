@@ -133,22 +133,24 @@ describe('McpListPage RBAC', () => {
 
     expect(await screen.findByText('Petstore API')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /Create MCP/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /Archive/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Delete/i })).not.toBeInTheDocument();
   });
 
-  it('shows edit but not deprecate for author role', async () => {
+  it('shows edit but not deprecate or delete for author role', async () => {
     renderWithProviders(<McpListPage />, 'author');
 
     expect(await screen.findByText('Petstore API')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Create MCP/i })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /Deprecate/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Delete/i })).not.toBeInTheDocument();
   });
 
-  it('shows deprecate for admin role', async () => {
+  it('shows deprecate and delete for admin role', async () => {
     renderWithProviders(<McpListPage />, 'admin');
 
     expect(await screen.findByText('Petstore API')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Deprecate/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Delete/i })).toBeInTheDocument();
   });
 });
 

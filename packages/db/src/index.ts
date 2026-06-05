@@ -14,6 +14,14 @@ export {
   type DbPool,
   type DatabaseHealth,
 } from './pool.js';
+export {
+  cleanupTestDbFixture,
+  deleteTestCredentialBinding,
+  deleteTestMcp,
+  deleteTestOrganization,
+  deleteTestUser,
+  type TestDbFixtureIds,
+} from './test-cleanup.js';
 
 export interface DiscoveryIndexRow {
   org_slug: string;
