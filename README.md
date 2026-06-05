@@ -4,6 +4,8 @@
 [![Secret scan](https://github.com/ChrisHoban/mcp-definer/actions/workflows/secret-scan.yml/badge.svg)](https://github.com/ChrisHoban/mcp-definer/actions/workflows/secret-scan.yml)
 [![codecov](https://codecov.io/gh/ChrisHoban/mcp-definer/graph/badge.svg)](https://codecov.io/gh/ChrisHoban/mcp-definer)
 [![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot&logoColor=white)](https://github.com/ChrisHoban/mcp-definer/security/dependabot)
+[![CodeQL Status](https://github.com/ChrisHoban/mcp-definer/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/ChrisHoban/mcp-definer/actions/workflows/github-code-scanning/codeql.yml)
+
 
 Turn any HTTP API into a standardized **Model Context Protocol (MCP)** server that AI agents can discover, install, and use—without hand-written integration code.
 
