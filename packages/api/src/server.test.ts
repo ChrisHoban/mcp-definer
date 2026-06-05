@@ -5,13 +5,14 @@ import { loadConfig } from './config.js';
 import type { ApiEnv } from './middleware/auth.js';
 import { registerSignalHandlers, startApiServer } from './server.js';
 
-const { loadRepoEnvMock, shutdownAppContextMock, validateDatabaseMock, createAppMock } =
-  vi.hoisted(() => ({
+const { loadRepoEnvMock, shutdownAppContextMock, validateDatabaseMock, createAppMock } = vi.hoisted(
+  () => ({
     loadRepoEnvMock: vi.fn(),
     shutdownAppContextMock: vi.fn().mockResolvedValue(undefined),
     validateDatabaseMock: vi.fn().mockResolvedValue({ ok: true, latencyMs: 2, migrationCount: 4 }),
     createAppMock: vi.fn(),
-  }));
+  }),
+);
 
 vi.mock('./load-repo-env.js', () => ({
   loadRepoEnv: loadRepoEnvMock,
@@ -39,7 +40,9 @@ vi.mock('@mcp-definer/db', async (importOriginal) => {
 
 function mockAppResult(config: ReturnType<typeof loadConfig>, withDatabase = false) {
   const app = {
-    request: vi.fn().mockResolvedValue(new Response(JSON.stringify({ status: 'ok' }), { status: 200 })),
+    request: vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify({ status: 'ok' }), { status: 200 })),
     fetch: vi.fn(),
   } as unknown as Hono<ApiEnv>;
 
