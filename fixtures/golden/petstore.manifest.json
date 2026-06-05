@@ -19,7 +19,7 @@
   "targetApi": {
     "baseUrl": "https://petstore.swagger.io/v2",
     "baseUrlOverridable": true,
-    "specHash": "sha256:bb116730d391e330119c691f9b124d07b9afdea61b5a252345b577e9a4c2f98b",
+    "specHash": "sha256:681493240fb2cc1b66ae4a9a001260f2d2f544d7bba2c2a6e8777e4875505d0e",
     "specType": "swagger2"
   },
   "tools": [
