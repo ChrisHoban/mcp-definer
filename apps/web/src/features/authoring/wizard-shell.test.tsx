@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useEffect } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { defaultWizardMeta, mockPetIr } from '@/test/wizard-fixtures';
@@ -56,10 +57,12 @@ function renderShell(opts?: { step?: WizardStepId; mcpId?: string; mode?: 'creat
 
   return render(
     <QueryClientProvider client={queryClient}>
-      <WizardProvider mode={opts?.mode ?? 'create'} initialMcpId={opts?.mcpId}>
-        <SeedWizard step={opts?.step} mcpId={opts?.mcpId} />
-        <WizardShell title="Create MCP" />
-      </WizardProvider>
+      <MemoryRouter>
+        <WizardProvider mode={opts?.mode ?? 'create'} initialMcpId={opts?.mcpId}>
+          <SeedWizard step={opts?.step} mcpId={opts?.mcpId} />
+          <WizardShell title="Create MCP" />
+        </WizardProvider>
+      </MemoryRouter>
     </QueryClientProvider>,
   );
 }
@@ -142,6 +145,21 @@ describe('WizardShell', () => {
     expect(
       await screen.findByText(/published and immutable/i),
     ).toBeInTheDocument();
+  });
+
+  it('renders preview step with operations table', async () => {
+    renderShell({ step: 'preview' });
+    expect(await screen.findByRole('heading', { name: /Preview operations/i })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /Search operations/i })).toBeInTheDocument();
+  });
+
+  it('renders test step with console link when MCP exists', async () => {
+    renderShell({ step: 'test', mcpId: 'mcp_new' });
+    expect(await screen.findByRole('heading', { name: /Test tools \(optional\)/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Open test console/i })).toHaveAttribute(
+      'href',
+      '/mcps/mcp_new/test',
+    );
   });
 
   it('persists author state after step change debounce', async () => {

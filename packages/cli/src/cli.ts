@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import { runInstall } from './commands/install.js';
 import { runList } from './commands/list.js';
 import { runValidate } from './commands/validate.js';
 
-function parseArgs(argv: string[]): {
+export function parseArgs(argv: string[]): {
   command: string | undefined;
   positional: string[];
   flags: Record<string, string | boolean>;
@@ -36,29 +39,25 @@ function parseArgs(argv: string[]): {
   return { command, positional, flags };
 }
 
-async function main(): Promise<void> {
-  const { command, positional, flags } = parseArgs(process.argv.slice(2));
+export async function runCli(argv: string[]): Promise<number> {
+  const { command, positional, flags } = parseArgs(argv);
 
-  let exitCode = 0;
   switch (command) {
     case 'install':
-      exitCode = await runInstall(positional, {
+      return runInstall(positional, {
         harness: flags.harness as string | undefined as 'cursor' | undefined,
         registryUrl: flags['registry-url'] as string | undefined,
         configPath: flags.config as string | undefined,
         local: flags.local === true,
         yes: flags.yes === true,
       });
-      break;
     case 'list':
-      exitCode = await runList(positional, {
+      return runList(positional, {
         registryUrl: flags['registry-url'] as string | undefined,
         local: flags.local === true,
       });
-      break;
     case 'validate':
-      exitCode = await runValidate(positional);
-      break;
+      return runValidate(positional);
     case undefined:
       console.log(`Usage: mcp-definer <command>
 
@@ -74,17 +73,24 @@ Options:
   --config <path>               Cursor mcp.json path
   --yes                         Skip secret prompt (use env or placeholder)
 `);
-      exitCode = 1;
-      break;
+      return 1;
     default:
       console.error(`Unknown command: ${command}`);
-      exitCode = 1;
+      return 1;
   }
-
-  process.exit(exitCode);
 }
 
-main().catch((error) => {
-  console.error(error instanceof Error ? error.message : error);
-  process.exit(1);
-});
+function isDirectRun(): boolean {
+  const entry = process.argv[1];
+  if (!entry) return false;
+  return resolve(fileURLToPath(import.meta.url)) === resolve(entry);
+}
+
+if (isDirectRun()) {
+  runCli(process.argv.slice(2))
+    .then((exitCode) => process.exit(exitCode))
+    .catch((error) => {
+      console.error(error instanceof Error ? error.message : error);
+      process.exit(1);
+    });
+}
