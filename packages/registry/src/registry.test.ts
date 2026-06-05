@@ -9,6 +9,7 @@ import { describe, expect, it } from 'vitest';
 import {
   buildIndex,
   buildInstallSnippet,
+  createInMemoryRegistryStore,
   createSeededRegistryStore,
   deprecateVersion,
   fetchManifest,
@@ -253,5 +254,12 @@ describe('registry: errors', () => {
   it('RegistryError carries HTTP status codes', () => {
     expect(new RegistryError('NOT_FOUND', 'missing').statusCode).toBe(404);
     expect(new RegistryError('IMMUTABLE', 'frozen').statusCode).toBe(409);
+  });
+});
+
+describe('createInMemoryRegistryStore', () => {
+  it('returns a fresh InMemoryRegistryStore instance', () => {
+    const store = createInMemoryRegistryStore();
+    expect(store).toBeInstanceOf(InMemoryRegistryStore);
   });
 });

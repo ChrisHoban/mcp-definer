@@ -1,20 +1,41 @@
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import { serve } from '@hono/node-server';
+import type { Hono } from 'hono';
 
 import { createApp } from './app.js';
-import { loadConfig } from './config.js';
+import { loadConfig, type ApiConfig } from './config.js';
 import { loadRepoEnv } from './load-repo-env.js';
-import { shutdownAppContext } from './context.js';
+import { shutdownAppContext, type AppContext } from './context.js';
+import type { ApiEnv } from './middleware/auth.js';
 
-loadRepoEnv();
+type ServeFn = typeof serve;
 
-const config = loadConfig();
+export interface StartApiServerOptions {
+  config?: ApiConfig;
+  loadEnv?: boolean;
+  serveFn?: ServeFn;
+}
 
-let ctx: Awaited<ReturnType<typeof createApp>>['ctx'] | undefined;
+export interface StartApiServerResult {
+  app: Hono<ApiEnv>;
+  ctx: AppContext;
+  shutdown: () => Promise<void>;
+}
 
-try {
+export async function startApiServer(
+  options: StartApiServerOptions = {},
+): Promise<StartApiServerResult> {
+  if (options.loadEnv !== false) {
+    loadRepoEnv();
+  }
+
+  const config = options.config ?? loadConfig();
+  const serveFn = options.serveFn ?? serve;
+
   const appResult = await createApp(config);
-  ctx = appResult.ctx;
-  const { app } = appResult;
+  const { app, ctx } = appResult;
 
   if (config.registryStore === 'postgres' && ctx.dbPool) {
     const { validateDatabase } = await import('@mcp-definer/db');
@@ -24,7 +45,7 @@ try {
     );
   }
 
-  serve(
+  serveFn(
     {
       fetch: app.fetch,
       port: config.port,
@@ -39,24 +60,46 @@ try {
       console.log('Control-plane auth: X-API-Key or Authorization Bearer (MCP_DEFINER_API_KEY)');
     },
   );
-} catch (error) {
-  console.error('Failed to start API server:', error instanceof Error ? error.message : error);
-  if (ctx) {
-    await shutdownAppContext(ctx);
-  }
-  process.exit(1);
+
+  return {
+    app,
+    ctx,
+    shutdown: () => shutdownAppContext(ctx),
+  };
 }
 
-process.on('SIGINT', async () => {
-  if (ctx) {
-    await shutdownAppContext(ctx);
-  }
-  process.exit(0);
-});
+export function registerSignalHandlers(getCtx: () => AppContext | undefined): void {
+  const shutdown = async () => {
+    const ctx = getCtx();
+    if (ctx) {
+      await shutdownAppContext(ctx);
+    }
+    process.exit(0);
+  };
 
-process.on('SIGTERM', async () => {
-  if (ctx) {
-    await shutdownAppContext(ctx);
-  }
-  process.exit(0);
-});
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
+}
+
+function isDirectRun(): boolean {
+  const entry = process.argv[1];
+  if (!entry) return false;
+  return resolve(fileURLToPath(import.meta.url)) === resolve(entry);
+}
+
+if (isDirectRun()) {
+  let ctx: AppContext | undefined;
+
+  startApiServer()
+    .then((result) => {
+      ctx = result.ctx;
+      registerSignalHandlers(() => ctx);
+    })
+    .catch(async (error) => {
+      console.error('Failed to start API server:', error instanceof Error ? error.message : error);
+      if (ctx) {
+        await shutdownAppContext(ctx);
+      }
+      process.exit(1);
+    });
+}

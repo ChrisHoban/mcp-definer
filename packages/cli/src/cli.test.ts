@@ -3,8 +3,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 import { validateManifest } from '@mcp-definer/schemas';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
+import { parseArgs, runCli } from './cli.js';
 import { runInstall } from './commands/install.js';
 import { runList } from './commands/list.js';
 import { runValidate } from './commands/validate.js';
@@ -77,5 +78,61 @@ describe('validateManifest integration', () => {
     );
     const result = validateManifest(JSON.parse(raw));
     expect(result.valid).toBe(true);
+  });
+});
+
+describe('parseArgs', () => {
+  it('parses command, positional args, and flags', () => {
+    expect(parseArgs(['install', 'acme/petstore', '--local', '--yes'])).toEqual({
+      command: 'install',
+      positional: ['acme/petstore'],
+      flags: { local: true, yes: true },
+    });
+
+    expect(parseArgs(['list', '--registry-url', 'http://registry.test'])).toEqual({
+      command: 'list',
+      positional: [],
+      flags: { 'registry-url': 'http://registry.test' },
+    });
+  });
+});
+
+describe('runCli', () => {
+  it('prints usage when no command is provided', async () => {
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    await expect(runCli([])).resolves.toBe(1);
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('Usage: mcp-definer'));
+    logSpy.mockRestore();
+  });
+
+  it('returns non-zero for unknown commands', async () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    await expect(runCli(['explode'])).resolves.toBe(1);
+    expect(errorSpy).toHaveBeenCalledWith('Unknown command: explode');
+    errorSpy.mockRestore();
+  });
+
+  it('dispatches validate to the validate command handler', async () => {
+    const manifestPath = join(repoRoot, 'fixtures/manifests/petstore-apikey.manifest.json');
+    await expect(runCli(['validate', manifestPath])).resolves.toBe(0);
+  });
+
+  it('dispatches install flags to runInstall', async () => {
+    const installModule = await import('./commands/install.js');
+    const installSpy = vi.spyOn(installModule, 'runInstall').mockResolvedValueOnce(0);
+
+    await expect(
+      runCli(['install', 'acme/petstore', '--local', '--yes', '--config', '/tmp/mcp.json']),
+    ).resolves.toBe(0);
+
+    expect(installSpy).toHaveBeenCalledWith(['acme/petstore'], {
+      harness: undefined,
+      registryUrl: undefined,
+      configPath: '/tmp/mcp.json',
+      local: true,
+      yes: true,
+    });
+
+    installSpy.mockRestore();
   });
 });

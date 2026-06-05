@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import { loadManifest, ManifestLoadError, resolveManifestSource } from './manifest-loader.js';
 import { serveStdio } from './server.js';
 
-function parseArgs(argv: string[]): { manifest?: string } {
+export function parseArgs(argv: string[]): { manifest?: string } {
   const result: { manifest?: string } = {};
 
   for (let index = 0; index < argv.length; index++) {
@@ -21,19 +24,27 @@ function parseArgs(argv: string[]): { manifest?: string } {
   return result;
 }
 
-async function main(): Promise<void> {
-  const args = parseArgs(process.argv.slice(2));
+export async function runRuntimeCli(argv: string[]): Promise<void> {
+  const args = parseArgs(argv);
   const source = resolveManifestSource(args.manifest);
   const manifest = await loadManifest(source);
   await serveStdio(manifest);
 }
 
-main().catch((error: unknown) => {
-  if (error instanceof ManifestLoadError) {
-    console.error(`[ERROR] ${error.message}`);
-    process.exit(1);
-  }
+function isDirectRun(): boolean {
+  const entry = process.argv[1];
+  if (!entry) return false;
+  return resolve(fileURLToPath(import.meta.url)) === resolve(entry);
+}
 
-  console.error('[ERROR] Fatal runtime error:', error);
-  process.exit(1);
-});
+if (isDirectRun()) {
+  runRuntimeCli(process.argv.slice(2)).catch((error: unknown) => {
+    if (error instanceof ManifestLoadError) {
+      console.error(`[ERROR] ${error.message}`);
+      process.exit(1);
+    }
+
+    console.error('[ERROR] Fatal runtime error:', error);
+    process.exit(1);
+  });
+}

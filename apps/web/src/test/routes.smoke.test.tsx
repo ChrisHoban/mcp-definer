@@ -173,6 +173,7 @@ describe('App route smoke', () => {
     { path: '/settings', heading: 'Settings' },
     { path: '/mcps/mcp_1', heading: 'Petstore API' },
     { path: '/mcps/mcp_1/test', heading: 'Test console' },
+    { path: '/mcps/mcp_1/versions/1.0.0/edit', heading: 'Edit v1.0.0' },
   ])('renders $path', async ({ path, heading }) => {
     renderAt(path);
     expect(await screen.findByRole('heading', { name: heading })).toBeInTheDocument();
