@@ -6,12 +6,12 @@ Platform RBAC (via `org_memberships`) and target-API credential resolution for M
 
 Roles are **per-org** in `org_memberships` — not on `users.role`:
 
-| Role | Capabilities |
-|------|--------------|
-| `viewer` | Read catalog/MCPs in scope |
+| Role     | Capabilities                                    |
+| -------- | ----------------------------------------------- |
+| `viewer` | Read catalog/MCPs in scope                      |
 | `author` | Create/edit drafts, configure auth, test-invoke |
-| `admin` | Publish/deprecate, manage members, manage tags |
-| `owner` | Org settings, billing, signing keys |
+| `admin`  | Publish/deprecate, manage members, manage tags  |
+| `owner`  | Org settings, billing, signing keys             |
 
 Use `hasPermission(role, permission)` and `canViewMcp(membership, mcp)` in the API layer (A6).
 
@@ -34,10 +34,10 @@ MCP_DEFINER_SECRET_{bindingId}
 
 Examples:
 
-| bindingId | Env var |
-|-----------|---------|
+| bindingId            | Env var                                 |
+| -------------------- | --------------------------------------- |
 | `cb_petstore_apikey` | `MCP_DEFINER_SECRET_cb_petstore_apikey` |
-| `cb_123` | `MCP_DEFINER_SECRET_cb_123` |
+| `cb_123`             | `MCP_DEFINER_SECRET_cb_123`             |
 
 Cursor install snippet:
 
@@ -46,12 +46,17 @@ Cursor install snippet:
   "mcpServers": {
     "petstore": {
       "command": "npx",
-      "args": ["-y", "@mcp-definer/runtime", "--manifest", "https://registry.example.com/.../manifest"],
+      "args": [
+        "-y",
+        "@mcp-definer/runtime",
+        "--manifest",
+        "https://registry.example.com/.../manifest",
+      ],
       "env": {
-        "MCP_DEFINER_SECRET_cb_petstore_apikey": "<user-supplied at install>"
-      }
-    }
-  }
+        "MCP_DEFINER_SECRET_cb_petstore_apikey": "<user-supplied at install>",
+      },
+    },
+  },
 }
 ```
 
@@ -59,12 +64,12 @@ Use `secretEnvVarName(bindingId)` when generating install snippets.
 
 ## Secret formats (runtime resolution)
 
-| authType | Secret value format |
-|----------|---------------------|
-| `apiKey` | Plain string |
-| `bearer` | Plain token string |
-| `basic` | `user:pass` or `{"username":"...","password":"..."}` |
-| `custom` | JSON object of header name → value |
+| authType    | Secret value format                                                  |
+| ----------- | -------------------------------------------------------------------- |
+| `apiKey`    | Plain string                                                         |
+| `bearer`    | Plain token string                                                   |
+| `basic`     | `user:pass` or `{"username":"...","password":"..."}`                 |
+| `custom`    | JSON object of header name → value                                   |
 | `oauth2_cc` | `clientId:clientSecret` or `{"clientId":"...","clientSecret":"..."}` |
 
 ## Write-only secrets

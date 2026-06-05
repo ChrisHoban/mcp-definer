@@ -51,13 +51,13 @@ apps/web                  ← depends on api (OpenAPI client / mock)
 
 ## Key boundaries
 
-| Package | Owns HTTP? | Notes |
-|---|---|---|
-| `packages/registry` | **No** | Domain/service layer only. Called by `packages/api`. |
-| `packages/api` | **Yes** | Sole HTTP entry point for control plane + discovery. |
-| `packages/runtime` | MCP only | stdio/HTTP MCP transport — not REST. |
-| `packages/request-pipeline` | No | Shared lib used by `runtime` and `api` (`:invoke`). |
-| `packages/cli` | No | Writes local harness config; calls API or reads registry index. |
+| Package                     | Owns HTTP? | Notes                                                           |
+| --------------------------- | ---------- | --------------------------------------------------------------- |
+| `packages/registry`         | **No**     | Domain/service layer only. Called by `packages/api`.            |
+| `packages/api`              | **Yes**    | Sole HTTP entry point for control plane + discovery.            |
+| `packages/runtime`          | MCP only   | stdio/HTTP MCP transport — not REST.                            |
+| `packages/request-pipeline` | No         | Shared lib used by `runtime` and `api` (`:invoke`).             |
+| `packages/cli`              | No         | Writes local harness config; calls API or reads registry index. |
 
 ## Workspace tooling (A0 delivers)
 

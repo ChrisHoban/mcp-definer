@@ -36,18 +36,18 @@ Plus the **Universal Runtime** that actually serves a Manifest as a live MCP ser
 
 ## Glossary
 
-| Term | Meaning |
-|---|---|
-| **MCP** | Model Context Protocol — the standard by which agents consume tools, resources, and prompts from servers. |
-| **Harness** | An MCP client/host (e.g. Cursor, Claude Desktop, a custom agent runtime). |
-| **Tool** | An MCP-exposed callable with a JSON Schema input; here, derived from an API operation. |
-| **Resource** | An MCP-exposed readable data item (often read-only API data). |
-| **Manifest** | The declarative, versioned source-of-truth document describing an MCP (tools, auth, transport, target API). Consumed by the Runtime. |
-| **IR** | Intermediate Representation — normalized form of a parsed API spec, before Manifest compilation. |
-| **Universal Runtime** | A single program that loads any Manifest and serves it as an MCP server. |
-| **Registry / Index** | The catalog service that stores, versions, and exposes MCPs for discovery and install. |
-| **Credential Binding** | Non-secret metadata describing how an MCP authenticates to its target API; references a secret, never stores it. |
-| **Eject / Codegen** | Optional export of a Manifest into a standalone runnable MCP server project. |
+| Term                   | Meaning                                                                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **MCP**                | Model Context Protocol — the standard by which agents consume tools, resources, and prompts from servers.                            |
+| **Harness**            | An MCP client/host (e.g. Cursor, Claude Desktop, a custom agent runtime).                                                            |
+| **Tool**               | An MCP-exposed callable with a JSON Schema input; here, derived from an API operation.                                               |
+| **Resource**           | An MCP-exposed readable data item (often read-only API data).                                                                        |
+| **Manifest**           | The declarative, versioned source-of-truth document describing an MCP (tools, auth, transport, target API). Consumed by the Runtime. |
+| **IR**                 | Intermediate Representation — normalized form of a parsed API spec, before Manifest compilation.                                     |
+| **Universal Runtime**  | A single program that loads any Manifest and serves it as an MCP server.                                                             |
+| **Registry / Index**   | The catalog service that stores, versions, and exposes MCPs for discovery and install.                                               |
+| **Credential Binding** | Non-secret metadata describing how an MCP authenticates to its target API; references a secret, never stores it.                     |
+| **Eject / Codegen**    | Optional export of a Manifest into a standalone runnable MCP server project.                                                         |
 
 ## Out of scope (initially)
 

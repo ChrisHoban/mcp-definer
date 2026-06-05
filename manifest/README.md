@@ -1,31 +1,18 @@
 # MCP Definer
 
-
-
 A system that turns any API (plus its specification) into a **standardized MCP (Model Context Protocol) server**, publishes it to a discoverable **registry/index**, and provides a **web UI** for creating, editing, listing, and managing MCPs. Generated MCPs are consumable by harnesses such as Cursor, Claude Desktop, and custom local agents.
-
-
 
 ---
 
-
-
 ## What this directory contains
-
-
 
 This folder holds **design and specification documentation** for MCP Definer: system-wide requirements, architecture decisions, build plan, and per-component specs. The runnable implementation lives at the repo root in `packages/`, `apps/`, `docker/`, and `scripts/` (bootstrapped by agent A0; business logic added by agents A1–A9 per [`BUILD_PLAN.md`](./BUILD_PLAN.md)).
 
 For local setup, tests, and CI, see the [project README](../README.md).
 
-
-
 ## How to use these docs (for human or AI contributors)
 
-
-
 1. **Read the top-level docs first** (in this order):
-
    - [`PROJECT_OVERVIEW.md`](./PROJECT_OVERVIEW.md) — vision, problem framing, glossary.
 
    - [`REQUIREMENTS.md`](./REQUIREMENTS.md) — system-wide functional & non-functional requirements.
@@ -48,11 +35,7 @@ For local setup, tests, and CI, see the [project README](../README.md).
 
 3. **Honor the contracts.** Where a component depends on another (e.g. the Runtime consumes the Manifest defined by the Generator), the shared contract is documented and must not be changed unilaterally.
 
-
-
 ## Component map
-
-
 
 | Folder | Agent | Package(s) | Responsibility |
 
@@ -76,19 +59,11 @@ For local setup, tests, and CI, see the [project README](../README.md).
 
 | [`ui-ux/`](./ui-ux/) | A7/A8 | `apps/web` | Web UI (Phase 3) |
 
-
-
 Integration agent **A9** wires everything and runs E2E tests per [`TESTING.md`](./TESTING.md).
-
-
 
 ## Standard folder contents
 
-
-
 Each component folder contains:
-
-
 
 - `README.md` — scope, responsibilities, dependencies, and the contracts it owns/consumes.
 
@@ -98,11 +73,7 @@ Each component folder contains:
 
 - `tasks.md` — actionable, ordered task breakdown for implementation.
 
-
-
 ## Core architectural decisions
-
-
 
 - **Manifest-driven runtime** (ADR-001): Generator produces a Manifest; one global `@mcp-definer/runtime` serves any Manifest.
 
@@ -110,8 +81,4 @@ Each component folder contains:
 
 - **Shared request pipeline** (ADR-012): runtime and `:invoke` test console use the same outbound HTTP + SSRF logic.
 
-
-
 See [`ARCHITECTURE_DECISIONS.md`](./ARCHITECTURE_DECISIONS.md) for all ADRs.
-
-

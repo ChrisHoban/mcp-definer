@@ -20,7 +20,10 @@ const INVOKE_ERROR_LABELS: Record<string, string> = {
 function redactSecrets(text: string): string {
   return text
     .replace(/Bearer\s+[^\s"']+/gi, 'Bearer [REDACTED]')
-    .replace(/("(?:api[_-]?key|secret|token|authorization)"\s*:\s*")([^"]+)(")/gi, '$1[REDACTED]$3');
+    .replace(
+      /("(?:api[_-]?key|secret|token|authorization)"\s*:\s*")([^"]+)(")/gi,
+      '$1[REDACTED]$3',
+    );
 }
 
 export function TestConsolePage() {
@@ -97,7 +100,8 @@ export function TestConsolePage() {
   if (!can('mcp:test_invoke')) {
     return (
       <Alert variant="warning">
-        Your role does not have permission to invoke tools. Authors and above can use the test console.
+        Your role does not have permission to invoke tools. Authors and above can use the test
+        console.
       </Alert>
     );
   }
@@ -136,7 +140,8 @@ export function TestConsolePage() {
 
         {credentialsQuery.isSuccess && !hasCredential && (
           <Alert variant="warning">
-            No credential secret is bound for this MCP. Set one in the auth step of the version editor before testing.
+            No credential secret is bound for this MCP. Set one in the auth step of the version
+            editor before testing.
           </Alert>
         )}
 

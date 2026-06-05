@@ -123,10 +123,7 @@ describe('PreviewStep', () => {
 });
 
 describe('OperationsTable', () => {
-  function renderTable(
-    curation = createEmptyCuration(),
-    onCurationChange = vi.fn(),
-  ) {
+  function renderTable(curation = createEmptyCuration(), onCurationChange = vi.fn()) {
     return render(
       <OperationsTable
         operations={taggedIr.operations}
@@ -170,7 +167,11 @@ describe('OperationsTable', () => {
     rerender(
       <OperationsTable
         operations={taggedIr.operations}
-        curation={bulkSetExcluded(createEmptyCuration(), taggedIr.operations.map((op) => op.id), true)}
+        curation={bulkSetExcluded(
+          createEmptyCuration(),
+          taggedIr.operations.map((op) => op.id),
+          true,
+        )}
         onCurationChange={onCurationChange}
       />,
     );

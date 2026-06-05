@@ -64,7 +64,13 @@ export function AuthStep({ onNext, onBack }: { onNext: () => void; onBack: () =>
       onNext();
     },
     onError: (err) => {
-      setError(err instanceof ApiError ? err.message : err instanceof Error ? err.message : 'Failed to save credentials');
+      setError(
+        err instanceof ApiError
+          ? err.message
+          : err instanceof Error
+            ? err.message
+            : 'Failed to save credentials',
+      );
     },
   });
 
@@ -72,7 +78,9 @@ export function AuthStep({ onNext, onBack }: { onNext: () => void; onBack: () =>
     return (
       <Card>
         <Alert variant="warning">Save the draft MCP first (complete the curation step).</Alert>
-        <Button variant="ghost" onClick={onBack}>Back</Button>
+        <Button variant="ghost" onClick={onBack}>
+          Back
+        </Button>
       </Card>
     );
   }
@@ -82,7 +90,8 @@ export function AuthStep({ onNext, onBack }: { onNext: () => void; onBack: () =>
       <Card>
         <h2 className={styles.heading}>Configure authentication</h2>
         <p className={styles.desc}>
-          One credential binding per MCP (ADR-009). Secret values are write-only and never displayed after save.
+          One credential binding per MCP (ADR-009). Secret values are write-only and never displayed
+          after save.
         </p>
 
         <div className={styles.field}>
@@ -108,7 +117,9 @@ export function AuthStep({ onNext, onBack }: { onNext: () => void; onBack: () =>
             }}
           >
             {AUTH_TYPES.map((t) => (
-              <option key={t.value} value={t.value}>{t.label}</option>
+              <option key={t.value} value={t.value}>
+                {t.label}
+              </option>
             ))}
           </Select>
         </div>
@@ -120,7 +131,9 @@ export function AuthStep({ onNext, onBack }: { onNext: () => void; onBack: () =>
               <Select
                 id="key-in"
                 value={String(auth.config.in ?? 'header')}
-                onChange={(e) => setAuth((a) => ({ ...a, config: { ...a.config, in: e.target.value } }))}
+                onChange={(e) =>
+                  setAuth((a) => ({ ...a, config: { ...a.config, in: e.target.value } }))
+                }
               >
                 <option value="header">Header</option>
                 <option value="query">Query</option>
@@ -131,7 +144,9 @@ export function AuthStep({ onNext, onBack }: { onNext: () => void; onBack: () =>
               <Input
                 id="key-name"
                 value={String(auth.config.name ?? '')}
-                onChange={(e) => setAuth((a) => ({ ...a, config: { ...a.config, name: e.target.value } }))}
+                onChange={(e) =>
+                  setAuth((a) => ({ ...a, config: { ...a.config, name: e.target.value } }))
+                }
               />
             </div>
           </div>
@@ -139,14 +154,15 @@ export function AuthStep({ onNext, onBack }: { onNext: () => void; onBack: () =>
 
         {auth.authType === 'oauth2_ac' && (
           <Alert variant="info">
-            OAuth2 authorization code flow will be available in Phase 4. Configure metadata now; consent flow is stubbed.
+            OAuth2 authorization code flow will be available in Phase 4. Configure metadata now;
+            consent flow is stubbed.
           </Alert>
         )}
 
         {(existing?.hasSecret || auth.hasSecret) && (
           <Alert variant="success">
-            Secret configured — ref: <code>{existing?.secretRef ?? auth.secretRef}</code>
-            {' '}(value masked, write-only)
+            Secret configured — ref: <code>{existing?.secretRef ?? auth.secretRef}</code> (value
+            masked, write-only)
           </Alert>
         )}
 
@@ -168,7 +184,9 @@ export function AuthStep({ onNext, onBack }: { onNext: () => void; onBack: () =>
         {error && <Alert variant="danger">{error}</Alert>}
 
         <div className={styles.actions}>
-          <Button variant="ghost" onClick={onBack}>Back</Button>
+          <Button variant="ghost" onClick={onBack}>
+            Back
+          </Button>
           <Button onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending}>
             {saveMutation.isPending ? <Spinner /> : null}
             Save & continue

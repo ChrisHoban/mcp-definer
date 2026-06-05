@@ -3,6 +3,7 @@
 Refines [`../REQUIREMENTS.md`](../REQUIREMENTS.md).
 
 ## Functional
+
 - UR-01 Import spec via upload/URL/paste with clear parse-error feedback (FR-01).
 - UR-02 Preview discovered operations with bulk include/exclude, search/filter for large specs (FR-05).
 - UR-03 Curate tools: edit name, description, group, input schema, response shaping (FR-05).
@@ -17,12 +18,14 @@ Refines [`../REQUIREMENTS.md`](../REQUIREMENTS.md).
 - UR-12 RBAC-aware rendering of actions; visibility scoping (FR-20, NFR-05).
 
 ## Non-Functional
+
 - UR-N1 Guide authors to high-quality LLM-facing tool metadata; "how the agent sees this" preview (NFR-10).
 - UR-N2 Never display secret values; masked/“set” indicators only (NFR-02).
 - UR-N3 Accessible (keyboard/ARIA), responsive; complete loading/empty/error states.
 - UR-N4 Cache-aware data fetching; resilient to API errors with actionable messages.
 
 ## Acceptance criteria
+
 - A user completes spec→curate→auth→validate→publish without leaving the UI.
 - Publishing a 300-operation spec is manageable via filtering/grouping.
 - No screen ever renders a secret value.

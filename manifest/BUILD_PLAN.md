@@ -23,18 +23,18 @@ WAVE -1 (first)     WAVE 0 (blocking)      WAVE 1 (parallel)        WAVE 2 (para
 └──────────────┘    └─────────────────┘    └──────────────────┘                          └─└───────────────────┘   └─────────────┘
 ```
 
-| Agent | Component | Depends on (hard) | Builds against (stub OK) | Parallel with |
-|---|---|---|---|---|
-| **A0** | `platform` | — | — | (none — runs first) |
-| **A1** | `data-structure` | A0 monorepo | — | — (after A0) |
-| **A2** | `generator` | A0, A1 schema | — | A3, A4 |
-| **A3** | `runtime` + `request-pipeline` | A0, A1 schema | A4 resolver stub | A2, A4 |
-| **A4** | `authentication` | A0, A1 model | — | A2, A3 |
-| **A5** | `registry` + `cli` | A0, A1 | A1 validator (real) | A6 |
-| **A6** | `api-design` | A0, A1 | A2/A4/A5/request-pipeline (stubs) | A5 |
-| **A7** | `ui-ux` authoring | A6 contract | A6 mock API | A8 |
-| **A8** | `ui-ux` management | A6 contract | A6 mock API | A7 |
-| **A9** | integration / E2E | A2–A8 | — | (after core complete) |
+| Agent  | Component                      | Depends on (hard) | Builds against (stub OK)          | Parallel with         |
+| ------ | ------------------------------ | ----------------- | --------------------------------- | --------------------- |
+| **A0** | `platform`                     | —                 | —                                 | (none — runs first)   |
+| **A1** | `data-structure`               | A0 monorepo       | —                                 | — (after A0)          |
+| **A2** | `generator`                    | A0, A1 schema     | —                                 | A3, A4                |
+| **A3** | `runtime` + `request-pipeline` | A0, A1 schema     | A4 resolver stub                  | A2, A4                |
+| **A4** | `authentication`               | A0, A1 model      | —                                 | A2, A3                |
+| **A5** | `registry` + `cli`             | A0, A1            | A1 validator (real)               | A6                    |
+| **A6** | `api-design`                   | A0, A1            | A2/A4/A5/request-pipeline (stubs) | A5                    |
+| **A7** | `ui-ux` authoring              | A6 contract       | A6 mock API                       | A8                    |
+| **A8** | `ui-ux` management             | A6 contract       | A6 mock API                       | A7                    |
+| **A9** | integration / E2E              | A2–A8             | —                                 | (after core complete) |
 
 **Lean (7 agents):** A0 · A1 · (generator+runtime) · authentication · (registry+api+cli) · (ui combined) · A9.
 
@@ -56,14 +56,14 @@ A4, A5 overlap with A2/A3/A6. **A9 is mandatory**, not optional.
 
 ## Interface freeze points
 
-| Freezes | Owner | Consumers | Deliverable |
-|---|---|---|---|
-| Monorepo skeleton + CI | A0 | all | `pnpm bootstrap` works |
-| IR + Manifest + CurationProfile schemas, TS types, **validator impl**, fixtures | **A1** | A2, A3, A5, A6 | `@mcp-definer/schemas` package |
-| Credential resolver interface | A4 | A3, request-pipeline | Interface + in-memory stub |
-| `request-pipeline` execute API | A3 | A6 (`:invoke`) | `executeToolCall(manifest, tool, args, credential)` |
-| Discovery index v1 shape + install snippet builder | A5 | A6, CLI, runtime | `fixtures/registry/index-v1.json` |
-| HTTP API contract + mock server | A6 | A7, A8 | OpenAPI doc + mock |
+| Freezes                                                                         | Owner  | Consumers            | Deliverable                                         |
+| ------------------------------------------------------------------------------- | ------ | -------------------- | --------------------------------------------------- |
+| Monorepo skeleton + CI                                                          | A0     | all                  | `pnpm bootstrap` works                              |
+| IR + Manifest + CurationProfile schemas, TS types, **validator impl**, fixtures | **A1** | A2, A3, A5, A6       | `@mcp-definer/schemas` package                      |
+| Credential resolver interface                                                   | A4     | A3, request-pipeline | Interface + in-memory stub                          |
+| `request-pipeline` execute API                                                  | A3     | A6 (`:invoke`)       | `executeToolCall(manifest, tool, args, credential)` |
+| Discovery index v1 shape + install snippet builder                              | A5     | A6, CLI, runtime     | `fixtures/registry/index-v1.json`                   |
+| HTTP API contract + mock server                                                 | A6     | A7, A8               | OpenAPI doc + mock                                  |
 
 **Validator ownership (resolved):** A1 **owns** `validateManifest()` in `@mcp-definer/schemas`. A2, A5, A6 **call** it — they do not define or stub their own.
 
@@ -80,31 +80,36 @@ A4, A5 overlap with A2/A3/A6. **A9 is mandatory**, not optional.
 ## Recommended breakdowns (oversized components)
 
 ### A1 → 2 sub-agents (if needed)
+
 - **A1a:** schemas, types, validator, fixtures → `packages/schemas`
 - **A1b:** DDL, migrations, discovery view → `packages/db`
 
 ### `generator` → G1 + G2 (+ optional G3)
+
 Split across IR contract. See prior breakdown.
 
 ### `runtime` → R1 + R2
+
 R1: MCP server + tool pipeline. R2: transports, policies, observability. **R1 also owns `packages/request-pipeline`** (shared with `:invoke`).
 
 ### `authentication` → AU1 + AU2
+
 AU1: OIDC, API keys, RBAC. AU2: secrets, resolver, OAuth cc (**defer OAuth ac to Phase 3**).
 
 ### `registry` → RG1 + RG2
+
 RG2 includes CLI.
 
 ---
 
 ## Phase alignment (see [`ROADMAP.md`](./ROADMAP.md))
 
-| Product phase | Agent waves | Deliverable |
-|---|---|---|
-| Phase 1 MVP | A0 → A1 → A2 + A3 + A4 | CLI/spec → manifest → runtime in Cursor (manual or `cli validate`) |
-| Phase 2 Registry | A5 + A6 | Publish, discover, `cli install` |
-| Phase 3 Authoring depth | A7 + A8 | Full UI wizard, test console, curation |
-| Phase 4+ | Hardening agents | OAuth ac, HTTP transport, signing |
+| Product phase           | Agent waves            | Deliverable                                                        |
+| ----------------------- | ---------------------- | ------------------------------------------------------------------ |
+| Phase 1 MVP             | A0 → A1 → A2 + A3 + A4 | CLI/spec → manifest → runtime in Cursor (manual or `cli validate`) |
+| Phase 2 Registry        | A5 + A6                | Publish, discover, `cli install`                                   |
+| Phase 3 Authoring depth | A7 + A8                | Full UI wizard, test console, curation                             |
+| Phase 4+                | Hardening agents       | OAuth ac, HTTP transport, signing                                  |
 
 Phase 1 intentionally **does not require UI** — CLI + runtime prove the core loop before A7/A8.
 

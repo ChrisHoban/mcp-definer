@@ -20,10 +20,7 @@ export function OperationsTable({ operations, curation, onCurationChange }: Oper
   const [tagFilter, setTagFilter] = useState('');
   const parentRef = useRef<HTMLDivElement>(null);
 
-  const methods = useMemo(
-    () => [...new Set(operations.map((o) => o.method))].sort(),
-    [operations],
-  );
+  const methods = useMemo(() => [...new Set(operations.map((o) => o.method))].sort(), [operations]);
 
   const tags = useMemo(() => {
     const set = new Set<string>();
@@ -77,16 +74,28 @@ export function OperationsTable({ operations, curation, onCurationChange }: Oper
           onChange={(e) => setSearch(e.target.value)}
           aria-label="Search operations"
         />
-        <Select value={methodFilter} onChange={(e) => setMethodFilter(e.target.value)} aria-label="Filter by method">
+        <Select
+          value={methodFilter}
+          onChange={(e) => setMethodFilter(e.target.value)}
+          aria-label="Filter by method"
+        >
           <option value="">All methods</option>
           {methods.map((m) => (
-            <option key={m} value={m}>{m}</option>
+            <option key={m} value={m}>
+              {m}
+            </option>
           ))}
         </Select>
-        <Select value={tagFilter} onChange={(e) => setTagFilter(e.target.value)} aria-label="Filter by tag">
+        <Select
+          value={tagFilter}
+          onChange={(e) => setTagFilter(e.target.value)}
+          aria-label="Filter by tag"
+        >
           <option value="">All tags</option>
           {tags.map((t) => (
-            <option key={t} value={t}>{t}</option>
+            <option key={t} value={t}>
+              {t}
+            </option>
           ))}
         </Select>
         <div className={styles.bulk}>

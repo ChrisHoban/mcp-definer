@@ -17,7 +17,11 @@ interface AuthContextValue extends AuthState {
   setApiKey: (key: string) => void;
   setRole: (role: OrgRole) => void;
   can: (permission: Parameters<typeof hasPermission>[1]) => boolean;
-  canView: (mcp: { visibility: 'private' | 'org' | 'public'; orgId?: string; ownerId?: string }) => boolean;
+  canView: (mcp: {
+    visibility: 'private' | 'org' | 'public';
+    orgId?: string;
+    ownerId?: string;
+  }) => boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);

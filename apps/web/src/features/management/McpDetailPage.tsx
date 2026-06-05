@@ -67,8 +67,10 @@ export function McpDetailPage() {
   });
 
   const createDraftMutation = useMutation({
-    mutationFn: (body: { version: string; manifest: NonNullable<typeof regenerateResult>['manifest'] }) =>
-      api.createVersion(id, body),
+    mutationFn: (body: {
+      version: string;
+      manifest: NonNullable<typeof regenerateResult>['manifest'];
+    }) => api.createVersion(id, body),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['versions', id] });
       navigate(`/mcps/${id}/versions/${data.version}/edit`);
@@ -111,10 +113,7 @@ export function McpDetailPage() {
         <span>{mcpQuery.data?.name ?? 'MCP'}</span>
       </div>
 
-      <AsyncState
-        isLoading={mcpQuery.isLoading}
-        error={mcpQuery.error as Error | null}
-      >
+      <AsyncState isLoading={mcpQuery.isLoading} error={mcpQuery.error as Error | null}>
         {mcpQuery.data && (
           <>
             <div className={styles.pageHeader}>
@@ -137,7 +136,11 @@ export function McpDetailPage() {
                   </Button>
                 )}
                 {can('mcp:edit') && !draftVersion && (
-                  <Button variant="secondary" disabled title="Create a new draft version from regeneration">
+                  <Button
+                    variant="secondary"
+                    disabled
+                    title="Create a new draft version from regeneration"
+                  >
                     New draft version
                   </Button>
                 )}
@@ -160,7 +163,9 @@ export function McpDetailPage() {
                 </div>
                 <div className={styles.metaItem}>
                   <dt>Org / slug</dt>
-                  <dd>{mcpQuery.data.org}/{mcpQuery.data.slug}</dd>
+                  <dd>
+                    {mcpQuery.data.org}/{mcpQuery.data.slug}
+                  </dd>
                 </div>
                 <div className={styles.metaItem}>
                   <dt>Latest version</dt>
@@ -187,13 +192,13 @@ export function McpDetailPage() {
                     {(versionsQuery.data?.items ?? []).map((v) => (
                       <li key={v.id} className={styles.timelineItem}>
                         <div className={styles.timelineVersion}>
-                          v{v.version}{' '}
-                          {v.publishedAt && <Badge variant="success">immutable</Badge>}
+                          v{v.version} {v.publishedAt && <Badge variant="success">immutable</Badge>}
                           {v.deprecatedAt && <Badge variant="warning">deprecated</Badge>}
                         </div>
                         <div className={styles.muted}>
                           {v.channel ?? 'draft'}
-                          {v.publishedAt && ` · published ${new Date(v.publishedAt).toLocaleDateString()}`}
+                          {v.publishedAt &&
+                            ` · published ${new Date(v.publishedAt).toLocaleDateString()}`}
                         </div>
                         <div className={styles.rowActions} style={{ marginTop: '0.5rem' }}>
                           {!v.publishedAt && can('mcp:edit') && (
@@ -260,7 +265,9 @@ export function McpDetailPage() {
                 </div>
                 {versionDetailQuery.data?.tools && (
                   <div style={{ marginTop: '1rem' }}>
-                    <AgentPreviewPanel tools={versionDetailQuery.data.tools.filter((t) => t.enabled)} />
+                    <AgentPreviewPanel
+                      tools={versionDetailQuery.data.tools.filter((t) => t.enabled)}
+                    />
                   </div>
                 )}
               </AsyncState>

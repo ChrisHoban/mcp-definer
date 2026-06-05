@@ -1,4 +1,9 @@
-import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from 'react';
+import type {
+  ButtonHTMLAttributes,
+  InputHTMLAttributes,
+  ReactNode,
+  TextareaHTMLAttributes,
+} from 'react';
 
 import styles from './ui.module.css';
 
@@ -6,7 +11,9 @@ export function Button({
   variant = 'primary',
   className = '',
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' | 'ghost' | 'danger' }) {
+}: ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
+}) {
   return (
     <button
       type="button"
@@ -20,11 +27,18 @@ export function Input({ className = '', ...props }: InputHTMLAttributes<HTMLInpu
   return <input className={`${styles.input} ${className}`} {...props} />;
 }
 
-export function Textarea({ className = '', ...props }: TextareaHTMLAttributes<HTMLTextAreaElement>) {
+export function Textarea({
+  className = '',
+  ...props
+}: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return <textarea className={`${styles.textarea} ${className}`} {...props} />;
 }
 
-export function Select({ className = '', children, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
+export function Select({
+  className = '',
+  children,
+  ...props
+}: React.SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <select className={`${styles.select} ${className}`} {...props}>
       {children}
@@ -51,7 +65,11 @@ export function Alert({
   variant?: 'info' | 'success' | 'warning' | 'danger';
   children: ReactNode;
 }) {
-  return <div className={`${styles.alert} ${styles[`alert-${variant}`]}`} role="alert">{children}</div>;
+  return (
+    <div className={`${styles.alert} ${styles[`alert-${variant}`]}`} role="alert">
+      {children}
+    </div>
+  );
 }
 
 export function Badge({

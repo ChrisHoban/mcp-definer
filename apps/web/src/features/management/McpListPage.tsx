@@ -30,7 +30,7 @@ export function McpListPage() {
   const [visibilityFilter, setVisibilityFilter] = useState('');
   const [tagFilter, setTagFilter] = useState('');
   const [sortBy, setSortBy] = useState<SortKey>('name');
-  const [archiveTarget, setArchiveTarget] = useState<McpSummary | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<McpSummary | null>(null);
 
   const listQuery = useQuery({
     queryKey: ['mcps', statusFilter, visibilityFilter, tagFilter],
@@ -56,9 +56,7 @@ export function McpListPage() {
   });
 
   const enriched = useMemo(() => {
-    const detailMap = new Map(
-      detailQueries.map((q, i) => [visibleItems[i]?.id, q.data]),
-    );
+    const detailMap = new Map(detailQueries.map((q, i) => [visibleItems[i]?.id, q.data]));
     return visibleItems.map((mcp) => ({
       ...mcp,
       latestVersion: detailMap.get(mcp.id)?.latestVersion ?? null,
@@ -84,11 +82,11 @@ export function McpListPage() {
     });
   }, [enriched, search, sortBy]);
 
-  const archiveMutation = useMutation({
+  const deleteMutation = useMutation({
     mutationFn: (id: string) => api.deleteMcp(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['mcps'] });
-      setArchiveTarget(null);
+      setDeleteTarget(null);
     },
   });
 
@@ -123,47 +121,71 @@ export function McpListPage() {
 
       <div className={styles.toolbar}>
         <Input
+          className={styles.toolbarSearch}
           placeholder="Search name, slug, tags…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           aria-label="Search MCPs"
         />
-        <Select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          aria-label="Filter by status"
-        >
-          <option value="">All statuses</option>
-          <option value="draft">Draft</option>
-          <option value="published">Published</option>
-          <option value="deprecated">Deprecated</option>
-          <option value="retired">Retired</option>
-        </Select>
-        <Select
-          value={visibilityFilter}
-          onChange={(e) => setVisibilityFilter(e.target.value)}
-          aria-label="Filter by visibility"
-        >
-          <option value="">All visibility</option>
-          <option value="private">Private</option>
-          <option value="org">Org</option>
-          <option value="public">Public</option>
-        </Select>
-        <Input
-          placeholder="Tag filter"
-          value={tagFilter}
-          onChange={(e) => setTagFilter(e.target.value)}
-          aria-label="Filter by tag"
-        />
-        <Select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as SortKey)}
-          aria-label="Sort by"
-        >
-          <option value="name">Sort: name</option>
-          <option value="status">Sort: status</option>
-          <option value="visibility">Sort: visibility</option>
-        </Select>
+        <div className={styles.filterBar}>
+          <div className={styles.filterGroup}>
+            <span className={styles.filterLabel}>Status</span>
+            <Select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              aria-label="Filter by status"
+            >
+              <option value="">All</option>
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
+              <option value="deprecated">Deprecated</option>
+              <option value="retired">Retired</option>
+            </Select>
+          </div>
+          <span className={styles.filterDivider} aria-hidden="true">
+            |
+          </span>
+          <div className={styles.filterGroup}>
+            <span className={styles.filterLabel}>Visibility</span>
+            <Select
+              value={visibilityFilter}
+              onChange={(e) => setVisibilityFilter(e.target.value)}
+              aria-label="Filter by visibility"
+            >
+              <option value="">All</option>
+              <option value="private">Private</option>
+              <option value="org">Org</option>
+              <option value="public">Public</option>
+            </Select>
+          </div>
+          <span className={styles.filterDivider} aria-hidden="true">
+            |
+          </span>
+          <div className={styles.filterGroup}>
+            <span className={styles.filterLabel}>Sort</span>
+            <Select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortKey)}
+              aria-label="Sort by"
+            >
+              <option value="name">Name</option>
+              <option value="status">Status</option>
+              <option value="visibility">Visibility</option>
+            </Select>
+          </div>
+          <span className={styles.filterDivider} aria-hidden="true">
+            |
+          </span>
+          <div className={styles.filterGroup}>
+            <span className={styles.filterLabel}>Tag</span>
+            <Input
+              placeholder="Search"
+              value={tagFilter}
+              onChange={(e) => setTagFilter(e.target.value)}
+              aria-label="Filter by tag"
+            />
+          </div>
+        </div>
       </div>
 
       <AsyncState
@@ -190,7 +212,9 @@ export function McpListPage() {
                 <tr key={mcp.id}>
                   <td>
                     <Link to={`/mcps/${mcp.id}`}>{mcp.name}</Link>
-                    <div className={styles.muted}>{mcp.org}/{mcp.slug}</div>
+                    <div className={styles.muted}>
+                      {mcp.org}/{mcp.slug}
+                    </div>
                   </td>
                   <td>
                     <Badge variant={statusBadgeVariant(mcp.status)}>{mcp.status}</Badge>
@@ -235,9 +259,9 @@ export function McpListPage() {
                           Deprecate
                         </Button>
                       )}
-                      {can('mcp:edit') && (
-                        <Button variant="ghost" onClick={() => setArchiveTarget(mcp)}>
-                          Archive
+                      {can('mcp:delete') && (
+                        <Button variant="ghost" onClick={() => setDeleteTarget(mcp)}>
+                          Delete
                         </Button>
                       )}
                     </div>
@@ -250,13 +274,13 @@ export function McpListPage() {
       </AsyncState>
 
       <ConfirmDialog
-        open={archiveTarget !== null}
-        title="Archive MCP"
-        message={`Archive "${archiveTarget?.name}"? Published versions remain in the registry.`}
-        confirmLabel="Archive"
-        loading={archiveMutation.isPending}
-        onConfirm={() => archiveTarget && archiveMutation.mutate(archiveTarget.id)}
-        onCancel={() => setArchiveTarget(null)}
+        open={deleteTarget !== null}
+        title="Delete MCP"
+        message={`Delete "${deleteTarget?.name}"? This retires the MCP and removes it from the catalog.`}
+        confirmLabel="Delete"
+        loading={deleteMutation.isPending}
+        onConfirm={() => deleteTarget && deleteMutation.mutate(deleteTarget.id)}
+        onCancel={() => setDeleteTarget(null)}
       />
     </div>
   );

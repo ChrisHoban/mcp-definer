@@ -10,6 +10,7 @@ const PERMISSION_MIN_ROLE: Record<Permission, OrgRole> = {
   'mcp:test_invoke': 'author',
   'mcp:publish': 'admin',
   'mcp:deprecate': 'admin',
+  'mcp:delete': 'admin',
   'members:manage': 'admin',
   'tags:manage': 'admin',
   'org:settings': 'owner',

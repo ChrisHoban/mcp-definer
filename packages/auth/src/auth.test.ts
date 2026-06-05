@@ -26,9 +26,12 @@ function loadManifest(name: string): Manifest {
 }
 
 describe('RBAC', () => {
-  it('author cannot publish; admin can', () => {
+  it('author cannot publish or delete; admin can', () => {
     expect(hasPermission('author', 'mcp:publish')).toBe(false);
     expect(hasPermission('admin', 'mcp:publish')).toBe(true);
+    expect(hasPermission('author', 'mcp:delete')).toBe(false);
+    expect(hasPermission('admin', 'mcp:delete')).toBe(true);
+    expect(hasPermission('owner', 'mcp:delete')).toBe(true);
   });
 
   it('viewer can read catalog; author can configure auth', () => {

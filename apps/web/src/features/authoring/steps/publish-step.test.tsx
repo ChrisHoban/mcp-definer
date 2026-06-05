@@ -59,7 +59,11 @@ function renderPublishStep(opts?: {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <MemoryRouter>
-          <WizardProvider mode="create" initialMcpId="mcp_pub" initialPublished={opts?.initialPublished}>
+          <WizardProvider
+            mode="create"
+            initialMcpId="mcp_pub"
+            initialPublished={opts?.initialPublished}
+          >
             <SeedPublishWizard
               validationValid={opts?.validationValid ?? true}
               published={opts?.publishDone}

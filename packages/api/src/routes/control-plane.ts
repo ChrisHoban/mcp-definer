@@ -282,7 +282,7 @@ export function createControlPlaneRoutes(ctx: AppContext): Hono<ApiEnv> {
     }
   });
 
-  routes.delete('/mcps/:id', requirePermission('mcp:edit'), async (c) => {
+  routes.delete('/mcps/:id', requirePermission('mcp:delete'), async (c) => {
     const app = ctx;
     try {
       const mcp = await app.registryStore.archiveMcp(c.req.param('id'));

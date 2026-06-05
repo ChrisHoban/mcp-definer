@@ -1,5 +1,12 @@
-import { createPool, resolveDatabaseUrl, runMigrations, validateDatabase } from '@mcp-definer/db';
+import {
+  cleanupTestDbFixture,
+  createPool,
+  resolveDatabaseUrl,
+  runMigrations,
+  validateDatabase,
+} from '@mcp-definer/db';
 import { describe, expect, it, beforeAll, afterAll } from 'vitest';
+import type pg from 'pg';
 
 import { EnvSecretStore } from '../secrets/env-secret-store.js';
 import { envSecretRef } from '../secrets/env-ref.js';
@@ -22,12 +29,17 @@ async function canConnect(): Promise<boolean> {
 const dbAvailable = await canConnect();
 
 describe.skipIf(!dbAvailable)('PostgresBindingStore', () => {
+  let pool: pg.Pool;
   let store: PostgresBindingStore;
-  let mcpId: string;
+  const fixture: { orgId: string; userId: string; mcpId: string } = {
+    orgId: '',
+    userId: '',
+    mcpId: '',
+  };
 
   beforeAll(async () => {
     await runMigrations(DATABASE_URL);
-    const pool = createPool(DATABASE_URL);
+    pool = createPool(DATABASE_URL);
     const health = await validateDatabase(pool);
     if (!health.ok) {
       await pool.end();
@@ -40,33 +52,39 @@ describe.skipIf(!dbAvailable)('PostgresBindingStore', () => {
        RETURNING id`,
       [`test-org-${Date.now()}`, 'Test Org'],
     );
-    const orgId = org.rows[0].id as string;
+    fixture.orgId = org.rows[0].id as string;
 
     const user = await pool.query(
       `INSERT INTO users (email, display_name) VALUES ($1, $2) RETURNING id`,
       [`binding-test-${Date.now()}@test.local`, 'Binding Test'],
     );
-    const userId = user.rows[0].id as string;
+    fixture.userId = user.rows[0].id as string;
 
     const mcp = await pool.query(
       `INSERT INTO mcps (org_id, slug, name, owner_id, visibility, status)
        VALUES ($1, $2, $3, $4, 'private', 'draft')
        RETURNING id`,
-      [orgId, `binding-mcp-${Date.now()}`, 'Binding MCP', userId],
+      [fixture.orgId, `binding-mcp-${Date.now()}`, 'Binding MCP', fixture.userId],
     );
-    mcpId = mcp.rows[0].id as string;
+    fixture.mcpId = mcp.rows[0].id as string;
 
     store = new PostgresBindingStore(pool, new EnvSecretStore());
   });
 
   afterAll(async () => {
-    // pool lifecycle owned by test process exit
+    await cleanupTestDbFixture(pool, fixture);
+    await pool.end();
   });
 
   it('persists binding metadata with env secretRef', async () => {
     const bindingId = `cb_pg_${Date.now()}`;
     const created = await store.create(
-      { id: bindingId, mcpId, authType: 'apiKey', config: { in: 'header', name: 'X-API-Key' } },
+      {
+        id: bindingId,
+        mcpId: fixture.mcpId,
+        authType: 'apiKey',
+        config: { in: 'header', name: 'X-API-Key' },
+      },
       'test-secret-value',
     );
 
@@ -76,5 +94,8 @@ describe.skipIf(!dbAvailable)('PostgresBindingStore', () => {
 
     const loaded = await store.get(bindingId);
     expect(loaded?.hasSecret).toBe(true);
+
+    await store.delete(bindingId);
+    expect(await store.get(bindingId)).toBeUndefined();
   });
 });

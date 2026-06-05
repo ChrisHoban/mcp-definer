@@ -14,6 +14,7 @@ export type Permission =
   | 'mcp:test_invoke'
   | 'mcp:publish'
   | 'mcp:deprecate'
+  | 'mcp:delete'
   | 'members:manage'
   | 'tags:manage'
   | 'org:settings'

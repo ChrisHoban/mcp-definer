@@ -1,7 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-
-
 import { AppLayout } from '@/components';
 
 import { CreateWizardPage } from '@/features/authoring/CreateWizardPage';
@@ -18,16 +16,10 @@ import { SettingsPage } from '@/features/management/SettingsPage';
 
 import { TestConsolePage } from '@/features/management/TestConsolePage';
 
-
-
 export function AppRoutes() {
-
   return (
-
     <Routes>
-
       <Route element={<AppLayout />}>
-
         <Route index element={<McpListPage />} />
 
         <Route path="mcps/new" element={<CreateWizardPage />} />
@@ -43,12 +35,7 @@ export function AppRoutes() {
         <Route path="settings" element={<SettingsPage />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
-
       </Route>
-
     </Routes>
-
   );
-
 }
-

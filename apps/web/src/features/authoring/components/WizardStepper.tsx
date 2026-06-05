@@ -8,7 +8,11 @@ interface WizardStepperProps {
   maxReachable?: number;
 }
 
-export function WizardStepper({ current, onStepClick, maxReachable = WIZARD_STEPS.length - 1 }: WizardStepperProps) {
+export function WizardStepper({
+  current,
+  onStepClick,
+  maxReachable = WIZARD_STEPS.length - 1,
+}: WizardStepperProps) {
   const currentIndex = WIZARD_STEPS.findIndex((s) => s.id === current);
 
   return (
@@ -33,7 +37,9 @@ export function WizardStepper({ current, onStepClick, maxReachable = WIZARD_STEP
                 <span className={styles.label}>{step.label}</span>
               </button>
               {index < WIZARD_STEPS.length - 1 && (
-                <span className={`${styles.connector} ${index < currentIndex ? styles.connectorComplete : ''}`} />
+                <span
+                  className={`${styles.connector} ${index < currentIndex ? styles.connectorComplete : ''}`}
+                />
               )}
             </li>
           );

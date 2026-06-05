@@ -16,7 +16,8 @@ export function PublishStep({ onBack }: { onBack: () => void }) {
   const { mcpId, version, publish, setPublish, validation, isPublished } = useWizard();
   const [error, setError] = useState<string | null>(null);
 
-  const canPublish = can('mcp:publish') && validation.valid === true && !isPublished && !publish.published;
+  const canPublish =
+    can('mcp:publish') && validation.valid === true && !isPublished && !publish.published;
 
   const publishMutation = useMutation({
     mutationFn: () =>
@@ -41,7 +42,8 @@ export function PublishStep({ onBack }: { onBack: () => void }) {
     return (
       <Card>
         <Alert variant="warning">
-          This version is already published and immutable (ADR-006). Create a new version to make changes.
+          This version is already published and immutable (ADR-006). Create a new version to make
+          changes.
         </Alert>
         <div className={styles.actions}>
           <Button onClick={() => navigate(`/mcps/${mcpId}`)}>View MCP</Button>
@@ -54,8 +56,8 @@ export function PublishStep({ onBack }: { onBack: () => void }) {
     return (
       <Card>
         <Alert variant="success">
-          Published v{version} to {publish.channel} channel at {publish.publishedAt}.
-          This version is now immutable.
+          Published v{version} to {publish.channel} channel at {publish.publishedAt}. This version
+          is now immutable.
         </Alert>
         <div className={styles.actions}>
           <Link to={`/mcps/${mcpId}`}>View MCP detail →</Link>
@@ -69,7 +71,8 @@ export function PublishStep({ onBack }: { onBack: () => void }) {
       <Card>
         <h2 className={styles.heading}>Publish</h2>
         <p className={styles.desc}>
-          Choose semver and channel. Published versions are immutable — changes require a new version (ADR-006).
+          Choose semver and channel. Published versions are immutable — changes require a new
+          version (ADR-006).
         </p>
 
         {!can('mcp:publish') && (
@@ -79,9 +82,7 @@ export function PublishStep({ onBack }: { onBack: () => void }) {
         )}
 
         {validation.valid !== true && (
-          <Alert variant="danger">
-            Run validation and fix all errors before publishing.
-          </Alert>
+          <Alert variant="danger">Run validation and fix all errors before publishing.</Alert>
         )}
 
         <div className={styles.metaGrid}>
@@ -122,13 +123,16 @@ export function PublishStep({ onBack }: { onBack: () => void }) {
         </div>
 
         <Alert variant="info">
-          After publish, this version cannot be edited. To update tools or schemas, create a new draft version.
+          After publish, this version cannot be edited. To update tools or schemas, create a new
+          draft version.
         </Alert>
 
         {error && <Alert variant="danger">{error}</Alert>}
 
         <div className={styles.actions}>
-          <Button variant="ghost" onClick={onBack}>Back</Button>
+          <Button variant="ghost" onClick={onBack}>
+            Back
+          </Button>
           <Button
             onClick={() => publishMutation.mutate()}
             disabled={!canPublish || publishMutation.isPending}
