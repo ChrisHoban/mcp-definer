@@ -9,11 +9,12 @@ export interface TestDbFixtureIds {
   orgId?: string;
 }
 
-async function withDbConnection<T>(
-  client: DbClient,
-  fn: (conn: pg.PoolClient) => Promise<T>,
-): Promise<T> {
-  if ('connect' in client) {
+function isPool(client: DbClient): client is pg.Pool {
+  return typeof (client as pg.Pool).connect === 'function';
+}
+
+async function withDbConnection<T>(client: DbClient, fn: (conn: DbClient) => Promise<T>): Promise<T> {
+  if (isPool(client)) {
     const conn = await client.connect();
     try {
       return await fn(conn);
@@ -30,7 +31,7 @@ const IMMUTABILITY_TRIGGERS = [
   'curation_profiles_immutability',
 ] as const;
 
-async function disableImmutabilityTriggers(conn: pg.PoolClient): Promise<void> {
+async function disableImmutabilityTriggers(conn: DbClient): Promise<void> {
   for (const trigger of IMMUTABILITY_TRIGGERS) {
     const table =
       trigger === 'mcp_versions_immutability'
@@ -42,7 +43,7 @@ async function disableImmutabilityTriggers(conn: pg.PoolClient): Promise<void> {
   }
 }
 
-async function enableImmutabilityTriggers(conn: pg.PoolClient): Promise<void> {
+async function enableImmutabilityTriggers(conn: DbClient): Promise<void> {
   for (const trigger of IMMUTABILITY_TRIGGERS) {
     const table =
       trigger === 'mcp_versions_immutability'
