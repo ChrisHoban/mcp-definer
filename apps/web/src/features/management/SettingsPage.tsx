@@ -7,7 +7,11 @@ import styles from './management.module.css';
 
 const ROLES: OrgRole[] = ['viewer', 'author', 'admin', 'owner'];
 
-const PERMISSION_READOUT: { label: string; permission: Parameters<typeof hasPermission>[1]; minRole: OrgRole }[] = [
+const PERMISSION_READOUT: {
+  label: string;
+  permission: Parameters<typeof hasPermission>[1];
+  minRole: OrgRole;
+}[] = [
   { label: 'Read catalog & MCPs', permission: 'catalog:read', minRole: 'viewer' },
   { label: 'Create / edit drafts', permission: 'mcp:edit', minRole: 'author' },
   { label: 'Test invoke', permission: 'mcp:test_invoke', minRole: 'author' },
@@ -96,8 +100,7 @@ export function SettingsPage() {
             return (
               <li key={permission} className={styles.auditItem}>
                 <span>{label}</span>
-                <span className={styles.muted}> — requires {minRole}+</span>
-                {' '}
+                <span className={styles.muted}> — requires {minRole}+</span>{' '}
                 <Badge variant={allowed ? 'success' : 'default'}>
                   {allowed ? 'allowed' : 'denied'}
                 </Badge>
@@ -106,16 +109,15 @@ export function SettingsPage() {
           })}
         </ul>
         <p className={styles.muted} style={{ marginTop: '0.75rem' }}>
-          Viewer: read-only. Author: edit drafts + test invoke. Admin: publish/deprecate/delete. Owner: org settings.
+          Viewer: read-only. Author: edit drafts + test invoke. Admin: publish/deprecate/delete.
+          Owner: org settings.
         </p>
       </Card>
 
       {can('org:settings') && (
         <Card className={styles.section}>
           <h2 className={styles.sectionTitle}>Organization</h2>
-          <p className={styles.muted}>
-            Members, billing, and signing keys — deferred to Phase 2.
-          </p>
+          <p className={styles.muted}>Members, billing, and signing keys — deferred to Phase 2.</p>
           <Button variant="secondary" disabled>
             Manage members (coming soon)
           </Button>

@@ -29,7 +29,9 @@ export function ValidateStep({ onNext, onBack }: { onNext: () => void; onBack: (
     return (
       <Card>
         <Alert variant="warning">Complete previous steps first.</Alert>
-        <Button variant="ghost" onClick={onBack}>Back</Button>
+        <Button variant="ghost" onClick={onBack}>
+          Back
+        </Button>
       </Card>
     );
   }
@@ -44,10 +46,7 @@ export function ValidateStep({ onNext, onBack }: { onNext: () => void; onBack: (
           </p>
 
           <div className={styles.actions} style={{ marginBottom: '1rem' }}>
-            <Button
-              onClick={() => validateMutation.mutate()}
-              disabled={validateMutation.isPending}
-            >
+            <Button onClick={() => validateMutation.mutate()} disabled={validateMutation.isPending}>
               {validateMutation.isPending ? <Spinner /> : null}
               Run validation
             </Button>
@@ -95,7 +94,9 @@ export function ValidateStep({ onNext, onBack }: { onNext: () => void; onBack: (
           )}
 
           <div className={styles.actions}>
-            <Button variant="ghost" onClick={onBack}>Back</Button>
+            <Button variant="ghost" onClick={onBack}>
+              Back
+            </Button>
             <Button onClick={onNext} disabled={!canProceed}>
               Continue
             </Button>

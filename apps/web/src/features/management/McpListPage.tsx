@@ -56,9 +56,7 @@ export function McpListPage() {
   });
 
   const enriched = useMemo(() => {
-    const detailMap = new Map(
-      detailQueries.map((q, i) => [visibleItems[i]?.id, q.data]),
-    );
+    const detailMap = new Map(detailQueries.map((q, i) => [visibleItems[i]?.id, q.data]));
     return visibleItems.map((mcp) => ({
       ...mcp,
       latestVersion: detailMap.get(mcp.id)?.latestVersion ?? null,
@@ -214,7 +212,9 @@ export function McpListPage() {
                 <tr key={mcp.id}>
                   <td>
                     <Link to={`/mcps/${mcp.id}`}>{mcp.name}</Link>
-                    <div className={styles.muted}>{mcp.org}/{mcp.slug}</div>
+                    <div className={styles.muted}>
+                      {mcp.org}/{mcp.slug}
+                    </div>
                   </td>
                   <td>
                     <Badge variant={statusBadgeVariant(mcp.status)}>{mcp.status}</Badge>

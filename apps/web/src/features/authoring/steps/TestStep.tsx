@@ -14,11 +14,13 @@ export function TestStep({ onNext, onBack }: { onNext: () => void; onBack: () =>
       <Card>
         <h2 className={styles.heading}>Test tools (optional)</h2>
         <p className={styles.desc}>
-          Invoke tools against the live API before publishing. The test console is owned by the management UI (A8).
+          Invoke tools against the live API before publishing. The test console is owned by the
+          management UI (A8).
         </p>
 
         <Alert variant="info">
-          Test console coming soon in the management view. You can invoke tools after publish from the MCP detail page.
+          Test console coming soon in the management view. You can invoke tools after publish from
+          the MCP detail page.
         </Alert>
 
         {mcpId && (
@@ -28,8 +30,12 @@ export function TestStep({ onNext, onBack }: { onNext: () => void; onBack: () =>
         )}
 
         <div className={styles.actions}>
-          <Button variant="ghost" onClick={onBack}>Back</Button>
-          <Button variant="secondary" onClick={onNext}>Skip to publish</Button>
+          <Button variant="ghost" onClick={onBack}>
+            Back
+          </Button>
+          <Button variant="secondary" onClick={onNext}>
+            Skip to publish
+          </Button>
         </div>
       </Card>
     </div>

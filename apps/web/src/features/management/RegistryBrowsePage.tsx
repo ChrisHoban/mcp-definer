@@ -33,14 +33,18 @@ export function RegistryBrowsePage() {
   });
 
   const entries = useMemo(() => {
-    const raw = search.trim() || tagFilter.trim()
-      ? (searchQuery.data?.entries ?? [])
-      : (indexQuery.data?.entries ?? []);
+    const raw =
+      search.trim() || tagFilter.trim()
+        ? (searchQuery.data?.entries ?? [])
+        : (indexQuery.data?.entries ?? []);
     return raw.filter((entry) => canView({ visibility: entry.visibility }));
   }, [search, tagFilter, searchQuery.data, indexQuery.data, canView]);
 
-  const isLoading = search.trim() || tagFilter.trim() ? searchQuery.isLoading : indexQuery.isLoading;
-  const error = (search.trim() || tagFilter.trim() ? searchQuery.error : indexQuery.error) as Error | null;
+  const isLoading =
+    search.trim() || tagFilter.trim() ? searchQuery.isLoading : indexQuery.isLoading;
+  const error = (
+    search.trim() || tagFilter.trim() ? searchQuery.error : indexQuery.error
+  ) as Error | null;
 
   return (
     <div>
@@ -72,7 +76,14 @@ export function RegistryBrowsePage() {
           }}
           aria-label="Filter by tag"
         />
-        <Button variant="ghost" onClick={() => { setSearch(''); setTagFilter(''); setSelected(null); }}>
+        <Button
+          variant="ghost"
+          onClick={() => {
+            setSearch('');
+            setTagFilter('');
+            setSelected(null);
+          }}
+        >
           Clear
         </Button>
       </div>
@@ -107,9 +118,7 @@ export function RegistryBrowsePage() {
                   <Badge key={tag}>{tag}</Badge>
                 ))}
               </div>
-              <p className={styles.muted}>
-                {entry.toolNames.join(', ')}
-              </p>
+              <p className={styles.muted}>{entry.toolNames.join(', ')}</p>
               <div className={styles.rowActions}>
                 <Button
                   variant={selected?.slug === entry.slug ? 'primary' : 'secondary'}

@@ -10,9 +10,7 @@ function Probe() {
     <div>
       <span data-testid="role">{role}</span>
       <span data-testid="publish">{String(can('mcp:publish'))}</span>
-      <span data-testid="view-public">
-        {String(canView({ visibility: 'public' }))}
-      </span>
+      <span data-testid="view-public">{String(canView({ visibility: 'public' }))}</span>
       <button type="button" onClick={() => setRole('admin')}>
         Promote
       </button>
@@ -39,5 +37,4 @@ describe('AuthProvider', () => {
     expect(screen.getByTestId('role')).toHaveTextContent('admin');
     expect(localStorage.getItem('mcp-definer-role')).toBe('admin');
   });
-
 });

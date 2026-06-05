@@ -9,11 +9,7 @@ JSON-Schema-driven form renderer for tool `inputSchema` editing and the test con
 ```tsx
 import { JsonSchemaForm } from '@/components';
 
-<JsonSchemaForm
-  schema={tool.inputSchema}
-  value={formValues}
-  onChange={setFormValues}
-/>
+<JsonSchemaForm schema={tool.inputSchema} value={formValues} onChange={setFormValues} />;
 ```
 
 **Supported types:** `string`, `number`, `integer`, `boolean`, `enum`, nested `object`, required fields.
@@ -33,7 +29,9 @@ Phase 1 auth: `X-API-Key` header from `localStorage` or `VITE_API_KEY` env.
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 
 const { can, role, setApiKey } = useAuth();
-if (can('mcp:publish')) { /* show publish button */ }
+if (can('mcp:publish')) {
+  /* show publish button */
+}
 ```
 
 Dev role is stored in `localStorage` key `mcp-definer-role` (default `owner`).

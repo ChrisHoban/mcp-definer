@@ -22,16 +22,16 @@ For vision, glossary, and detailed requirements, see the [manifest documentation
 
 ## Technical overview
 
-| Layer | Technology | Role |
-| --- | --- | --- |
-| Language & runtime | TypeScript on Node.js 22 | End-to-end type sharing (IR, Manifest, API) |
-| Monorepo | pnpm workspaces | `packages/*` libraries + `apps/web` UI |
-| Data | PostgreSQL | Registry, versions, discovery views |
-| HTTP control plane | Fastify (`packages/api`) | Sole REST entry—authoring, publish, discovery |
-| MCP runtime | `@modelcontextprotocol/sdk` | Universal stdio/HTTP MCP server |
-| Web UI | React + Vite (`apps/web`) | Create, edit, test, and manage MCPs |
-| Testing | Vitest | Unit, contract, integration, and E2E layers |
-| CI | GitHub Actions | Lint, build, test, contract-test, integration, e2e |
+| Layer              | Technology                  | Role                                               |
+| ------------------ | --------------------------- | -------------------------------------------------- |
+| Language & runtime | TypeScript on Node.js 22    | End-to-end type sharing (IR, Manifest, API)        |
+| Monorepo           | pnpm workspaces             | `packages/*` libraries + `apps/web` UI             |
+| Data               | PostgreSQL                  | Registry, versions, discovery views                |
+| HTTP control plane | Fastify (`packages/api`)    | Sole REST entry—authoring, publish, discovery      |
+| MCP runtime        | `@modelcontextprotocol/sdk` | Universal stdio/HTTP MCP server                    |
+| Web UI             | React + Vite (`apps/web`)   | Create, edit, test, and manage MCPs                |
+| Testing            | Vitest                      | Unit, contract, integration, and E2E layers        |
+| CI                 | GitHub Actions              | Lint, build, test, contract-test, integration, e2e |
 
 ### Architecture (conceptual)
 
@@ -143,19 +143,19 @@ Integration and E2E tests expect Postgres (same credentials as `.env.example` or
 
 ## Documentation
 
-| Document | Description |
-| --- | --- |
-| [manifest/README.md](./manifest/README.md) | How to navigate specs and component folders |
-| [manifest/PROJECT_OVERVIEW.md](./manifest/PROJECT_OVERVIEW.md) | Vision, personas, glossary |
-| [manifest/REQUIREMENTS.md](./manifest/REQUIREMENTS.md) | System requirements |
-| [manifest/ARCHITECTURE_DECISIONS.md](./manifest/ARCHITECTURE_DECISIONS.md) | Binding ADRs |
-| [manifest/TESTING.md](./manifest/TESTING.md) | Contract, integration, and E2E strategy |
+| Document                                                                   | Description                                 |
+| -------------------------------------------------------------------------- | ------------------------------------------- |
+| [manifest/README.md](./manifest/README.md)                                 | How to navigate specs and component folders |
+| [manifest/PROJECT_OVERVIEW.md](./manifest/PROJECT_OVERVIEW.md)             | Vision, personas, glossary                  |
+| [manifest/REQUIREMENTS.md](./manifest/REQUIREMENTS.md)                     | System requirements                         |
+| [manifest/ARCHITECTURE_DECISIONS.md](./manifest/ARCHITECTURE_DECISIONS.md) | Binding ADRs                                |
+| [manifest/TESTING.md](./manifest/TESTING.md)                               | Contract, integration, and E2E strategy     |
 
 ## Project health metrics
 
-| Metric | Status | Notes |
-| --- | --- | --- |
-| CI (lint, audit, test, contract, integration, e2e) | [![CI](https://github.com/ChrisHoban/mcp-definer/actions/workflows/ci.yml/badge.svg)](https://github.com/ChrisHoban/mcp-definer/actions/workflows/ci.yml) | Runs on every push/PR to `main` / `master` |
-| Secret scanning | [![Secret scan](https://github.com/ChrisHoban/mcp-definer/actions/workflows/secret-scan.yml/badge.svg)](https://github.com/ChrisHoban/mcp-definer/actions/workflows/secret-scan.yml) | Gitleaks on push/PR |
-| Code coverage | [![codecov](https://codecov.io/gh/ChrisHoban/mcp-definer/graph/badge.svg)](https://codecov.io/gh/ChrisHoban/mcp-definer) | Vitest coverage from packages + web; uploaded in CI |
-| Dependency vulnerabilities | [![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot&logoColor=white)](https://github.com/ChrisHoban/mcp-definer/security/dependabot) | Weekly Dependabot PRs; `pnpm audit --audit-level=high` in CI |
+| Metric                                             | Status                                                                                                                                                                               | Notes                                                        |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------ |
+| CI (lint, audit, test, contract, integration, e2e) | [![CI](https://github.com/ChrisHoban/mcp-definer/actions/workflows/ci.yml/badge.svg)](https://github.com/ChrisHoban/mcp-definer/actions/workflows/ci.yml)                            | Runs on every push/PR to `main` / `master`                   |
+| Secret scanning                                    | [![Secret scan](https://github.com/ChrisHoban/mcp-definer/actions/workflows/secret-scan.yml/badge.svg)](https://github.com/ChrisHoban/mcp-definer/actions/workflows/secret-scan.yml) | Gitleaks on push/PR                                          |
+| Code coverage                                      | [![codecov](https://codecov.io/gh/ChrisHoban/mcp-definer/graph/badge.svg)](https://codecov.io/gh/ChrisHoban/mcp-definer)                                                             | Vitest coverage from packages + web; uploaded in CI          |
+| Dependency vulnerabilities                         | [![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot&logoColor=white)](https://github.com/ChrisHoban/mcp-definer/security/dependabot)               | Weekly Dependabot PRs; `pnpm audit --audit-level=high` in CI |

@@ -5,19 +5,22 @@ import { join } from 'node:path';
 import { secretEnvVarName } from '@mcp-definer/auth';
 import { runInstall } from '../../packages/cli/src/commands/install.js';
 import { readMcpConfig } from '../../packages/cli/src/mcp-config.js';
-import {
-  applyCuration,
-  emptyCuration,
-  mapIrToManifest,
-  parseSpec,
-} from '@mcp-definer/generator';
+import { applyCuration, emptyCuration, mapIrToManifest, parseSpec } from '@mcp-definer/generator';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { describe, expect, it } from 'vitest';
 
-import { startMockUpstream, withMockEgress } from '../../packages/api/tests/helpers/mock-upstream.js';
+import {
+  startMockUpstream,
+  withMockEgress,
+} from '../../packages/api/tests/helpers/mock-upstream.js';
 import { shutdownAppContext } from '../../packages/api/src/context.js';
-import { authHeaders, createTestApp, loadRepoText, repoRoot } from '../../packages/api/tests/helpers/test-app.js';
+import {
+  authHeaders,
+  createTestApp,
+  loadRepoText,
+  repoRoot,
+} from '../../packages/api/tests/helpers/test-app.js';
 
 const E2E_SECRET = 'e2e-petstore-secret-not-in-logs';
 
@@ -44,7 +47,9 @@ describe('E2E: Petstore acceptance loop', () => {
         body: JSON.stringify({ content: spec, filename: 'petstore.yaml' }),
       });
       expect(parseRes.status).toBe(200);
-      const parsed = (await parseRes.json()) as { ir: import('@mcp-definer/schemas').IntermediateRepresentation };
+      const parsed = (await parseRes.json()) as {
+        ir: import('@mcp-definer/schemas').IntermediateRepresentation;
+      };
       expect(parsed.ir.operations.length).toBe(20);
 
       const slug = `petstore-e2e-${Date.now()}`;
@@ -136,9 +141,8 @@ describe('E2E: Petstore acceptance loop', () => {
       expect(configSerialized).not.toContain(E2E_SECRET);
 
       const published = await ctx.registryStore.getVersion('acme', slug, version);
-      const publishedManifest = (
-        await ctx.registryStore.getManifestById(published!.manifestId)
-      )!.content;
+      const publishedManifest = (await ctx.registryStore.getManifestById(published!.manifestId))!
+        .content;
       const runtimeManifest = withMockEgress(publishedManifest, mock.baseUrl);
       const manifestPath = join(workDir, 'runtime-manifest.json');
       await writeFile(manifestPath, JSON.stringify(runtimeManifest, null, 2));

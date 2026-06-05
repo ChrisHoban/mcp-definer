@@ -9,11 +9,7 @@ function PreviewProbe() {
   return <span data-testid="preview">{manifestPreview ? 'yes' : 'no'}</span>;
 }
 
-function SeedWizard({
-  ir,
-}: {
-  ir: import('@mcp-definer/schemas').IntermediateRepresentation;
-}) {
+function SeedWizard({ ir }: { ir: import('@mcp-definer/schemas').IntermediateRepresentation }) {
   const { setIr, setMeta } = useWizard();
   useEffect(() => {
     setIr(ir);

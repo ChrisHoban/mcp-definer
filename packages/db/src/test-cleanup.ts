@@ -29,10 +29,7 @@ export async function deleteTestOrganization(client: DbClient, orgId: string): P
 }
 
 /** Removes rows created for an isolated Postgres test fixture (child tables cascade from mcps). */
-export async function cleanupTestDbFixture(
-  client: DbClient,
-  ids: TestDbFixtureIds,
-): Promise<void> {
+export async function cleanupTestDbFixture(client: DbClient, ids: TestDbFixtureIds): Promise<void> {
   if (ids.bindingId) {
     await deleteTestCredentialBinding(client, ids.bindingId);
   }

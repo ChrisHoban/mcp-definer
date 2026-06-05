@@ -33,9 +33,7 @@ export function AsyncState({
   }
 
   if (isEmpty) {
-    return (
-      <Alert variant="info">{emptyMessage}</Alert>
-    );
+    return <Alert variant="info">{emptyMessage}</Alert>;
   }
 
   return children;

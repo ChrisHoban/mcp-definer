@@ -53,12 +53,12 @@ postgresql://mcp_definer:mcp_definer@localhost:5432/mcp_definer
 
 ## Troubleshooting
 
-| Symptom | Likely cause | Fix |
-| ------- | ------------ | --- |
-| `ECONNREFUSED` on `localhost:5432` | Postgres not running | `docker compose -f docker/docker-compose.yml up -d` and wait for healthy container |
-| `password authentication failed` | Wrong user/password or another Postgres on 5432 | Set `DATABASE_URL` in `.env` to match your instance, or stop the conflicting service |
-| `Cannot find module '../dist/migrate.js'` | Package not built | `pnpm build` then `pnpm db:migrate` |
-| Tests skipped (`db: migrations…`) | Same connection issues | Fix Postgres + `.env`, then `pnpm test` |
+| Symptom                                   | Likely cause                                    | Fix                                                                                  |
+| ----------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `ECONNREFUSED` on `localhost:5432`        | Postgres not running                            | `docker compose -f docker/docker-compose.yml up -d` and wait for healthy container   |
+| `password authentication failed`          | Wrong user/password or another Postgres on 5432 | Set `DATABASE_URL` in `.env` to match your instance, or stop the conflicting service |
+| `Cannot find module '../dist/migrate.js'` | Package not built                               | `pnpm build` then `pnpm db:migrate`                                                  |
+| Tests skipped (`db: migrations…`)         | Same connection issues                          | Fix Postgres + `.env`, then `pnpm test`                                              |
 
 Check the container:
 

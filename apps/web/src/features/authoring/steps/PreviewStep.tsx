@@ -19,7 +19,8 @@ export function PreviewStep({ onNext, onBack }: { onNext: () => void; onBack: ()
         <Card>
           <h2 className={styles.heading}>Preview operations</h2>
           <p className={styles.desc}>
-            {ir.operations.length} operations discovered. Include or exclude tools; use filters for large specs.
+            {ir.operations.length} operations discovered. Include or exclude tools; use filters for
+            large specs.
           </p>
           <OperationsTable
             operations={ir.operations}
@@ -27,7 +28,9 @@ export function PreviewStep({ onNext, onBack }: { onNext: () => void; onBack: ()
             onCurationChange={setCuration}
           />
           <div className={styles.actions}>
-            <Button variant="ghost" onClick={onBack}>Back</Button>
+            <Button variant="ghost" onClick={onBack}>
+              Back
+            </Button>
             <Button onClick={onNext}>Continue to curation</Button>
           </div>
         </Card>

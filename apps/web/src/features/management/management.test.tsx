@@ -209,7 +209,14 @@ describe('TestConsolePage', () => {
       authorState: {},
     });
     mockedApi.getCredentials.mockResolvedValue({
-      binding: { id: 'cb_1', mcpId: 'mcp_1', authType: 'apiKey', config: {}, secretRef: 'vault://x', hasSecret: true },
+      binding: {
+        id: 'cb_1',
+        mcpId: 'mcp_1',
+        authType: 'apiKey',
+        config: {},
+        secretRef: 'vault://x',
+        hasSecret: true,
+      },
     });
 
     renderWithProviders(

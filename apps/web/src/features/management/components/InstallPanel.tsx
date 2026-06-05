@@ -64,9 +64,7 @@ export function InstallPanel({
 
   if (error) {
     return (
-      <Alert variant="danger">
-        Failed to load install snippet: {(error as Error).message}
-      </Alert>
+      <Alert variant="danger">Failed to load install snippet: {(error as Error).message}</Alert>
     );
   }
 
@@ -85,11 +83,7 @@ export function InstallPanel({
 
       <div className={styles.fieldRow}>
         <label htmlFor="harness-select">Harness</label>
-        <Select
-          id="harness-select"
-          value={harness}
-          onChange={(e) => setHarness(e.target.value)}
-        >
+        <Select id="harness-select" value={harness} onChange={(e) => setHarness(e.target.value)}>
           <option value="cursor">Cursor</option>
           <option value="claude-desktop">Claude Desktop</option>
           <option value="generic">Generic</option>

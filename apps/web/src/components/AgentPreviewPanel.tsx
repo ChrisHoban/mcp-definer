@@ -10,7 +10,10 @@ export interface AgentPreviewPanelProps {
 }
 
 /** Renders tools as an agent/harness would see them (NFR-10). */
-export function AgentPreviewPanel({ tools, title = 'How the agent sees this' }: AgentPreviewPanelProps) {
+export function AgentPreviewPanel({
+  tools,
+  title = 'How the agent sees this',
+}: AgentPreviewPanelProps) {
   const enabled = tools.filter((t) => t.enabled);
 
   return (
@@ -20,7 +23,8 @@ export function AgentPreviewPanel({ tools, title = 'How the agent sees this' }: 
         <Badge>{enabled.length} tools</Badge>
       </div>
       <p className={styles.subtitle}>
-        This is the tool list an LLM receives — optimize names and descriptions for accurate selection.
+        This is the tool list an LLM receives — optimize names and descriptions for accurate
+        selection.
       </p>
       <div className={styles.toolList} role="list">
         {enabled.length === 0 ? (

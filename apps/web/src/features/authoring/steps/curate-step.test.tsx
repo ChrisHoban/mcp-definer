@@ -38,12 +38,7 @@ function renderCurateStep(opts?: {
       <QueryClientProvider client={queryClient}>
         <WizardProvider mode="create">
           <SeedCurateWizard excludeAll={opts?.excludeAll} />
-          <CurateStep
-            onNext={onNext}
-            onBack={vi.fn()}
-            onSaveDraft={onSaveDraft}
-            saving={false}
-          />
+          <CurateStep onNext={onNext} onBack={vi.fn()} onSaveDraft={onSaveDraft} saving={false} />
         </WizardProvider>
       </QueryClientProvider>,
     ),

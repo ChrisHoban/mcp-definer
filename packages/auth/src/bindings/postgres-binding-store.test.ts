@@ -79,7 +79,12 @@ describe.skipIf(!dbAvailable)('PostgresBindingStore', () => {
   it('persists binding metadata with env secretRef', async () => {
     const bindingId = `cb_pg_${Date.now()}`;
     const created = await store.create(
-      { id: bindingId, mcpId: fixture.mcpId, authType: 'apiKey', config: { in: 'header', name: 'X-API-Key' } },
+      {
+        id: bindingId,
+        mcpId: fixture.mcpId,
+        authType: 'apiKey',
+        config: { in: 'header', name: 'X-API-Key' },
+      },
       'test-secret-value',
     );
 

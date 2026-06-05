@@ -18,7 +18,9 @@ function ToolList({
     <div className={styles.diffSection}>
       <h4>
         {title}{' '}
-        <Badge variant={variant === 'success' ? 'success' : variant === 'danger' ? 'danger' : 'warning'}>
+        <Badge
+          variant={variant === 'success' ? 'success' : variant === 'danger' ? 'danger' : 'warning'}
+        >
           {items.length}
         </Badge>
       </h4>

@@ -12,26 +12,30 @@ The IR is the normalized, source-format-agnostic result of parsing an API spec. 
   "servers": [{ "url": "https://api.example.com/v1" }],
   "operations": [
     {
-      "id": "getUserById",            // stable, derived if operationId missing
+      "id": "getUserById", // stable, derived if operationId missing
       "method": "GET",
       "path": "/users/{id}",
       "summary": "Fetch a user",
       "description": "...",
       "tags": ["users"],
       "parameters": [
-        { "in": "path",  "name": "id", "required": true, "schema": { "type": "string" } },
-        { "in": "query", "name": "expand", "required": false, "schema": { "type": "boolean" } }
+        { "in": "path", "name": "id", "required": true, "schema": { "type": "string" } },
+        { "in": "query", "name": "expand", "required": false, "schema": { "type": "boolean" } },
       ],
-      "requestBody": { "required": false, "contentType": "application/json", "schema": { "...": "..." } },
+      "requestBody": {
+        "required": false,
+        "contentType": "application/json",
+        "schema": { "...": "..." },
+      },
       "responses": [
-        { "status": "200", "contentType": "application/json", "schema": { "...": "..." } }
+        { "status": "200", "contentType": "application/json", "schema": { "...": "..." } },
       ],
-      "security": ["apiKeyAuth"]       // references named security schemes
-    }
+      "security": ["apiKeyAuth"], // references named security schemes
+    },
   ],
   "securitySchemes": {
-    "apiKeyAuth": { "type": "apiKey", "in": "header", "name": "X-API-Key" }
-  }
+    "apiKeyAuth": { "type": "apiKey", "in": "header", "name": "X-API-Key" },
+  },
 }
 ```
 
@@ -42,7 +46,7 @@ The Manifest is the **source of truth**: produced by the Generator, edited via t
 ```jsonc
 {
   "manifestSchemaVersion": "1.0",
-  "mcpProtocolVersion": "2024-11-05",     // MCP protocol revision; pin to @modelcontextprotocol/sdk version (ADR-008)
+  "mcpProtocolVersion": "2024-11-05", // MCP protocol revision; pin to @modelcontextprotocol/sdk version (ADR-008)
   "name": "petstore",
   "displayName": "Petstore API",
   "description": "MCP for the Petstore API",
@@ -50,57 +54,60 @@ The Manifest is the **source of truth**: produced by the Generator, edited via t
     "specType": "openapi3",
     "specHash": "sha256:...",
     "baseUrl": "https://api.example.com/v1",
-    "baseUrlOverridable": true            // allow per-install override
+    "baseUrlOverridable": true, // allow per-install override
   },
   "transport": { "modes": ["stdio", "http"], "default": "stdio" },
   "auth": {
-    "bindingId": "cb_123",                // FK to credential_bindings; NO secret values
+    "bindingId": "cb_123", // FK to credential_bindings; NO secret values
     "type": "apiKey",
-    "apply": { "in": "header", "name": "X-API-Key" }
+    "apply": { "in": "header", "name": "X-API-Key" },
   },
   "tools": [
     {
       "name": "getUserById",
-      "description": "Fetch a user by id.",   // LLM-facing; quality matters (NFR-10)
+      "description": "Fetch a user by id.", // LLM-facing; quality matters (NFR-10)
       "enabled": true,
       "group": "users",
-      "inputSchema": {                        // JSON Schema: merged path+query+header+body
+      "inputSchema": {
+        // JSON Schema: merged path+query+header+body
         "type": "object",
         "properties": {
           "id": { "type": "string", "description": "User id" },
-          "expand": { "type": "boolean" }
+          "expand": { "type": "boolean" },
         },
-        "required": ["id"]
+        "required": ["id"],
       },
-      "request": {                            // how to build the HTTP call
+      "request": {
+        // how to build the HTTP call
         "method": "GET",
         "pathTemplate": "/users/{id}",
         "paramMap": {
           "id": { "in": "path" },
-          "expand": { "in": "query" }
+          "expand": { "in": "query" },
         },
-        "bodyParam": null
+        "bodyParam": null,
       },
       "response": {
-        "shape": "passthrough",               // passthrough | summarize | jsonpath
+        "shape": "passthrough", // passthrough | summarize | jsonpath
         "successStatus": ["200"],
-        "errorMap": { "default": "raise" }
+        "errorMap": { "default": "raise" },
       },
-      "pagination": null,                     // optional pagination descriptor
-      "rateLimit": null
-    }
+      "pagination": null, // optional pagination descriptor
+      "rateLimit": null,
+    },
   ],
-  "resources": [],                            // optional MCP resources
-  "prompts": [],                              // optional MCP prompts
+  "resources": [], // optional MCP resources
+  "prompts": [], // optional MCP prompts
   "policies": {
     "timeoutMs": 30000,
     "retries": { "max": 2, "backoffMs": 200 },
-    "egressAllowlist": ["api.example.com"]    // SSRF protection (NFR-03)
-  }
+    "egressAllowlist": ["api.example.com"], // SSRF protection (NFR-03)
+  },
 }
 ```
 
 ### Manifest design rules
+
 - **Deterministic generation** (NFR-06): same IR + same curation → byte-identical Manifest (stable key ordering).
 - **No secrets** (ADR-004): only `auth.bindingId` + non-secret apply-metadata.
 - **Schema-versioned**: `manifestSchemaVersion` changes require an ADR + migration note.
@@ -117,10 +124,10 @@ Author overrides are stored separately from the compiled Manifest so regeneratio
   "toolRenames": { "getPetById": "fetchPet" },
   "toolDescriptions": { "getPetById": "Fetch a pet by ID for the agent." },
   "toolGroups": { "getPetById": "pets", "listPets": "pets" },
-  "inputSchemaOverrides": {},           // optional per-tool JSON Schema patches
+  "inputSchemaOverrides": {}, // optional per-tool JSON Schema patches
   "responseShapeOverrides": {},
   "filters": { "tags": ["pets"], "methods": ["GET", "POST"] },
-  "metaToolsEnabled": false             // Phase 3: search_tools / invoke_operation
+  "metaToolsEnabled": false, // Phase 3: search_tools / invoke_operation
 }
 ```
 
@@ -183,18 +190,22 @@ audit_events(id, org_id, actor_id→users, action, target_type,
 ```
 
 ### Indexing & search strategy
+
 - Full-text / trigram indexes: `mcps.name`, `mcps.description`, `tools.name`, `tools.description`.
 - GIN indexes: `manifests.content`, `tools.input_schema`, `tools.tags`, `mcp_tags`.
 - **Discovery read view**: a materialized/cached view joining `mcps` + `latest published mcp_versions` + `tools` summary, refreshed on publish; CDN-frontable (ADR-007).
 
 ### Immutability rules (ADR-006)
+
 - A `mcp_versions` row with non-null `published_at` is immutable. Its `manifests` row is immutable.
 - Draft versions (`published_at IS NULL`) are freely editable.
 
 ### Three version axes (NFR-11)
+
 - `mcp_versions.version` — the MCP product version (semver).
 - `mcp_versions.source_spec_hash` / target-API version — upstream API.
 - `mcp_versions.manifest_schema_version` — our internal contract.
 
 ## Object storage
+
 - Generated code bundles ("eject", FR-19) and large blobs stored in S3/MinIO, referenced by URL; not in Postgres.

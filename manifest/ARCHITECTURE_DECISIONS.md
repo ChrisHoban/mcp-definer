@@ -9,9 +9,10 @@ This document records **binding, system-wide decisions**. Component designs must
 **Decision.** The system is anchored on a declarative **Manifest** as the source of truth. A single **Universal Runtime** loads any Manifest and serves it as an MCP server. Per-API code generation is a later, optional "eject" export.
 
 **Alternatives considered.**
-- *Pure code generation per API* — fully customizable but heavy to maintain, causes version sprawl, hard to centrally control.
-- *Pure runtime interpretation* — easy to create/update and version, but less customizable and depends on a central runtime.
-- *Hybrid* — chosen end-state: Manifest is source of truth; codegen is an export path.
+
+- _Pure code generation per API_ — fully customizable but heavy to maintain, causes version sprawl, hard to centrally control.
+- _Pure runtime interpretation_ — easy to create/update and version, but less customizable and depends on a central runtime.
+- _Hybrid_ — chosen end-state: Manifest is source of truth; codegen is an export path.
 
 **Rationale.** The manifest-driven model makes the UI, registry, and generator dramatically simpler, enables trivial create/update and clean versioning, and keeps a single contract at the center. Codegen can be added later without reworking the core.
 
@@ -74,15 +75,21 @@ This document records **binding, system-wide decisions**. Component designs must
 **Decision.** The Universal Runtime is a **single global install** (`@mcp-definer/runtime` via npm or a standalone binary), installed once per machine. Each MCP is a **Manifest reference**, not a separate server binary.
 
 **Install model (Cursor stdio).**
+
 ```jsonc
 {
   "mcpServers": {
     "petstore": {
       "command": "npx",
-      "args": ["-y", "@mcp-definer/runtime", "--manifest", "https://registry.example.com/v1/registry/acme/petstore/versions/1.0.0/manifest"],
-      "env": { "MCP_DEFINER_SECRET_cb_123": "<user-supplied at install>" }
-    }
-  }
+      "args": [
+        "-y",
+        "@mcp-definer/runtime",
+        "--manifest",
+        "https://registry.example.com/v1/registry/acme/petstore/versions/1.0.0/manifest",
+      ],
+      "env": { "MCP_DEFINER_SECRET_cb_123": "<user-supplied at install>" },
+    },
+  },
 }
 ```
 
@@ -132,14 +139,14 @@ Manifest sources: registry URL (preferred), local file path (`--manifest ./petst
 
 **Controls.**
 
-| Control | Default |
-|---|---|
-| Allow-list | **Required** — empty list rejects all URL fetches |
-| Protocol | `http:` and `https:` only |
-| Blocked targets | Private/reserved IPs, `localhost`, `*.local`, `*.internal`, metadata endpoints |
-| Max response size | 5 MiB |
-| Timeout | 30 s |
-| Redirects | Max 3; each redirect URL re-validated |
+| Control           | Default                                                                        |
+| ----------------- | ------------------------------------------------------------------------------ |
+| Allow-list        | **Required** — empty list rejects all URL fetches                              |
+| Protocol          | `http:` and `https:` only                                                      |
+| Blocked targets   | Private/reserved IPs, `localhost`, `*.local`, `*.internal`, metadata endpoints |
+| Max response size | 5 MiB                                                                          |
+| Timeout           | 30 s                                                                           |
+| Redirects         | Max 3; each redirect URL re-validated                                          |
 
 **Consequences.** UI and API document the allow-list requirement. Operators add trusted hosts (e.g. `raw.githubusercontent.com`) per environment.
 
@@ -156,23 +163,29 @@ Manifest sources: registry URL (preferred), local file path (`--manifest ./petst
 ## Cross-cutting concerns (apply to all components)
 
 ### Security
+
 - Secret isolation (ADR-004), egress allow-listing/SSRF protection for runtime calls (NFR-03), optional artifact signing (NFR-04), supply-chain hygiene, sandboxed execution.
 
 ### Versioning strategy (three independent axes — NFR-11)
+
 - **MCP protocol version** (what the runtime speaks).
 - **Target-API version** (from the source spec).
 - **Manifest schema version** (our internal contract).
 
 ### Observability
+
 - Structured logs, OpenTelemetry tracing spanning tool-call → outbound API call, and an audit trail for all authoring/publish events (NFR-07).
 
 ### Multi-tenancy & AuthZ
+
 - Org-scoped resources; RBAC roles owner/admin/author/viewer; visibility private/org/public (NFR-05, FR-20).
 
 ### Determinism & reproducibility
+
 - Spec → Manifest generation must be deterministic (same input → same output) to produce clean diffs (NFR-06).
 
 ### Known risks to manage
+
 - Poor/incomplete real-world specs (need an editing/fallback layer).
 - Tool explosion on large APIs (filtering/grouping/meta-tools).
 - OAuth user-delegated flows are the hardest auth case.

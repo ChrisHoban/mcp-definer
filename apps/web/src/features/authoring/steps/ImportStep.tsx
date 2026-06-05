@@ -9,7 +9,10 @@ import { useWizard } from '../WizardContext';
 import styles from './steps.module.css';
 
 function inferFilename(text: string, current: string): string {
-  const trimmed = text.trim().replace(/^```(?:yaml|yml|json|openapi)?\s*\n/i, '').trim();
+  const trimmed = text
+    .trim()
+    .replace(/^```(?:yaml|yml|json|openapi)?\s*\n/i, '')
+    .trim();
   if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
     return 'openapi.json';
   }

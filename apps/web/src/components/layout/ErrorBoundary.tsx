@@ -29,7 +29,11 @@ export class ErrorBoundary extends Component<Props, State> {
             <strong>Something went wrong</strong>
             <p>{this.state.error.message}</p>
           </Alert>
-          <Button variant="secondary" onClick={() => this.setState({ error: null })} style={{ marginTop: '1rem' }}>
+          <Button
+            variant="secondary"
+            onClick={() => this.setState({ error: null })}
+            style={{ marginTop: '1rem' }}
+          >
             Try again
           </Button>
         </div>

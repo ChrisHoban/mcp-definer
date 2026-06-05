@@ -35,11 +35,7 @@ describe('JsonSchemaForm', () => {
 
   it('shows empty state for schema without properties', () => {
     render(
-      <JsonSchemaForm
-        schema={{ type: 'object', properties: {} }}
-        value={{}}
-        onChange={() => {}}
-      />,
+      <JsonSchemaForm schema={{ type: 'object', properties: {} }} value={{}} onChange={() => {}} />,
     );
 
     expect(screen.getByText(/No input parameters/)).toBeInTheDocument();

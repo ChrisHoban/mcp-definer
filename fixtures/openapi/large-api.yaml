@@ -1,59 +1,203 @@
 {
-  "openapi": "3.0.3",
-  "info": { "title": "Large API", "version": "1.0.0" },
-  "servers": [{ "url": "https://large.example.com/api" }],
-  "paths": {
-    "/resource0": {
-      "get": { "operationId": "getResource0", "tags": ["batch"], "responses": { "200": { "description": "ok" } } },
-      "post": { "operationId": "postResource0", "tags": ["batch"], "responses": { "201": { "description": "created" } } }
+  'openapi': '3.0.3',
+  'info': { 'title': 'Large API', 'version': '1.0.0' },
+  'servers': [{ 'url': 'https://large.example.com/api' }],
+  'paths':
+    {
+      '/resource0':
+        {
+          'get':
+            {
+              'operationId': 'getResource0',
+              'tags': ['batch'],
+              'responses': { '200': { 'description': 'ok' } },
+            },
+          'post':
+            {
+              'operationId': 'postResource0',
+              'tags': ['batch'],
+              'responses': { '201': { 'description': 'created' } },
+            },
+        },
+      '/resource1':
+        {
+          'get':
+            {
+              'operationId': 'getResource1',
+              'tags': ['batch'],
+              'responses': { '200': { 'description': 'ok' } },
+            },
+          'post':
+            {
+              'operationId': 'postResource1',
+              'tags': ['batch'],
+              'responses': { '201': { 'description': 'created' } },
+            },
+        },
+      '/resource2':
+        {
+          'get':
+            {
+              'operationId': 'getResource2',
+              'tags': ['batch'],
+              'responses': { '200': { 'description': 'ok' } },
+            },
+          'post':
+            {
+              'operationId': 'postResource2',
+              'tags': ['batch'],
+              'responses': { '201': { 'description': 'created' } },
+            },
+        },
+      '/resource3':
+        {
+          'get':
+            {
+              'operationId': 'getResource3',
+              'tags': ['batch'],
+              'responses': { '200': { 'description': 'ok' } },
+            },
+          'post':
+            {
+              'operationId': 'postResource3',
+              'tags': ['batch'],
+              'responses': { '201': { 'description': 'created' } },
+            },
+        },
+      '/resource4':
+        {
+          'get':
+            {
+              'operationId': 'getResource4',
+              'tags': ['batch'],
+              'responses': { '200': { 'description': 'ok' } },
+            },
+          'post':
+            {
+              'operationId': 'postResource4',
+              'tags': ['batch'],
+              'responses': { '201': { 'description': 'created' } },
+            },
+        },
+      '/resource5':
+        {
+          'get':
+            {
+              'operationId': 'getResource5',
+              'tags': ['batch'],
+              'responses': { '200': { 'description': 'ok' } },
+            },
+          'post':
+            {
+              'operationId': 'postResource5',
+              'tags': ['batch'],
+              'responses': { '201': { 'description': 'created' } },
+            },
+        },
+      '/resource6':
+        {
+          'get':
+            {
+              'operationId': 'getResource6',
+              'tags': ['batch'],
+              'responses': { '200': { 'description': 'ok' } },
+            },
+          'post':
+            {
+              'operationId': 'postResource6',
+              'tags': ['batch'],
+              'responses': { '201': { 'description': 'created' } },
+            },
+        },
+      '/resource7':
+        {
+          'get':
+            {
+              'operationId': 'getResource7',
+              'tags': ['batch'],
+              'responses': { '200': { 'description': 'ok' } },
+            },
+          'post':
+            {
+              'operationId': 'postResource7',
+              'tags': ['batch'],
+              'responses': { '201': { 'description': 'created' } },
+            },
+        },
+      '/resource8':
+        {
+          'get':
+            {
+              'operationId': 'getResource8',
+              'tags': ['batch'],
+              'responses': { '200': { 'description': 'ok' } },
+            },
+          'post':
+            {
+              'operationId': 'postResource8',
+              'tags': ['batch'],
+              'responses': { '201': { 'description': 'created' } },
+            },
+        },
+      '/resource9':
+        {
+          'get':
+            {
+              'operationId': 'getResource9',
+              'tags': ['batch'],
+              'responses': { '200': { 'description': 'ok' } },
+            },
+          'post':
+            {
+              'operationId': 'postResource9',
+              'tags': ['batch'],
+              'responses': { '201': { 'description': 'created' } },
+            },
+        },
+      '/resource10':
+        {
+          'get':
+            {
+              'operationId': 'getResource10',
+              'tags': ['batch'],
+              'responses': { '200': { 'description': 'ok' } },
+            },
+          'post':
+            {
+              'operationId': 'postResource10',
+              'tags': ['batch'],
+              'responses': { '201': { 'description': 'created' } },
+            },
+        },
+      '/resource11':
+        {
+          'get':
+            {
+              'operationId': 'getResource11',
+              'tags': ['batch'],
+              'responses': { '200': { 'description': 'ok' } },
+            },
+          'post':
+            {
+              'operationId': 'postResource11',
+              'tags': ['batch'],
+              'responses': { '201': { 'description': 'created' } },
+            },
+        },
+      '/resource12':
+        {
+          'get':
+            {
+              'operationId': 'getResource12',
+              'tags': ['batch'],
+              'responses': { '200': { 'description': 'ok' } },
+            },
+          'post':
+            {
+              'operationId': 'postResource12',
+              'tags': ['batch'],
+              'responses': { '201': { 'description': 'created' } },
+            },
+        },
     },
-    "/resource1": {
-      "get": { "operationId": "getResource1", "tags": ["batch"], "responses": { "200": { "description": "ok" } } },
-      "post": { "operationId": "postResource1", "tags": ["batch"], "responses": { "201": { "description": "created" } } }
-    },
-    "/resource2": {
-      "get": { "operationId": "getResource2", "tags": ["batch"], "responses": { "200": { "description": "ok" } } },
-      "post": { "operationId": "postResource2", "tags": ["batch"], "responses": { "201": { "description": "created" } } }
-    },
-    "/resource3": {
-      "get": { "operationId": "getResource3", "tags": ["batch"], "responses": { "200": { "description": "ok" } } },
-      "post": { "operationId": "postResource3", "tags": ["batch"], "responses": { "201": { "description": "created" } } }
-    },
-    "/resource4": {
-      "get": { "operationId": "getResource4", "tags": ["batch"], "responses": { "200": { "description": "ok" } } },
-      "post": { "operationId": "postResource4", "tags": ["batch"], "responses": { "201": { "description": "created" } } }
-    },
-    "/resource5": {
-      "get": { "operationId": "getResource5", "tags": ["batch"], "responses": { "200": { "description": "ok" } } },
-      "post": { "operationId": "postResource5", "tags": ["batch"], "responses": { "201": { "description": "created" } } }
-    },
-    "/resource6": {
-      "get": { "operationId": "getResource6", "tags": ["batch"], "responses": { "200": { "description": "ok" } } },
-      "post": { "operationId": "postResource6", "tags": ["batch"], "responses": { "201": { "description": "created" } } }
-    },
-    "/resource7": {
-      "get": { "operationId": "getResource7", "tags": ["batch"], "responses": { "200": { "description": "ok" } } },
-      "post": { "operationId": "postResource7", "tags": ["batch"], "responses": { "201": { "description": "created" } } }
-    },
-    "/resource8": {
-      "get": { "operationId": "getResource8", "tags": ["batch"], "responses": { "200": { "description": "ok" } } },
-      "post": { "operationId": "postResource8", "tags": ["batch"], "responses": { "201": { "description": "created" } } }
-    },
-    "/resource9": {
-      "get": { "operationId": "getResource9", "tags": ["batch"], "responses": { "200": { "description": "ok" } } },
-      "post": { "operationId": "postResource9", "tags": ["batch"], "responses": { "201": { "description": "created" } } }
-    },
-    "/resource10": {
-      "get": { "operationId": "getResource10", "tags": ["batch"], "responses": { "200": { "description": "ok" } } },
-      "post": { "operationId": "postResource10", "tags": ["batch"], "responses": { "201": { "description": "created" } } }
-    },
-    "/resource11": {
-      "get": { "operationId": "getResource11", "tags": ["batch"], "responses": { "200": { "description": "ok" } } },
-      "post": { "operationId": "postResource11", "tags": ["batch"], "responses": { "201": { "description": "created" } } }
-    },
-    "/resource12": {
-      "get": { "operationId": "getResource12", "tags": ["batch"], "responses": { "200": { "description": "ok" } } },
-      "post": { "operationId": "postResource12", "tags": ["batch"], "responses": { "201": { "description": "created" } } }
-    }
-  }
 }

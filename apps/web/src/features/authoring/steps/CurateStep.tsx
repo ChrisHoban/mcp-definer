@@ -61,7 +61,8 @@ export function CurateStep({
         <Card>
           <h2 className={styles.heading}>Curate tools</h2>
           <p className={styles.desc}>
-            Edit LLM-facing names and descriptions. Quality metadata improves agent tool selection (NFR-10).
+            Edit LLM-facing names and descriptions. Quality metadata improves agent tool selection
+            (NFR-10).
           </p>
 
           <div className={styles.curateLayout}>
@@ -80,7 +81,15 @@ export function CurateStep({
                       onClick={() => setSelectedId(op.id)}
                     >
                       <code>{name}</code>
-                      <Badge variant={quality.level === 'good' ? 'success' : quality.level === 'warn' ? 'warning' : 'danger'}>
+                      <Badge
+                        variant={
+                          quality.level === 'good'
+                            ? 'success'
+                            : quality.level === 'warn'
+                              ? 'warning'
+                              : 'danger'
+                        }
+                      >
                         {quality.level}
                       </Badge>
                     </button>
@@ -96,23 +105,39 @@ export function CurateStep({
                   <Input
                     id="tool-name"
                     value={getEffectiveToolName(selected.id, curation)}
-                    onChange={(e) => setCuration(updateToolRename(curation, selected.id, e.target.value))}
+                    onChange={(e) =>
+                      setCuration(updateToolRename(curation, selected.id, e.target.value))
+                    }
                   />
                 </div>
                 <div className={styles.field}>
                   <Label htmlFor="tool-desc">Description (LLM-facing)</Label>
                   <Textarea
                     id="tool-desc"
-                    value={getEffectiveDescription(selected.id, curation, selected.summary ?? selected.description)}
-                    onChange={(e) => setCuration(updateToolDescription(curation, selected.id, e.target.value))}
+                    value={getEffectiveDescription(
+                      selected.id,
+                      curation,
+                      selected.summary ?? selected.description,
+                    )}
+                    onChange={(e) =>
+                      setCuration(updateToolDescription(curation, selected.id, e.target.value))
+                    }
                     rows={4}
                   />
                   {(() => {
                     const q = assessDescriptionQuality(
-                      getEffectiveDescription(selected.id, curation, selected.summary ?? selected.description),
+                      getEffectiveDescription(
+                        selected.id,
+                        curation,
+                        selected.summary ?? selected.description,
+                      ),
                     );
                     return (
-                      <Alert variant={q.level === 'good' ? 'success' : q.level === 'warn' ? 'warning' : 'danger'}>
+                      <Alert
+                        variant={
+                          q.level === 'good' ? 'success' : q.level === 'warn' ? 'warning' : 'danger'
+                        }
+                      >
                         {q.message}
                       </Alert>
                     );
@@ -123,7 +148,9 @@ export function CurateStep({
                   <Input
                     id="tool-group"
                     value={curation.toolGroups?.[selected.id] ?? ''}
-                    onChange={(e) => setCuration(updateToolGroup(curation, selected.id, e.target.value))}
+                    onChange={(e) =>
+                      setCuration(updateToolGroup(curation, selected.id, e.target.value))
+                    }
                     placeholder="e.g. pets, orders"
                   />
                 </div>
@@ -167,7 +194,9 @@ export function CurateStep({
           {saveError && <Alert variant="danger">{saveError}</Alert>}
 
           <div className={styles.actions}>
-            <Button variant="ghost" onClick={onBack}>Back</Button>
+            <Button variant="ghost" onClick={onBack}>
+              Back
+            </Button>
             <Button onClick={handleContinue} disabled={saving || includedOps.length === 0}>
               {saving ? 'Saving…' : 'Save draft & continue'}
             </Button>

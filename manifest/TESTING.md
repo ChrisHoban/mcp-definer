@@ -4,38 +4,44 @@ Cross-cutting test expectations for multi-agent development. Each component adds
 
 ## Test layers
 
-| Layer | Owner | When | Location |
-|---|---|---|---|
-| Unit | Each component agent | Per package | `packages/*/src/**/*.test.ts` |
-| Web UI | A8 + A9 | CSS compile, route smoke, components | `apps/web/src/**/*.test.{ts,tsx}` |
-| Contract | A1 + A9 | Schema/API shape stability | `fixtures/`, `scripts/contract-test.sh` |
-| Integration | A9 (mandatory) | Real services wired | `packages/api/tests/integration/` |
-| E2E | A9 | Full user loop | `tests/e2e/` |
+| Layer       | Owner                | When                                 | Location                                |
+| ----------- | -------------------- | ------------------------------------ | --------------------------------------- |
+| Unit        | Each component agent | Per package                          | `packages/*/src/**/*.test.ts`           |
+| Web UI      | A8 + A9              | CSS compile, route smoke, components | `apps/web/src/**/*.test.{ts,tsx}`       |
+| Contract    | A1 + A9              | Schema/API shape stability           | `fixtures/`, `scripts/contract-test.sh` |
+| Integration | A9 (mandatory)       | Real services wired                  | `packages/api/tests/integration/`       |
+| E2E         | A9                   | Full user loop                       | `tests/e2e/`                            |
 
 ## Contract tests (run in CI from Phase 1)
 
 ### Schema contracts (A1)
+
 - IR + Manifest + CurationProfile JSON Schemas validate all fixtures in `fixtures/manifests/`.
 - `validateManifest()` returns `{ valid: true }` for valid fixtures; errors for intentionally invalid variants.
 - Determinism: canonical serialize → parse → serialize yields identical bytes.
 
 ### Generator golden files (A2)
+
 - Given `fixtures/openapi/petstore.yaml` + empty curation → output matches `fixtures/golden/petstore.manifest.json`.
 - Same input run twice → byte-identical output (NFR-06).
 
 ### Request pipeline (A3 + A6)
+
 - Egress allow-list blocks requests to non-allowed hosts (runtime **and** `:invoke`).
 - Secrets redacted from logs in test capture.
 
 ### Discovery index (A5 + A6)
+
 - API `GET /v1/index` response validates against `fixtures/registry/index-v1.json` shape.
 
 ### Credential resolver (A4)
+
 - Write secret → resolve returns value in memory → API GET binding never returns value.
 
 ## Integration tests (A9)
 
 Minimum scenarios:
+
 1. **Parse pipeline:** upload spec → IR returned with expected operation count.
 2. **Publish pipeline:** draft → validate → publish → immutable (409 on PATCH).
 3. **Install snippet:** published MCP → Cursor config snippet contains runtime + manifest URL.
@@ -57,11 +63,11 @@ import fixtures/openapi/petstore.yaml (via CLI or API)
 
 ## Mock strategy for parallel agents
 
-| Consumer | Mock until real |
-|---|---|
-| A7/A8 UI | A6 OpenAPI mock server + fixture responses |
-| A6 API | Stub generator/registry/runtime/auth modules |
-| A3 runtime | A4 in-memory credential resolver stub |
+| Consumer    | Mock until real                                           |
+| ----------- | --------------------------------------------------------- |
+| A7/A8 UI    | A6 OpenAPI mock server + fixture responses                |
+| A6 API      | Stub generator/registry/runtime/auth modules              |
+| A3 runtime  | A4 in-memory credential resolver stub                     |
 | A5 registry | A1 validator from `@mcp-definer/schemas` (real, not stub) |
 
 ## CI commands
@@ -86,11 +92,11 @@ pnpm test:web
 pnpm test:web:build   # same check as CI; fails on invalid CSS like management.module.css
 ```
 
-| Test | File | What it catches |
-|------|------|-----------------|
-| CSS modules | `src/test/css-modules.test.ts` | Invalid PostCSS/CSS syntax in `*.module.css` |
-| Route smoke | `src/test/routes.smoke.test.tsx` | Main routes render without throw (mocked API) |
-| Feature tests | `src/features/**/*.test.tsx` | RBAC, wizard steps, forms |
+| Test          | File                             | What it catches                               |
+| ------------- | -------------------------------- | --------------------------------------------- |
+| CSS modules   | `src/test/css-modules.test.ts`   | Invalid PostCSS/CSS syntax in `*.module.css`  |
+| Route smoke   | `src/test/routes.smoke.test.tsx` | Main routes render without throw (mocked API) |
+| Feature tests | `src/features/**/*.test.tsx`     | RBAC, wizard steps, forms                     |
 
 Fast subset:
 
@@ -100,12 +106,12 @@ pnpm --filter @mcp-definer/web test:smoke
 
 ### Environment variables
 
-| Variable | Default | Used by |
-|---|---|---|
-| `MOCK_MODE` | `true` (unless `false`) | API: seed petstore fixture when `true`; empty registry when `false` |
-| `MCP_DEFINER_API_KEY` | `dev-api-key` | Control-plane `X-API-Key` auth |
-| `API_PUBLIC_URL` | `http://localhost:3001/v1` | Discovery install/manifest URLs in snippets |
-| `DATABASE_URL` | (from docker-compose) | `pnpm db:migrate` / future Postgres-backed stores |
+| Variable              | Default                    | Used by                                                             |
+| --------------------- | -------------------------- | ------------------------------------------------------------------- |
+| `MOCK_MODE`           | `true` (unless `false`)    | API: seed petstore fixture when `true`; empty registry when `false` |
+| `MCP_DEFINER_API_KEY` | `dev-api-key`              | Control-plane `X-API-Key` auth                                      |
+| `API_PUBLIC_URL`      | `http://localhost:3001/v1` | Discovery install/manifest URLs in snippets                         |
+| `DATABASE_URL`        | (from docker-compose)      | `pnpm db:migrate` / future Postgres-backed stores                   |
 
 Integration tests default to **in-memory** registry for speed. `packages/api/tests/integration/postgres-pipeline.test.ts` exercises **Postgres registry + env credential bindings** when `DATABASE_URL` is available (`SKIP_DB_TESTS=true` to skip).
 

@@ -138,7 +138,8 @@ function renderPrimitiveField(
     );
   }
 
-  const isLongText = (fieldSchema.maxLength as number | undefined) !== undefined &&
+  const isLongText =
+    (fieldSchema.maxLength as number | undefined) !== undefined &&
     (fieldSchema.maxLength as number) > 200;
 
   return (

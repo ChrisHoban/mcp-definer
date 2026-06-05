@@ -30,13 +30,7 @@ import { api, ApiError } from '@/lib/api-client';
 const mockedCreateMcp = vi.mocked(api.createMcp);
 const mockedPatchVersion = vi.mocked(api.patchVersion);
 
-function SeedWizard({
-  step = 'import',
-  mcpId,
-}: {
-  step?: WizardStepId;
-  mcpId?: string;
-}) {
+function SeedWizard({ step = 'import', mcpId }: { step?: WizardStepId; mcpId?: string }) {
   const { setIr, setMeta, setSpecText, setStep, setMcpId } = useWizard();
   useEffect(() => {
     setIr(mockPetIr);
@@ -109,9 +103,7 @@ describe('WizardShell', () => {
         version: '0.1.0',
       }),
     );
-    await waitFor(() =>
-      expect(screen.getByText(/mcp_new · v0\.1\.0/)).toBeInTheDocument(),
-    );
+    await waitFor(() => expect(screen.getByText(/mcp_new · v0\.1\.0/)).toBeInTheDocument());
   });
 
   it('patches version when MCP already exists', async () => {
@@ -142,9 +134,7 @@ describe('WizardShell', () => {
     await screen.findByRole('heading', { name: /Curate tools/i });
     await user.click(screen.getByRole('button', { name: /Save draft & continue/i }));
 
-    expect(
-      await screen.findByText(/published and immutable/i),
-    ).toBeInTheDocument();
+    expect(await screen.findByText(/published and immutable/i)).toBeInTheDocument();
   });
 
   it('renders preview step with operations table', async () => {
@@ -155,7 +145,9 @@ describe('WizardShell', () => {
 
   it('renders test step with console link when MCP exists', async () => {
     renderShell({ step: 'test', mcpId: 'mcp_new' });
-    expect(await screen.findByRole('heading', { name: /Test tools \(optional\)/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: /Test tools \(optional\)/i }),
+    ).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Open test console/i })).toHaveAttribute(
       'href',
       '/mcps/mcp_new/test',
