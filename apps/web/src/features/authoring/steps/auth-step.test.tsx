@@ -87,6 +87,7 @@ describe('AuthStep', () => {
     mockedCreateCredentials.mockResolvedValue({
       binding: {
         id: 'cb_petstore',
+        mcpId: 'mcp_petstore',
         authType: 'apiKey',
         config: { in: 'header', name: 'api_key' },
         hasSecret: true,
