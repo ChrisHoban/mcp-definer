@@ -99,7 +99,10 @@ describe('createRuntimeServer', () => {
   it('lists enabled tools', async () => {
     const { client } = await connectClient(loadPetstoreManifest());
     const listed = await client.listTools();
-    expect(listed.tools.map((tool) => tool.name).sort()).toEqual(['findPetsByStatus', 'getPetById']);
+    expect(listed.tools.map((tool) => tool.name).sort()).toEqual([
+      'findPetsByStatus',
+      'getPetById',
+    ]);
     await client.close();
   });
 
@@ -198,7 +201,10 @@ describe('createRuntimeServer', () => {
     });
     await server.connect(serverTransport);
 
-    const client = new Client({ name: 'runtime-unit-test', version: '1.0.0' }, { capabilities: {} });
+    const client = new Client(
+      { name: 'runtime-unit-test', version: '1.0.0' },
+      { capabilities: {} },
+    );
     await client.connect(clientTransport);
 
     const result = await client.callTool({ name: 'getPetById', arguments: { petId: 5 } });
