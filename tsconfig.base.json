@@ -28,5 +28,5 @@
       "@mcp-definer/request-pipeline": ["./packages/request-pipeline/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
 }

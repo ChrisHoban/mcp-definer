@@ -18,5 +18,6 @@
       "@mcp-definer/auth": ["../../packages/auth/src/index.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "src/test/**"]
 }
