@@ -47,7 +47,10 @@ describe('apiFetch', () => {
 
   it('sends X-API-Key and parses JSON body', async () => {
     fetchMock.mockResolvedValue(
-      new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'Content-Type': 'application/json' } }),
+      new Response(JSON.stringify({ ok: true }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
     );
 
     const result = await apiFetch<{ ok: boolean }>('/mcps', {}, { baseUrl: 'https://api.test/v1' });
@@ -183,6 +186,8 @@ describe('discoveryApi', () => {
     fetchMock.mockResolvedValue(
       new Response(JSON.stringify({ detail: 'Not found' }), { status: 404 }),
     );
-    await expect(discoveryApi.getRegistryDetail('acme', 'missing')).rejects.toBeInstanceOf(ApiError);
+    await expect(discoveryApi.getRegistryDetail('acme', 'missing')).rejects.toBeInstanceOf(
+      ApiError,
+    );
   });
 });

@@ -233,10 +233,9 @@ describe('control plane routes', () => {
     const { app, ctx } = await createTestApp();
     const petstore = (await ctx.registryStore.listMcps()).items.find((m) => m.slug === 'petstore')!;
 
-    const res = await app.request(
-      `http://localhost/v1/mcps/${petstore.id}/versions/1.0.0`,
-      { headers: authHeaders() },
-    );
+    const res = await app.request(`http://localhost/v1/mcps/${petstore.id}/versions/1.0.0`, {
+      headers: authHeaders(),
+    });
     expect(res.status).toBe(200);
     const body = (await res.json()) as { tools: unknown[]; manifest: { name: string } };
     expect(body.manifest.name).toBe('petstore');

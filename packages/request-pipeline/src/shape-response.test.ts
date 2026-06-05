@@ -52,10 +52,7 @@ describe('shapeResponse', () => {
       ...tool,
       response: { ...tool.response, shape: 'summarize' },
     };
-    const result = shapeResponse(
-      summarizeTool,
-      response({ text: longText, body: longText }),
-    );
+    const result = shapeResponse(summarizeTool, response({ text: longText, body: longText }));
     expect(result.data).toMatchObject({ truncated: true });
     expect((result.data as { summary: string }).summary.length).toBeLessThanOrEqual(500);
   });

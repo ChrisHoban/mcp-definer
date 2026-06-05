@@ -1,11 +1,7 @@
 import type { IntermediateRepresentation } from '@mcp-definer/schemas';
 import { describe, expect, it } from 'vitest';
 
-import {
-  buildManifestAuth,
-  defaultBindingId,
-  pickPrimarySecuritySchemeName,
-} from './auth-map.js';
+import { buildManifestAuth, defaultBindingId, pickPrimarySecuritySchemeName } from './auth-map.js';
 
 const IR_BASE: IntermediateRepresentation = {
   irVersion: '1.0',

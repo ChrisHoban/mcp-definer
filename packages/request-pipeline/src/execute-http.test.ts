@@ -53,9 +53,7 @@ describe('executeHttpWithRetries', () => {
   });
 
   it('retries after network failure then throws last error', async () => {
-    const fetchFn = vi
-      .fn<HttpFetchFn>()
-      .mockRejectedValue(new Error('network down'));
+    const fetchFn = vi.fn<HttpFetchFn>().mockRejectedValue(new Error('network down'));
 
     await expect(
       executeHttpWithRetries(request, { ...policies, retries: { max: 1, backoffMs: 1 } }, fetchFn),
