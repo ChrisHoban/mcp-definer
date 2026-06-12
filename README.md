@@ -20,6 +20,48 @@ The result is faster time-to-value for agent integrations, consistent behavior a
 
 For vision, glossary, and detailed requirements, see the [manifest documentation](./manifest/README.md).
 
+## UI walkthrough
+
+The web UI (`apps/web`) covers the full MCP lifecycle—from importing an OpenAPI spec through publishing and testing.
+
+### Authoring workflow
+
+Step through the seven-stage wizard: import → preview → curate → auth → validate → test → publish.
+
+![Authoring workflow — import through publish](./docs/screenshots/authoring-workflow.gif)
+
+### Catalog & discovery
+
+Browse your organization's MCPs, filter by status and tags, and open detail views for version history and install snippets.
+
+![MCP catalog — list published and draft MCPs](./docs/screenshots/01-catalog.png)
+
+![Registry browse — discovery index with install actions](./docs/screenshots/07-registry-browse.png)
+
+### Create MCP from OpenAPI
+
+Paste or upload a spec, preview discovered operations, and curate which endpoints become agent tools. The live preview panel shows how the LLM will see each tool.
+
+| Import spec | Preview operations | Curate tools |
+| --- | --- | --- |
+| ![Import OpenAPI spec](./docs/screenshots/02-import-spec.png) | ![Preview operations table and agent preview](./docs/screenshots/03-preview-operations.png) | ![Curate tool names, descriptions, and schemas](./docs/screenshots/04-curate-tools.png) |
+
+### Manage, test, and install
+
+Inspect version history, invoke tools against the live upstream API from the test console, and copy install snippets for Cursor or Claude Desktop.
+
+| MCP detail | Test console |
+| --- | --- |
+| ![MCP detail — versions, audit feed, tools](./docs/screenshots/05-mcp-detail.png) | ![Test console — invoke tools via shared request pipeline](./docs/screenshots/06-test-console.png) |
+
+To regenerate these assets locally (starts API + web in memory mode, captures PNGs and GIF):
+
+```bash
+pnpm screenshots
+```
+
+Assets are written to [`docs/screenshots/`](./docs/screenshots/).
+
 ## Technical overview
 
 | Layer              | Technology                  | Role                                               |

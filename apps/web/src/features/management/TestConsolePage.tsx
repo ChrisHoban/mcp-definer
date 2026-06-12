@@ -59,10 +59,13 @@ export function TestConsolePage() {
     enabled: Boolean(id) && can('mcp:configure_auth'),
   });
 
-  const enabledTools = useMemo(
-    () => (versionQuery.data?.tools ?? []).filter((t) => t.enabled),
-    [versionQuery.data?.tools],
-  );
+  const enabledTools = useMemo(() => {
+    const manifestTools = versionQuery.data?.manifest?.tools;
+    if (manifestTools?.length) {
+      return manifestTools.filter((t) => t.enabled);
+    }
+    return (versionQuery.data?.tools ?? []).filter((t) => t.enabled);
+  }, [versionQuery.data?.manifest?.tools, versionQuery.data?.tools]);
 
   const activeTool = enabledTools.find((t) => t.name === selectedTool) ?? enabledTools[0] ?? null;
 

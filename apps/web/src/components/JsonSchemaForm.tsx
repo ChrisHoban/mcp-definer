@@ -33,7 +33,8 @@ export interface JsonSchemaFormProps {
   disabled?: boolean;
 }
 
-function schemaType(schema: JsonSchema): string {
+function schemaType(schema: JsonSchema | undefined): string {
+  if (!schema) return 'object';
   if (Array.isArray(schema.type)) {
     return (schema.type as string[]).find((t) => t !== 'null') ?? 'string';
   }
@@ -179,6 +180,9 @@ export function JsonSchemaForm({
   disabled = false,
 }: JsonSchemaFormProps) {
   const baseId = useId();
+  if (!schema || typeof schema !== 'object') {
+    return <p className={styles.empty}>No input parameters defined.</p>;
+  }
   const type = schemaType(schema);
 
   const onFieldChange = useCallback(
