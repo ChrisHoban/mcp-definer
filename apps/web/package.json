@@ -20,9 +20,9 @@
     "@tanstack/react-virtual": "^3.13.9",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-hook-form": "^7.57.0",
+    "react-hook-form": "^7.78.0",
     "react-router-dom": "^7.6.2",
-    "zod": "^3.25.56"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
