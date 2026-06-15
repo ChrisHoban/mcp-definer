@@ -19,21 +19,30 @@
     "test:web:coverage": "pnpm --filter @mcp-definer/web test:coverage",
     "test:web:build": "pnpm --filter @mcp-definer/web build",
     "dev:api": "pnpm --filter @mcp-definer/api run dev",
-    "dev:web": "pnpm --filter @mcp-definer/web run dev"
+    "dev:web": "pnpm --filter @mcp-definer/web run dev",
+    "screenshots": "powershell -ExecutionPolicy Bypass -File scripts/capture-screenshots.ps1"
   },
   "devDependencies": {
-    "@modelcontextprotocol/sdk": "^1.12.1",
     "@eslint/js": "^9.28.0",
+    "@modelcontextprotocol/sdk": "^1.12.1",
     "@types/node": "^22.15.29",
+    "@vitest/coverage-v8": "^4.1.0",
+    "dotenv": "^16.5.0",
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
+    "gifenc": "^1.0.3",
     "globals": "^16.2.0",
+    "playwright": "^1.60.0",
+    "pngjs": "^7.0.0",
     "prettier": "^3.5.3",
     "turbo": "^2.5.4",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.33.1",
-    "vitest": "^4.1.0",
-    "@vitest/coverage-v8": "^4.1.0",
-    "dotenv": "^16.5.0"
+    "vitest": "^4.1.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": ">=0.28.1"
+    }
   }
 }
