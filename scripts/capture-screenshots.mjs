@@ -21,16 +21,6 @@ const webBase = process.env.WEB_URL ?? 'http://localhost:5173';
 const apiBase = process.env.API_URL ?? 'http://localhost:3000/v1';
 const apiKey = process.env.MCP_DEFINER_API_KEY ?? 'dev-api-key';
 
-const WIZARD_STEP_LABELS = [
-  'Import spec',
-  'Preview operations',
-  'Curate tools',
-  'Configure auth',
-  'Validate',
-  'Test',
-  'Publish',
-];
-
 const petstoreSpec = readFileSync(join(repoRoot, 'fixtures/openapi/petstore.yaml'), 'utf8');
 
 async function fetchPetstoreMeta() {
