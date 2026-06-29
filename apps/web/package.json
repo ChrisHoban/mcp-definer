@@ -16,13 +16,13 @@
     "@mcp-definer/auth": "workspace:*",
     "@mcp-definer/generator": "workspace:*",
     "@mcp-definer/schemas": "workspace:*",
-    "@tanstack/react-query": "^5.80.7",
-    "@tanstack/react-virtual": "^3.13.9",
+    "@tanstack/react-query": "^5.101.2",
+    "@tanstack/react-virtual": "^3.14.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-hook-form": "^7.57.0",
-    "react-router-dom": "^7.6.2",
-    "zod": "^3.25.56"
+    "react-hook-form": "^7.80.0",
+    "react-router-dom": "^7.18.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
