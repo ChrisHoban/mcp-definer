@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@mcp-definer/schemas": "workspace:*",
-    "pg": "^8.16.0"
+    "pg": "^8.22.0"
   },
   "devDependencies": {
     "@types/pg": "^8.15.2",
