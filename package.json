@@ -23,22 +23,22 @@
     "screenshots": "powershell -ExecutionPolicy Bypass -File scripts/capture-screenshots.ps1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.28.0",
+    "@eslint/js": "^10.0.1",
     "@modelcontextprotocol/sdk": "^1.12.1",
-    "@types/node": "^22.15.29",
-    "@vitest/coverage-v8": "^4.1.0",
+    "@types/node": "^26.1.1",
+    "@vitest/coverage-v8": "^4.1.10",
     "dotenv": "^16.5.0",
-    "eslint": "^9.28.0",
+    "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.5",
     "gifenc": "^1.0.3",
-    "globals": "^16.2.0",
-    "playwright": "^1.60.0",
+    "globals": "^17.7.0",
+    "playwright": "^1.61.1",
     "pngjs": "^7.0.0",
-    "prettier": "^3.5.3",
-    "turbo": "^2.5.4",
+    "prettier": "^3.9.6",
+    "turbo": "^2.10.5",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.33.1",
-    "vitest": "^4.1.0"
+    "typescript-eslint": "^8.65.0",
+    "vitest": "^4.1.10"
   },
   "pnpm": {
     "overrides": {
