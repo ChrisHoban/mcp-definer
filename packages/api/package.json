@@ -27,7 +27,7 @@
     "@mcp-definer/request-pipeline": "workspace:*",
     "@mcp-definer/schemas": "workspace:*",
     "dotenv": "^16.5.0",
-    "hono": "^4.12.25"
+    "hono": "^4.13.5"
   },
   "devDependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
