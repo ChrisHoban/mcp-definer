@@ -20,10 +20,10 @@
     "@mcp-definer/auth": "workspace:*",
     "@mcp-definer/db": "workspace:*",
     "@mcp-definer/schemas": "workspace:*",
-    "pg": "^8.16.0"
+    "pg": "^8.23.0"
   },
   "devDependencies": {
-    "@types/pg": "^8.15.2",
+    "@types/pg": "^8.23.1",
     "typescript": "catalog:",
     "vitest": "^4.1.0"
   }
